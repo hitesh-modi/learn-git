@@ -1,6 +1,0 @@
-one
-two
-three
-Fourth Master
-Fourth second-branch
-This will be applied through patch.
