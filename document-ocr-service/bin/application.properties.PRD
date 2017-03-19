@@ -1,0 +1,43 @@
+##Please add properties in alphabetical order
+application.name=FAX-ACKNOWLEDGE
+faxacknowledge.filewatcher.email.cron=0\ */5\ *\ *\ *\ ?
+faxacknowledge.filewatcher.primaryaccount.cron=0\ */5\ *\ *\ *\ ?
+lux.filewatcher.bau.cron=0\ */5\ *\ *\ *\ ?
+lux.filewatcher.investor.cron=0\ */5\ *\ *\ *\ ?
+lux.spooler.threadpoolsize=10
+hk.filewatcher.quickreference.cron=0\ */5\ *\ *\ *\ ?
+hk.filewatcher.drools.cron=0\ */5\ *\ *\ *\ ?
+faxacknowledge.inputFilePathForEmailMaster=D:\\OCR-Utility\\SSIS_Sheets_OCR_Service\\account-email-master-files
+faxacknowledge.inputFilePathForPrimaryAccount=D:\\OCR-Utility\\SSIS_Sheets_OCR_Service\\primary-account-mapping-files
+lux.inputFilePathForBAUValidation=\\\\EMEA.AD.JPMORGANCHASE.com\\TSS\\WSS\\LUXWSSGROUP2\\GROUPS\\DATACAP\\PROD\\BAU_SHEETS
+lux.inputFilePathForInvestorValidation=D:\\OCR-Utility\\SSIS_Sheets_OCR_Service\\Investor
+hk.inputFilePathForQuickReference=D:\\OCR-Utility\\SSIS_Sheets_OCR_Service\\QUICK_REFERENCE
+hk.inputFilePathForDrools=D:\\OCR-Utility\\SSIS_Sheets_OCR_Service\\Drools
+faxacknowledge.processedFolder=PROCESSED
+faxacknowledge.dbwatcher.enable=false
+faxacknowledge.dbwatcher.threadpoolsize=10
+faxacknowledge.dbwatcher.cron=0\ 0\ 12\ 31\ 12\ ?
+faxacknowledge.email.content=\nReceived\ %s\ page\ %s\ %s
+faxacknowledge.email.host=mailhost.jpmchase.net
+#faxacknowledge.email.host=inoutlookpstg.esfglb-c3.jpmchase.net
+faxacknowledge.email.port=25
+faxacknowledge.email.transportProtocol=smtp
+faxacknowledge.email.sslTrust=mailhost.jpmchase.net
+faxacknowledge.email.smtpStarttlsEnable=false
+faxacknowledge.email.sender=blackrock.asian.ta.support@jpmorgan.com
+faxacknowledge.email.subject=
+faxacknowledge.email.exception=binoy.singh@restricted.chase.com
+faxacknowledge.email.exception.subject=Email not sent for Batch ID %s.
+faxacknowledge.email.exception.content=Not able to send the email due to some exception in the data. Please check the fax details in database.
+faxacknowledge.email.exception.emailDoesNotExist=EmailId does not exist for any of the account in the batch.
+faxacknowledge.password.encryption.initVector=JPMCLUXDOCIDINIT
+faxacknowledge.password.encryption.encryptionKey=JPMCLUXDOCGENKEY
+
+spring.datasource.username=DatacapDBAdmin
+spring.datasource.password=hetDN74b6vNmMBDwxi4X1Q==
+
+spring.datasource.url=jdbc:sqlserver://YLUXEBBCIDSQL01:16001;databaseName=LookupDB
+#spring.datasource.url=jdbc:sqlserver://YLUXDEVIDSQL01\\YLUXDEVIDSQL01:16001;databaseName=LookupDB
+#spring.datasource.url=jdbc:sqlserver://YLUXUATIDSQL01\\YLUXUATIDSQL01:16001;databaseName=LookupDB
+spring.datasource.driverClassName=com.microsoft.sqlserver.jdbc.SQLServerDriver
+server.port = 8090

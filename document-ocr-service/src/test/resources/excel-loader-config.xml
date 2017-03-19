@@ -1,0 +1,245 @@
+<sheetsMapping>
+
+	<application id="fax_acknowledgement_email_master" db="LookupDB"
+		schema="DATACAP" table="FAX_ACCT_EMAIL_MASTER" sheetIndex="0">
+		<mapping>
+			<sheetColumn dataType="string">First Name</sheetColumn>
+			<dbColumn dataType="varchar" size="" defaultValue="">AccountNo
+			</dbColumn>
+		</mapping>
+		<mapping>
+			<sheetColumn dataType="string">Email Address</sheetColumn>
+			<dbColumn dataType="varchar" size="200" defaultValue="">Emailid
+			</dbColumn>
+		</mapping>
+		<mapping>
+			<sheetColumn dataType="string" />
+			<dbColumn dataType="varchar" size="1" defaultValue="Y">isValid
+			</dbColumn>
+		</mapping>
+	</application>
+
+	<application id="fax_acknowledgement_primary_account_mapping"
+		db="LookupDB" schema="DATACAP" table="ACCT_MAPPING" sheetIndex="0">
+		<mapping>
+			<sheetColumn dataType="string">ACC'S</sheetColumn>
+			<dbColumn dataType="varchar" size="20" defaultValue="">SecondaryAccoutNo
+			</dbColumn>
+		</mapping>
+		<mapping>
+			<sheetColumn dataType="string">PRIMARY ACC</sheetColumn>
+			<dbColumn dataType="varchar" size="20" defaultValue="">PrimaryAccountNo
+			</dbColumn>
+		</mapping>
+	</application>
+
+	<application id="LUX_BAU_VALIDATION" db="LookupDB" schema="DATACAP"
+		table="LUX_BAU_VALIDATION" sheetIndex="0">
+		<mapping>
+			<sheetColumn dataType="string">Fund Name</sheetColumn>
+			<dbColumn dataType="varchar" size="20" defaultValue="">FundName
+			</dbColumn>
+		</mapping>
+		<mapping>
+			<sheetColumn dataType="string">Product Group</sheetColumn>
+			<dbColumn dataType="varchar" size="20" defaultValue="">ProductGroup
+			</dbColumn>
+		</mapping>
+		<mapping>
+			<sheetColumn dataType="string">Product code</sheetColumn>
+			<dbColumn dataType="varchar" size="20" defaultValue="">ProductCode
+			</dbColumn>
+		</mapping>
+		<mapping>
+			<sheetColumn dataType="string">Fund/GFAS code</sheetColumn>
+			<dbColumn dataType="varchar" size="20" defaultValue="">FundCode
+			</dbColumn>
+		</mapping>
+		<mapping>
+			<sheetColumn dataType="string">ISIN code</sheetColumn>
+			<dbColumn dataType="varchar" size="20" defaultValue="">ISIN
+			</dbColumn>
+		</mapping>
+		<mapping>
+			<sheetColumn dataType="string">SEDOL</sheetColumn>
+			<dbColumn dataType="varchar" size="20" defaultValue="">SEDOL
+			</dbColumn>
+		</mapping>
+		<mapping>
+			<sheetColumn dataType="string">WKN</sheetColumn>
+			<dbColumn dataType="varchar" size="20" defaultValue="">WKN
+			</dbColumn>
+		</mapping>
+		<mapping>
+			<sheetColumn dataType="string">Currency</sheetColumn>
+			<dbColumn dataType="varchar" size="20" defaultValue="">Currency
+			</dbColumn>
+		</mapping>
+		<mapping>
+			<sheetColumn dataType="string">SUB minimum initial</sheetColumn>
+			<dbColumn dataType="varchar" size="20" defaultValue="">MinSubscription
+			</dbColumn>
+		</mapping>
+		<mapping>
+			<sheetColumn dataType="string">SUB minimum subsequent
+			</sheetColumn>
+			<dbColumn dataType="varchar" size="20" defaultValue="">SubsequentSubscription
+			</dbColumn>
+		</mapping>
+		<mapping>
+			<sheetColumn dataType="string">Red minimum</sheetColumn>
+			<dbColumn dataType="varchar" size="20" defaultValue="">MinRedemption
+			</dbColumn>
+		</mapping>
+		<mapping>
+			<sheetColumn dataType="string">Large mail</sheetColumn>
+			<dbColumn dataType="varchar" size="20" defaultValue="">LargeMail
+			</dbColumn>
+		</mapping>
+		<mapping>
+			<sheetColumn dataType="string">Switch Minimum</sheetColumn>
+			<dbColumn dataType="varchar" size="20" defaultValue="">MinSwitch
+			</dbColumn>
+		</mapping>
+		<mapping>
+			<sheetColumn dataType="string">Switch Settlement</sheetColumn>
+			<dbColumn dataType="varchar" size="20" defaultValue="">SwitchSettlement
+			</dbColumn>
+		</mapping>
+		<mapping>
+			<sheetColumn dataType="string">Sheet Name</sheetColumn>
+			<dbColumn dataType="varchar" size="20" defaultValue="">Sheet
+			</dbColumn>
+		</mapping>
+	</application>
+
+
+	<application id="LUX_INVESTORS_VALIDATION" db="LookupDB"
+		schema="DATACAP" table="Lux_Inverstors_Validation" sheetIndex="0">
+		<mapping>
+			<sheetColumn dataType="string">Promoter</sheetColumn>
+			<dbColumn dataType="varchar" size="" defaultValue="">Promoter
+			</dbColumn>
+		</mapping>
+		<mapping>
+			<sheetColumn dataType="string">Location</sheetColumn>
+			<dbColumn dataType="varchar" size="200" defaultValue="">Location
+			</dbColumn>
+		</mapping>
+		<mapping>
+			<sheetColumn dataType="string">CDB</sheetColumn>
+			<dbColumn dataType="varchar" size="1" defaultValue="Y">CDB
+			</dbColumn>
+		</mapping>
+		<mapping>
+			<sheetColumn dataType="string">Account ID</sheetColumn>
+			<dbColumn dataType="varchar" size="" defaultValue="">AccountNumber
+			</dbColumn>
+		</mapping>
+		<mapping>
+			<sheetColumn dataType="string">Account Name</sheetColumn>
+			<dbColumn dataType="varchar" size="" defaultValue="">AccountName
+			</dbColumn>
+		</mapping>
+		<mapping>
+			<sheetColumn dataType="string">Account Designation</sheetColumn>
+			<dbColumn dataType="varchar" size="" defaultValue="">AccountDesignation
+			</dbColumn>
+		</mapping>
+		<mapping>
+			<sheetColumn dataType="string">Country Code</sheetColumn>
+			<dbColumn dataType="varchar" size="" defaultValue="">CountryCode
+			</dbColumn>
+		</mapping>
+		<mapping>
+			<sheetColumn dataType="string">Customer type</sheetColumn>
+			<dbColumn dataType="varchar" size="" defaultValue="">CustomerType
+			</dbColumn>
+		</mapping>
+		<mapping>
+			<sheetColumn dataType="string">Holdings Y/N</sheetColumn>
+			<dbColumn dataType="varchar" size="" defaultValue="">Holdings
+			</dbColumn>
+		</mapping>
+	</application>
+
+	<application id="QUICK_REFERENCE" db="LookupDB" schema="DATACAP"
+		table="QUICK_REFERENCE" sheetIndex="1">
+		<mapping>
+			<sheetColumn dataType="string">Acct No</sheetColumn>
+			<dbColumn dataType="varchar" size="" defaultValue="">AccountNumber
+			</dbColumn>
+		</mapping>
+		<mapping>
+			<sheetColumn dataType="string">Acct Name(GFAS)</sheetColumn>
+			<dbColumn dataType="varchar" size="200" defaultValue="">AccountName
+			</dbColumn>
+		</mapping>
+		<mapping>
+			<sheetColumn dataType="string">Minimum Investment Waived (Y/N)
+			</sheetColumn>
+			<dbColumn dataType="varchar" size="1" defaultValue="Y">MinInvestmentWaived
+			</dbColumn>
+		</mapping>
+		<mapping>
+			<sheetColumn dataType="string">Fund/Share Class</sheetColumn>
+			<dbColumn dataType="varchar" size="" defaultValue="">ShareClass
+			</dbColumn>
+		</mapping>
+		<mapping>
+			<sheetColumn dataType="string">Unique Dealing Terms</sheetColumn>
+			<dbColumn dataType="varchar" size="" defaultValue="">Charges
+			</dbColumn>
+		</mapping>
+	</application>
+
+	<application id="FUND_MAPPING" db="LookupDB" schema="DATACAP"
+		table="FUND_MAPPING" sheetIndex="2">
+		<mapping>
+			<sheetColumn dataType="string">Fund Family</sheetColumn>
+			<dbColumn dataType="varchar" size="" defaultValue="">FUND_GROUP
+			</dbColumn>
+		</mapping>
+		<mapping>
+			<sheetColumn dataType="string">Fund Name 1</sheetColumn>
+			<dbColumn dataType="varchar" size="" defaultValue="">Fund_Name1
+			</dbColumn>
+		</mapping>
+		<mapping>
+			<sheetColumn dataType="string">FundName 2</sheetColumn>
+			<dbColumn dataType="varchar" size="200" defaultValue="">Fund_Name2
+			</dbColumn>
+		</mapping>
+		<mapping>
+			<sheetColumn dataType="string">Class</sheetColumn>
+			<dbColumn dataType="varchar" size="1" defaultValue="Y">Class
+			</dbColumn>
+		</mapping>
+		<mapping>
+			<sheetColumn dataType="string">Fund Ccy</sheetColumn>
+			<dbColumn dataType="varchar" size="" defaultValue="">Fund_Currency
+			</dbColumn>
+		</mapping>
+		<mapping>
+			<sheetColumn dataType="string">ISIN</sheetColumn>
+			<dbColumn dataType="varchar" size="" defaultValue="">ISIN
+			</dbColumn>
+		</mapping>
+	</application>
+
+	<application id="DROOLS_VALIDATION" db="LookupDB" schema="DATACAP"
+		table="DROOLSENGINE" sheetIndex="0">
+		<mapping>
+			<sheetColumn dataType="string">Account Number</sheetColumn>
+			<dbColumn dataType="varchar" size="" defaultValue="">AccountNumber
+			</dbColumn>
+		</mapping>
+		<mapping>
+			<sheetColumn dataType="string">ASL Transaction Currencies
+			</sheetColumn>
+			<dbColumn dataType="varchar" size="200" defaultValue="">ASLCurrency
+			</dbColumn>
+		</mapping>
+	</application>
+
+</sheetsMapping>

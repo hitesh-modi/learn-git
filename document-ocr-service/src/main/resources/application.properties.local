@@ -1,0 +1,99 @@
+##Please add properties in alphabetical order
+application.name=FAX-ACKNOWLEDGE
+excel.loader.supported.format=xls,xlsx
+faxacknowledge.filewatcher.email.cron=0\ */2\ *\ ?\ *\ *
+faxacknowledge.filewatcher.email.cron.enable=false
+faxacknowledge.filewatcher.primaryaccount.cron=0\ */2\ *\ ?\ *\ *
+faxacknowledge.filewatcher.primaryaccount.cron.enable=false
+faxacknowledge.inputFilePathForEmailMaster=C:\\Hitesh\\application-input-files\\account-email-data
+faxacknowledge.inputFilePathForPrimaryAccount=C:\\Hitesh\\application-input-files\\primary-account-data
+faxacknowledge.processedFolder=PROCESSED
+faxacknowledge.dbwatcher.threadpoolsize=10
+faxacknowledge.dbwatcher.cron=0\ */2\ *\ ?\ *\ *
+faxacknowledge.dbwatcher.enable=false
+faxacknowledge.email.content=\n\n\n\nReceived\ %s\ page\ %s\ %s
+faxacknowledge.email.content.disclaimer=This\ email\ is\ confidential\ and\ subject\ to\ important\ disclaimers\ and\ conditions\ including\ on\ offers\ for\ the\ purchase\ or\ sale\ of\ securities,\ accuracy\ and\ completeness\ of\ information,\ viruses,\ confidentiality,\ legal privilege,\ and\ legal\ entity\ disclaimers,\ available\ at\ http://www.jpmorgan.com/pagesidisclosuresiemail.  
+faxacknowledge.email.host=mailhost.jpmchase.net
+#faxacknowledge.email.host=inoutlookpstg.esfglb-c3.jpmchase.net
+faxacknowledge.email.port=25
+faxacknowledge.email.transportProtocol=smtp
+faxacknowledge.email.sslTrust=mailhost.jpmchase.net
+faxacknowledge.email.smtpStarttlsEnable=true
+faxacknowledge.email.sender=blackrock.asian.ta.support@jpmorgan.com
+faxacknowledge.email.subject=
+faxacknowledge.email.exception=hitesh.modi@jpmorgan.com,akash.sao@jpmorgan.com
+faxacknowledge.email.cc=hitesh.modi@jpmorgan.com
+faxacknowledge.email.bcc=hitesh.modi@jpmorgan.com
+faxacknowledge.email.exception.subject=Email not sent for Batch ID %s.
+faxacknowledge.email.exception.content=Not able to send the email due to some exception in the data. Please check the fax details in database.
+faxacknowledge.email.exception.emailDoesNotExist=EmailId does not exist for any of the account in the batch.
+faxacknowledge.password.encryption.initVector=JPMCLUXDOCIDINIT
+faxacknowledge.password.encryption.encryptionKey=JPMCLUXDOCGENKEY
+hk.filewatcher.quickreference.cron=0\ */1\ *\ *\ *\ ?
+hk.filewatcher.quickreference.cron.enable=false
+hk.filewatcher.drools.cron=0\ */1\ *\ *\ *\ ?
+hk.filewatcher.drools.cron.enable=false
+hk.inputFilePathForQuickReference=C:\\DatacapUtility\\Sheets\\QUICK_REFERENCE
+hk.inputFilePathForDrools=C:\\DatacapUtility\\Sheets\\Drools
+
+hk.spooler.cron1=0\ */1\ *\ *\ *\ ?
+hk.spooler.cron2=0\ */1\ *\ *\ *\ ?
+hk.spooler.cron.enable=false
+hk.spooler.applicationName=JPMCHongKongDealing
+hk.spooler.threadpoolsize=10
+hk.spooler.job=Navigator\ Job
+hk.spooler.faxFolderPath=H:\\K\\
+hk.spooler.supportedFaxFormats=tif,tiff
+hk.spooler.processedFolderPath=C:\\DatacapUtility\\JPMCDealingFaxInstructionAutomatedScanUtility\\HK\\Processed
+hk.spooler.faxTempPath=C:\\DatacapUtility\\LUX\\JPMCTALUXDatacapFaxSpoolerService\\Datacap\\Temp
+hk.spooler.contentType=image/tiff
+hk.spooler.dealDateTimeZone=GMT
+
+lux.filewatcher.bau.cron=0\ */1\ *\ *\ *\ ?
+lux.filewatcher.bau.cron.enable=false
+lux.filewatcher.investor.cron=0\ */1\ *\ *\ *\ ?
+lux.filewatcher.investor.cron.enable=false
+lux.spooler.threadpoolsize=10
+lux.inputFilePathForBAUValidation=C:\\DatacapUtility\\Sheets\\BAU
+lux.inputFilePathForInvestorValidation=C:\\DatacapUtility\\Sheets\\Investor
+datacap.wTMURL=http://yluxdevid01:82/ServicewTM.svc/Queue/
+
+lux.spooler.blackrock.cron=0\ */1\ *\ *\ *\ ?
+lux.spooler.blackrock.cron.enable=false
+lux.spooler.blackrock.applicationName=LuxembourgTA-BlackRock
+lux.spooler.blackrock.fax.path=H:\\K\\LUX-Blackrock
+lux.spooler.bau.cron=0\ */1\ *\ *\ *\ ?
+lux.spooler.bau.cron.enable=false
+lux.spooler.bau.applicationName=LuxembourgTA-BAU
+lux.spooler.bau.fax.path=H:\\K\\LUX-BAU
+lux.spooler.job=Navigator\ Job
+lux.spooler.supportedFaxFormats=tif,tiff
+lux.spooler.faxTempPath=C:\\DatacapUtility\\LUX\\JPMCTALUXDatacapFaxSpoolerService\\Datacap\\Temp
+lux.spooler.processedFolderPath=H:\\K\\EasyLink
+lux.spooler.contentType=image/tiff
+lux.spooler.dealDateTimeZone=GMT
+lux.spooler.dateFolderFormat=yyMMdd
+
+lux.spooler.docIdUrl=https://psin7p150.svr.us.jpmchase.net:27400/isearchCB/udid
+lux.spooler.docIdUrl.userName=7ht+Yog9j5N4mlDJ3uvIdQ==
+#D566888
+lux.spooler.docIdUrl.password=rZ+BhSpx9jOqfUFWu+PrGQ==
+#uvrN4YHW
+lux.spooler.docIdUrl.key=JPMCLUXDOCGENKEY
+lux.spooler.docIdUrl.initVector=JPMCLUXDOCIDINIT
+
+
+spring.datasource.username=DatacapDBAdmin
+#spring.datasource.password=Ji5wrt/ogxzG/0pTgqGXzg==
+spring.datasource.password=pvd5PNPRvh0Ui2HMYaXaEg==
+
+#spring.datasource.url=jdbc:sqlserver://YLUXDEVIDSQL01\\YLUXDEVIDSQL01:16001;databaseName=LookupDB
+spring.datasource.url=jdbc:sqlserver://YLUXUATIDSQL01\\YLUXUATIDSQL01:16001;databaseName=LookupDB
+spring.datasource.driverClassName=com.microsoft.sqlserver.jdbc.SQLServerDriver
+server.port = 8090
+
+service.log.rollChecker.cron=0\ 0/3\ *\ *\ *\ ?
+service.log.path=C:\\workspace\\captis\\document-ocr-service\\logs
+service.log.name=document-ocr-service.log
+service.log.size.offset=10240
+service.log.toKeep=3
