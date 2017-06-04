@@ -1,0 +1,128 @@
+/*-------------------------
+	Simple reset
+--------------------------*/
+* {
+	margin: 0;
+	padding: 0;
+}
+
+/*-------------------------
+	General Styles
+--------------------------*/
+.footer {
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	padding: 1rem;
+	background-color: #efefef;
+	text-align: center;
+}
+
+a, a:visited {
+	outline: none;
+	color: #389dc1;
+}
+
+a:hover {
+	text-decoration: none;
+}
+
+section, footer, header, aside, nav {
+	display: block;
+}
+
+/*-------------------------
+	The menu
+--------------------------*/
+nav {
+	display: inline-block;
+	margin: 10px auto 45px;
+	background-color: #57c1c2;
+	box-shadow: 5px 5px 5px #ccc;
+	border-radius: 10px;
+}
+
+body {
+	font-family: "Book Antiqua" !important;
+	color: #3c3c58 !important;
+	text-align: center;
+	background-size: 10px 10px;
+	background-image: linear-gradient(to right, #e7e8ea 1px, transparent 1px),
+		linear-gradient(to bottom, #e7e8ea 1px, transparent 1px);
+}
+
+.logo {
+	background-size: 1063px 143px;
+	border-radius: 20px;
+	border: 3px solid #57c1c2;
+}
+
+.logo img {
+	width: 100%;
+	height: auto;
+}
+
+.mainbody {
+	margin: 10px 10px 10px 10px;
+	border-radius: 10px;
+}
+
+.forms {
+	display: inline-block;
+}
+
+h2 {
+	font-family: "Book Antiqua";
+	color: #3c3c58;
+}
+
+nav a {
+	font-family: "Book Antiqua";
+	display: inline-block;
+	padding: 18px 30px;
+	color: #fff !important;
+	font-weight: bold;
+	font-size: 16px;
+	text-decoration: none !important;
+	line-height: 1;
+	text-transform: uppercase;
+	background-color: transparent;
+	-webkit-transition: background-color 0.25s;
+	-moz-transition: background-color 0.25s;
+	transition: background-color 0.25s;
+}
+
+nav a:first-child {
+	font-family: "Book Antiqua";
+	border-radius: 10px 0 0 10px;
+}
+
+nav a:last-child {
+	font-family: "Book Antiqua";
+	border-radius: 0 10px 10px 0;
+}
+
+nav.home .home, nav.team .team, nav.invoice .invoice, nav.product .product,
+	nav.inventory .inventory, nav.servicerecord .servicerecord, nav.service .service,
+	nav.contact .contact {
+	background-color: #3c3c58;
+}
+
+p {
+	font-family: "Book Antiqua";
+	color: #3c3c58;;
+}
+
+p b {
+	font-family: "Book Antiqua";
+	color: #ffffff;
+	display: inline-block;
+	padding: 5px 10px;
+	background-color: #DC64C6;
+	border-radius: 2px;
+	ize: 22px;
+	font-weight: bold;
+	text-transform: uppercase;
+	font-size: 18px;
+}

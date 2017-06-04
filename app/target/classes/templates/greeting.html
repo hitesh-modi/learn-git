@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <meta charset="utf-8"/>
+      <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet" />
+      <!-- The main CSS file -->
+      <link href="css/style.css" rel="stylesheet" />
+      <link href="css/bootstrap.min.css" rel="stylesheet" />
+      <link href="css/bootstrap-theme.min.css" rel="stylesheet" />
+      <script type="text/javascript" src="js/bootstrap.min.js"></script> 
+      <!--[if lt IE 9]>
+      <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+      <![endif]-->
+   </head>
+   <!-- The ng-app directive tells angular that the code below should be evaluated -->
+   <body ng-app="modiTradersApp">
+      <!-- The navigation menu will get the value of the "active" variable as a class.
+         The $event.preventDefault() stops the page from jumping when a link is clicked. -->
+      <div class="mainbody" ng-controller="MainCtrl as mainCtrl">
+         <div class="logo">
+            <img src="images/final-logo-cropped.png"></img>
+         </div>
+         <nav class="{{active}}" ng-click="$event.preventDefault()">
+            <!-- When a link in the menu is clicked, we set the active variable -->
+            <a href="#" class="home" ng-click="active='home'">Home</a>
+            <a href="#" class="invoice" ng-click="active='invoice'">Create Invoice</a>
+            <a href="#" class="product" ng-click="active='product'">Create Product</a>
+            <a href="#" class="service" ng-click="active='service'">Create Service</a>
+            <a href="#" class="inventory" ng-click="active='inventory'">Inventory Refill</a>
+            <a href="#" class="servicerecord" ng-click="active='servicerecord'">Service Record</a>
+            <a href="#" class="contact" ng-click="active='contact'">Contact</a>
+         </nav>
+         <!-- ng-show will show an element if the value in the quotes is truthful,
+            while ng-hide does the opposite. Because the active variable is not set
+            initially, this will cause the first paragraph to be visible. -->
+         <div ng-show="active=='home'">
+            <p>TODO: Create a homepage here</p>
+         </div>
+         <div ng-show="active=='invoice'">
+            <p>TODO: Create a Create Invoice form here</p>
+         </div>
+         <div ng-show="active=='product'" ng-controller="ProductController as productController">
+            <div ng-include="mainCtrl.productForm"></div>
+         </div>
+         <div ng-show="active=='service'">
+            <div ng-include="mainCtrl.serviceForm"></div>
+         </div>
+         <div ng-show="active=='inventory'">
+            <div ng-include="mainCtrl.inventoryRefill"></div>
+         </div>
+         <div ng-show="active=='servicerecord'">
+            <div ng-include="mainCtrl.serviceRecord"></div>
+         </div>
+         <div ng-show="active=='contact'">
+            <div ng-include="mainCtrl.contactUs"></div>
+         </div>
+      </div>
+      
+      <div class="footer">
+      	© 2017-2019 Modi Traders <br/>
+      	Designed and Built by Hitesh Modi
+      </div>
+      
+      <!-- Include AngularJS from Google's CDN -->
+      <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.11/angular.js"></script>
+	  <script src="js/app.js"></script>
+	  <script src="js/productController.js"></script>
+   </body>
+</html>
