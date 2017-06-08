@@ -3,7 +3,9 @@
 		<div class="form-group">
 			<label class ="control-label col-xs-4">Product Type</label>
 			<div class="col-xs-8">
-				<input class="form-control" type="text" ng-model="productController.product.type" name="productType" placeholder="e.g. Cement, Putty"> 
+				<select class="form-control" ng-model="productController.product.type" name="productType" ng-options="productType for productType in productController.productTypes">
+					<option value="" label="Select Product Type"></option>
+				</select> 
 			</div>
 		</div> 
 		<div class="form-group">
