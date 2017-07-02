@@ -1,5 +1,6 @@
 package com.moditraders.models;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import com.moditraders.types.ProductType;
@@ -8,7 +9,7 @@ public class Product {
 	private ProductType type;
 	private String company;
 	private Date agencyStartDate;
-	private Double depositAmount;
+	private BigDecimal depositAmount;
 	public ProductType getType() {
 		return type;
 	}
@@ -27,10 +28,10 @@ public class Product {
 	public void setAgencyStartDate(Date agencyStartDate) {
 		this.agencyStartDate = agencyStartDate;
 	}
-	public Double getDepositAmount() {
+	public BigDecimal getDepositAmount() {
 		return depositAmount;
 	}
-	public void setDepositAmount(Double securityDeposit) {
+	public void setDepositAmount(BigDecimal securityDeposit) {
 		this.depositAmount = securityDeposit;
 	}
 	

@@ -16,8 +16,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import com.moditraders.exceptions.ServiceExcpetion;
 import com.moditraders.models.Product;
 import com.moditraders.services.IMainService;
@@ -36,24 +38,25 @@ public class MainController {
 		return "greeting";
 	}
 	
-	@ResponseBody
+	
 	@RequestMapping(value="/createProduct", method=RequestMethod.POST, produces=MediaType.APPLICATION_JSON_VALUE)
-	public String createProduct(@Valid @RequestBody String productJson) {
+	public @ResponseBody String createProduct(@Valid @RequestBody String productJson) throws JsonProcessingException {
 		LOGGER.info("Request received for Product Creation with data " + productJson);
+		Long id = -1L;
 		try {
 			Product product = new ObjectMapper().readValue(productJson, Product.class);
+			id = mainService.saveProduct(product);
 			LOGGER.info(product);
 		} catch (JsonParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOGGER.info("JsonParseException during service call", e);
 		} catch (JsonMappingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOGGER.info("JsonMappingException during service call", e);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOGGER.info("IOException during service call", e);
+		} catch (ServiceExcpetion e) {
+			LOGGER.info("ServiceExcpetion during service call", e);
 		}
-		return "success";
+		return convertToJson(id);
 	} 
 	
 	@ResponseBody
@@ -68,6 +71,12 @@ public class MainController {
 			e.printStackTrace();
 		}
 		return productTypes;
+	}
+	
+	private String convertToJson(Object object) throws JsonProcessingException {
+		ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+		String json = ow.writeValueAsString(object);
+		return json;
 	}
 	
 }
