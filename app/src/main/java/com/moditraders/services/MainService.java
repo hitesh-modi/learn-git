@@ -1,6 +1,7 @@
 package com.moditraders.services;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -8,6 +9,7 @@ import javax.annotation.Resource;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
+import com.google.common.collect.Iterables;
 import com.moditraders.entities.Productdetail;
 import com.moditraders.models.Product;
 import com.moditraders.repositories.ProductRepository;
@@ -42,6 +44,24 @@ public class MainService implements IMainService{
 		Productdetail savedProduct = productRepository.save(productDetail);
 		LOGGER.info("Saved Product with ID " + savedProduct.getProductId());
 		return savedProduct.getProductId();
+	}
+	
+	@Override
+	public Collection<Product> getProducts() {
+		LOGGER.info("Get all the products");
+		Collection<Product> products = new ArrayList<Product>();
+		Iterable<Productdetail> productsFromDB = productRepository.findAll();
+		LOGGER.info("Found " + Iterables.size(productsFromDB) + " from Database.");
+		for (Productdetail productdetail : productsFromDB) {
+			Product product = new Product();
+			product.setProductId(productdetail.getProductId());
+			product.setType(ProductType.valueOf(productdetail.getProductType().toUpperCase()));
+			product.setAgencyStartDate(productdetail.getAgencyStartDate());
+			product.setCompany(productdetail.getProductCompany());
+			product.setDepositAmount(productdetail.getAgencySecurityDeposit());
+			products.add(product);
+		}
+		return products;
 	}
 	
 }

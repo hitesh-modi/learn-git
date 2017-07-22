@@ -18,7 +18,7 @@ angular.module('modiTradersApp')
 	                                		  		);
 	                                	  
 	                                	  
-	                                	  self.submit = function() {
+	                                	  self.submitProductForm = function() {
 	                                		  console.log('User clicked submit with product ', self.product);
 	                                		  $http.post('/createProduct', self.product)
 	                                		  .then(
@@ -37,7 +37,7 @@ angular.module('modiTradersApp')
 	                                		  		
 	                                	  };
 	                                	  
-	                                	  self.clearMessage = function() {
+	                                	  $scope.clearMessage = function() {
 	                                		  console.log('Clearing message');
 	                                		  self.showMessage = false;
 	                                	  };

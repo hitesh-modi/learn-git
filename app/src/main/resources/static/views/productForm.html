@@ -1,11 +1,11 @@
-<div ng-controller="ProductController as productController" ng-init="productController.clearMessage()">
+<div ng-controller="ProductController as productController" onload="clearMessage()">
 	<div ng-show="productController.showMessage"
 		class="notificationMessage">
 		{{productController.message}} <br />
 	</div>
 	<div class="container-fluid" style="max-width: 600px;">
 		<form name="productForm" class="form-horizontal"
-			ng-submit="productController.submit()">
+			ng-submit="productController.submitProductForm()">
 			<div class="form-group">
 				<label class="control-label col-xs-4">Product Type</label>
 				<div class="col-xs-8">

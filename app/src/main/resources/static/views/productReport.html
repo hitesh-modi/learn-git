@@ -1,0 +1,44 @@
+<div ng-controller="ProductReportController as productReportController"
+	class="container">
+	<div class="container-fluid" style="max-width: 800px;">
+		<h4>
+			Product Report
+			</h5>
+			<table class="table table-striped">
+				<tr>
+					<th ng-click="sort('productId')">Product Id <span
+						class="glyphicon sort-icon" ng-show="sortKey=='productId'"
+						ng-class="{'glyphicon-circle-arrow-up':reverse,'glyphicon-circle-arrow-down':!reverse}">
+					</span>
+					</th>
+					<th ng-click="sort('type.type')">Product Type <span
+						class="glyphicon sort-icon" ng-show="sortKey=='type.type'"
+						ng-class="{'glyphicon-circle-arrow-up':reverse,'glyphicon-circle-arrow-down':!reverse}"></span>
+					</th>
+					<th ng-click="sort('company')">Product Company <span
+						class="glyphicon sort-icon" ng-show="sortKey=='company'"
+						ng-class="{'glyphicon-circle-arrow-up':reverse,'glyphicon-circle-arrow-down':!reverse}"></span>
+					</th>
+					<th ng-click="sort('depositAmount')">Deposit Amount <span
+						class="glyphicon sort-icon" ng-show="sortKey=='depositAmount'"
+						ng-class="{'glyphicon-circle-arrow-up':reverse,'glyphicon-circle-arrow-down':!reverse}"></span>
+					</th>
+					<th ng-click="sort('agencyStartDate')">Agency Start Date <span
+						class="glyphicon sort-icon" ng-show="sortKey=='agencyStartDate'"
+						ng-class="{'glyphicon-circle-arrow-up':reverse,'glyphicon-circle-arrow-down':!reverse}"></span>
+					</th>
+				</tr>
+				<tr
+					dir-paginate="product in productReportController.products | orderBy:sortKey:reverse | itemsPerPage: 10">
+					<td>{{product.productId}}</td>
+					<td>{{product.type.type}}</td>
+					<td>{{product.company}}</td>
+					<td><i class="fa fa-inr"></i>{{product.depositAmount |
+						currency:' '}}</td>
+					<td>{{product.agencyStartDate | date: 'medium'}}</td>
+				</tr>
+			</table>
+			<dir-pagination-controls max-size="10" direction-links="true"
+				boundary-links="true"> </dir-pagination-controls>
+	</div>
+</div>

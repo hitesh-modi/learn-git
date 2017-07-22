@@ -1,11 +1,13 @@
 package com.moditraders.controller;
 
 import java.io.IOException;
+import java.util.Collection;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
 
 import org.apache.log4j.Logger;
+import org.hibernate.service.spi.ServiceException;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -71,6 +73,20 @@ public class MainController {
 			e.printStackTrace();
 		}
 		return productTypes;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="/getProducts", method=RequestMethod.GET)
+	public Collection<Product> getProducts() {
+		LOGGER.info("Getting product types from service");
+		Collection<Product> products = null;
+			try {
+				products = mainService.getProducts();
+			} catch (ServiceException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		return products;
 	}
 	
 	private String convertToJson(Object object) throws JsonProcessingException {

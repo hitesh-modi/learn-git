@@ -1,0 +1,60 @@
+<div ng-controller="InvoiceController as controller"
+	onload="x`x``">
+	<form name="invoiceForm">
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-2">
+				</div>
+				<div class="col-sm-8">
+					<table class="formTable">
+						<tr>
+							<td class="boldRow">GSTIN</td>
+							<td>BGVPM7295M00089</td>
+						</tr>
+						<tr>
+							<td class="boldRow">Name</td>
+							<td>Harshit Modi</td>
+						</tr>
+						<tr>
+							<td class="boldRow">Address</td>
+							<td>Modi Traders, Near Dada Dhaniram Ashram, Karikon Tiraha, Maharajpur, Mandla</td>
+						</tr>
+						<tr>
+							<td class="boldRow">State</td>
+							<td>Madhya Pradesh</td>
+						</tr>
+						<tr>
+							<td class="invoiceNumber">Invoice Number</td>
+							<td ng-model="controller.invoice.number"></td>
+						</tr>
+						<tr>
+							<td class="boldRow">Invoice Date</td>
+							<td ng-model="controller.invoice.number"></td>
+						</tr>
+					</table>
+				</div>
+				<div class="col-sm-2">
+				</div>	
+			</div>
+			<div class="row">
+				<div class="col-sm-2">
+				</div>	
+				<div class="col-sm-4 panel">
+					<table>
+						<tr class="boldRow"><td>Details of Receiver(Billed To)</td></tr>
+						<tr class="boldRow"><td>Details of the person to whom the invoice is billed</td></tr>
+						<tr class="boldRow"><td></td></tr>
+					</table>
+				</div>	
+				<div class="col-sm-4 panel">
+					<table>
+						<tr class="boldRow"><td>Details of Consignee(Shipped To)</td></tr>
+						<tr class="boldRow"><td>Address of delivery, to be specified if different from billing address</td></tr>
+					</table>
+				</div>	
+				<div class="col-sm-2">
+				</div>		
+			</div>
+		</div>
+	</form>
+</div>

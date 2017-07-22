@@ -10,28 +10,31 @@
 	General Styles
 --------------------------*/
 .footer {
-	position: absolute;
+	position: relative;
 	right: 0;
 	bottom: 0;
 	left: 0;
 	padding: 1rem;
-	background-color: #efefef;
+	background-color: #e3e8ea;
 	text-align: center;
-}
-
-a, a:visited {
-	outline: none;
-	color: #389dc1;
 }
 
 a:hover {
 	text-decoration: none;
 }
 
+a:visited {
+	background-color: #efefef;
+}
+
 .notificationMessage {
 	font-weight: bold;
 	font-size: 11;
-	background-color: #57c1c2;
+	background-color: #3c3c58;
+	color: white;
+	margin: 10px;
+	width: 300px;
+	display: inline-block;
 }
 
 section, footer, header, aside, nav {
@@ -51,7 +54,7 @@ nav {
 
 body {
 	font-family: "Book Antiqua" !important;
-	color: #3c3c58 !important;
+	color: #3c3c58;
 	text-align: center;
 	background-size: 10px 10px;
 	background-image: linear-gradient(to right, #e7e8ea 1px, transparent 1px),
@@ -83,22 +86,6 @@ h2 {
 	color: #3c3c58;
 }
 
-nav a {
-	font-family: "Book Antiqua";
-	display: inline-block;
-	padding: 18px 30px;
-	color: #fff !important;
-	font-weight: bold;
-	font-size: 16px;
-	text-decoration: none !important;
-	line-height: 1;
-	text-transform: uppercase;
-	background-color: transparent;
-	-webkit-transition: background-color 0.25s;
-	-moz-transition: background-color 0.25s;
-	transition: background-color 0.25s;
-}
-
 nav a:first-child {
 	font-family: "Book Antiqua";
 	border-radius: 10px 0 0 10px;
@@ -109,15 +96,35 @@ nav a:last-child {
 	border-radius: 0 10px 10px 0;
 }
 
-nav.home .home, nav.team .team, nav.invoice .invoice, nav.product .product,
-	nav.inventory .inventory, nav.servicerecord .servicerecord, nav.service .service,
-	nav.contact .contact {
+.navigation {
+	display: inline-block;
+	margin: 10px auto 45px;
+	box-shadow: 5px 5px 5px #ccc;
+	border-radius: 10px;
+}
+
+.navigation a:link {
+	color: white !important;
 	background-color: #3c3c58;
+	color: white;
+	padding: 14px 25px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+}
+
+.navigation a[tabindex]:focus {
+	color: white !important;
+	background-color: #57c1c2;
+	color: white;
+	padding: 14px 25px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
 }
 
 p {
 	font-family: "Book Antiqua";
-	color: #3c3c58;;
 }
 
 p b {
@@ -127,8 +134,93 @@ p b {
 	padding: 5px 10px;
 	background-color: #DC64C6;
 	border-radius: 2px;
-	ize: 22px;
+	size: 22px;
 	font-weight: bold;
 	text-transform: uppercase;
 	font-size: 18px;
+}
+/* Dropdown Button */
+.dropbtn {
+	background-color: #3c3c58;
+	color: white;
+	padding: 14px 25px;
+	border: none;
+	cursor: pointer;
+}
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+	position: relative;
+	display: inline-block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+	display: none;
+	position: absolute;
+	box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+	color: white;
+	text-decoration: none;
+	display: block;
+	background-color: #3c3c58;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {
+	background-color: #57c1c2;
+}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {
+	display: block;
+}
+
+/* Change the background color of the dropdown button when the dropdown content is shown */
+.dropdown:hover .dropbtn {
+	background-color: #57c1c2;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th, td {
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even){background-color: #e3e8ea;}
+
+th {
+    background-color: #3c3c58;
+    color: white;
+}
+
+.boldRow {
+	font-weight: bold;
+}
+
+.panel {
+	height: 100px;
+}
+
+.col-sm-8 {
+	background-color: #e3e8ea;
+	text-align: left;
+}
+.col-sm-4 {
+	margin: 2px;
+}
+.formTable {
+	margin: 4px;
+}
+
+.invoiceNumber {
+	background-color: #3c3c58;
+	color: white;
 }

@@ -20,7 +20,7 @@ public class Productdetail implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(name="PD_ProductId")
+	@Column(name="pd_productid")
 	private int productId;
 
 	@Column(name="pd_agencysecuritydeposit")

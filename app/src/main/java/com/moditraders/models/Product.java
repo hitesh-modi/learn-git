@@ -6,6 +6,7 @@ import java.util.Date;
 import com.moditraders.types.ProductType;
 
 public class Product {
+	private long productId;
 	private ProductType type;
 	private String company;
 	private Date agencyStartDate;
@@ -34,10 +35,16 @@ public class Product {
 	public void setDepositAmount(BigDecimal securityDeposit) {
 		this.depositAmount = securityDeposit;
 	}
-	
+	public long getProductId() {
+		return productId;
+	}
+	public void setProductId(long productId) {
+		this.productId = productId;
+	}
 	@Override
 	public String toString() {
-		return "Product[ productType: "+ type +", companyName: "+company+", agencyStartDate:"+agencyStartDate+", securityDeposit:"+depositAmount+" ]";
+		return "Product[ productId: " + productId + ", productType: "+ type +", companyName: "+company+", agencyStartDate:"+agencyStartDate+", securityDeposit:"+depositAmount+" ]";
+				
 	}
 	
 }
