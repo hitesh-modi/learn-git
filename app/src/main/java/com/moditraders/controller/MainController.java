@@ -23,6 +23,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.moditraders.exceptions.ServiceExcpetion;
+import com.moditraders.models.Customer;
 import com.moditraders.models.Product;
 import com.moditraders.services.IMainService;
 
@@ -87,6 +88,27 @@ public class MainController {
 				e.printStackTrace();
 			}
 		return products;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="/getInvoiceNumber", method=RequestMethod.GET)
+	public String getInvoiceNumber() throws ServiceException, JsonProcessingException {
+		LOGGER.info("Request received for generating the invoice number");
+		return convertToJson(mainService.generateInvoiceNumber());
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="/getCustomers", method=RequestMethod.GET)
+	public Collection<Customer> getCustomers() {
+		LOGGER.info("Getting product types from service");
+		Collection<Customer> customers = null;
+			try {
+				customers = mainService.getCustomers();
+			} catch (ServiceException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		return customers;
 	}
 	
 	private String convertToJson(Object object) throws JsonProcessingException {

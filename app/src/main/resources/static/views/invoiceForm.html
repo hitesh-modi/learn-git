@@ -1,6 +1,6 @@
 <div ng-controller="InvoiceController as controller"
-	onload="x`x``">
-	<form name="invoiceForm">
+	onload="getInvoiceNumber()">
+	<form name="invoiceForm" ng-submit="controller.submit()">
 		<div class="container">
 			<div class="row">
 				<div class="col-sm-2">
@@ -24,12 +24,12 @@
 							<td>Madhya Pradesh</td>
 						</tr>
 						<tr>
-							<td class="invoiceNumber">Invoice Number</td>
-							<td ng-model="controller.invoice.number"></td>
+							<td class="boldRow">Invoice Number</td>
+							<td>{{controller.invoice.invoiceNumber}}</td>
 						</tr>
 						<tr>
 							<td class="boldRow">Invoice Date</td>
-							<td ng-model="controller.invoice.number"></td>
+							<td><input type="date" ng-model="controller.invoice.invoiceDate"></td>
 						</tr>
 					</table>
 				</div>
@@ -39,22 +39,71 @@
 			<div class="row">
 				<div class="col-sm-2">
 				</div>	
-				<div class="col-sm-4 panel">
+				<div class="col-sm-4">
 					<table>
-						<tr class="boldRow"><td>Details of Receiver(Billed To)</td></tr>
-						<tr class="boldRow"><td>Details of the person to whom the invoice is billed</td></tr>
-						<tr class="boldRow"><td></td></tr>
+						<tr class="boldRow"><td colspan="2">Details of Receiver(Billed To)</td></tr>
+						<tr class="boldRow"><td colspan="2">Details of the person to whom the invoice is billed</td></tr>
+						<tr class="boldRow"><td colspan="2"><br/></td></tr>
+						<tr>
+							<td>
+								<input type="radio" name="isNewCustomer" value="true" ng-model="controller.invoice.isNewCustomer" ng-change="clearCustomer()">New Customer
+							</td>
+							<td>
+								<input type="radio" name="isNewCustomer" value="false" ng-model="controller.invoice.isNewCustomer" ng-change="getCustomers()">Existing Customer
+							</td>
+						</tr>
+						<tr>
+							<td class="boldRow">Name</td>
+							<td><input type="text" ng-model="controller.invoice.customer.name"></td>
+						</tr>
+						<tr>
+							<td class="boldRow">Address</td>
+							<td><input type="text" ng-model="controller.invoice.customer.address"></td>
+						</tr>
+						<tr>
+							<td class="boldRow">Mobile</td>
+							<td><input type="text" ng-model="controller.invoice.customer.mobileNo"></td>
+						</tr>
+						<tr>
+							<td class="boldRow">Phone</td>
+							<td><input type="text" ng-model="controller.invoice.customer.phoneNo"></td>
+						</tr>
+						<tr>
+							<td class="boldRow">Email</td>
+							<td><input type="text" ng-model="controller.invoice.customer.email"></td>
+						</tr>
+						<tr>
+							<td class="boldRow">State</td>
+							<td><input type="text" ng-model="controller.invoice.customer.state"></td>
+						</tr>
+						<tr>
+							<td class="boldRow">State Code</td>
+							<td><input type="text" ng-model="controller.invoice.customer.stateCode"></td>
+						</tr>
+						<tr>
+							<td class="boldRow">GSTIN</td>
+							<td><input type="text" ng-model="controller.invoice.customer.gstin"></td>
+						</tr>
 					</table>
 				</div>	
 				<div class="col-sm-4 panel">
 					<table>
-						<tr class="boldRow"><td>Details of Consignee(Shipped To)</td></tr>
-						<tr class="boldRow"><td>Address of delivery, to be specified if different from billing address</td></tr>
+						<tr class="boldRow"><td colspan="2">Details of Consignee(Shipped To)</td></tr>
+						<tr class="boldRow"><td colspan="2">Address of delivery, to be specified if different from billing address</td></tr>
+						<tr>
+							<td>
+								<input type="radio" name="isNewConsignee" value="true" ng-model="controller.invoice.isNewConsignee">New Consignee
+							</td>
+							<td>
+								<input type="radio" name="isNewConsignee" value="false" ng-model="controller.invoice.isNewConsignee" ng-change="getConsignees()>Existing Consignee
+							</td>
+						</tr>
 					</table>
 				</div>	
 				<div class="col-sm-2">
 				</div>		
 			</div>
 		</div>
+		<button type="submit" class="btn btn-default">Submit</button>
 	</form>
 </div>

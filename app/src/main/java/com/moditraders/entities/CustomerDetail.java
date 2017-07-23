@@ -40,13 +40,46 @@ public class CustomerDetail implements Serializable {
 	private String cdCustomerMiddlename;
 
 	@Column(name="CD_CUSTOMER_MOBILE")
-	private int cdCustomerMobile;
+	private String cdCustomerMobile;
 
 	@Column(name="CD_CUSTOMER_PHONE")
-	private int cdCustomerPhone;
+	private String cdCustomerPhone;
 
 	@Column(name="CD_MODIFICATIONTIMESTAMP")
 	private Timestamp cdModificationtimestamp;
+	
+	@Column(name="CD_CUSTOMER_STATE")
+	private String cdCustomerState;
+	
+	@Column(name="CD_CUSTOMER_STATE_CODE")
+	private String cdCustomerStateCode;
+	
+	@Column(name="CD_GSTIN")
+	private String cdCustomerGSTIN;
+
+	public String getCdCustomerState() {
+		return cdCustomerState;
+	}
+
+	public void setCdCustomerState(String cdCustomerState) {
+		this.cdCustomerState = cdCustomerState;
+	}
+
+	public String getCdCustomerStateCode() {
+		return cdCustomerStateCode;
+	}
+
+	public void setCdCustomerStateCode(String cdCustomerStateCode) {
+		this.cdCustomerStateCode = cdCustomerStateCode;
+	}
+
+	public String getCdCustomerGSTIN() {
+		return cdCustomerGSTIN;
+	}
+
+	public void setCdCustomerGSTIN(String cdCustomerGSTIN) {
+		this.cdCustomerGSTIN = cdCustomerGSTIN;
+	}
 
 	//bi-directional many-to-one association to Invoicedetail
 	@OneToMany(mappedBy="customerDetail")
@@ -111,19 +144,19 @@ public class CustomerDetail implements Serializable {
 		this.cdCustomerMiddlename = cdCustomerMiddlename;
 	}
 
-	public int getCdCustomerMobile() {
+	public String getCdCustomerMobile() {
 		return this.cdCustomerMobile;
 	}
 
-	public void setCdCustomerMobile(int cdCustomerMobile) {
+	public void setCdCustomerMobile(String cdCustomerMobile) {
 		this.cdCustomerMobile = cdCustomerMobile;
 	}
 
-	public int getCdCustomerPhone() {
+	public String getCdCustomerPhone() {
 		return this.cdCustomerPhone;
 	}
 
-	public void setCdCustomerPhone(int cdCustomerPhone) {
+	public void setCdCustomerPhone(String cdCustomerPhone) {
 		this.cdCustomerPhone = cdCustomerPhone;
 	}
 

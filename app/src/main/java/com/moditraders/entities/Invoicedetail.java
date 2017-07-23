@@ -19,8 +19,7 @@ public class Invoicedetail implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private int ID_InvoiceId;
+	private String ID_InvoiceId;
 
 	private Timestamp ID_CreationTimestamp;
 
@@ -54,11 +53,11 @@ public class Invoicedetail implements Serializable {
 	public Invoicedetail() {
 	}
 
-	public int getID_InvoiceId() {
+	public String getID_InvoiceId() {
 		return this.ID_InvoiceId;
 	}
 
-	public void setID_InvoiceId(int ID_InvoiceId) {
+	public void setID_InvoiceId(String ID_InvoiceId) {
 		this.ID_InvoiceId = ID_InvoiceId;
 	}
 
