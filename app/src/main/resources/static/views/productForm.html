@@ -41,12 +41,23 @@
 						name="depositAmount" placeholder="Amount deposoited as security">
 				</div>
 			</div>
+			
+			<div class="form-group">
+			<div class="row">
+				<label class="control-label col-xs-4">HSN Code</label>
+				<div class="col-xs-4">
+					<input class="form-control" type="text"
+						ng-model="productController.product.hsnCode"
+						name="hsnCode" placeholder="Type the description of Product, e.g. Cement, Milk etc">
+				</div>
+				<div class="col-xs-4">
+					<input type="button" class="btn" value="Get HSN" ng-click="getHSNForProduct(productController.product.hsnCode)">
+				</div>
+			</div>
+			</div>
+			
+			
 			<button type="submit" class="btn btn-default">Submit</button>
 		</form>
 	</div>
-</div>
-
-
-<div class="footer">
-		© 2017-2019 Modi Traders <br /> Designed and Built by Hitesh Modi
 </div>

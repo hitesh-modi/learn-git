@@ -27,6 +27,10 @@
 						class="glyphicon sort-icon" ng-show="sortKey=='agencyStartDate'"
 						ng-class="{'glyphicon-circle-arrow-up':reverse,'glyphicon-circle-arrow-down':!reverse}"></span>
 					</th>
+					<th ng-click="sort('hsnCode')">HSN Code<span
+						class="glyphicon sort-icon" ng-show="sortKey=='hsnCode'"
+						ng-class="{'glyphicon-circle-arrow-up':reverse,'glyphicon-circle-arrow-down':!reverse}"></span>
+					</th>
 				</tr>
 				<tr
 					dir-paginate="product in productReportController.products | orderBy:sortKey:reverse | itemsPerPage: 10">
@@ -36,6 +40,7 @@
 					<td><i class="fa fa-inr"></i>{{product.depositAmount |
 						currency:' '}}</td>
 					<td>{{product.agencyStartDate | date: 'medium'}}</td>
+					<td>{{product.hsnCode}}</td>
 				</tr>
 			</table>
 			<dir-pagination-controls max-size="10" direction-links="true"

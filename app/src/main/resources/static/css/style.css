@@ -192,6 +192,7 @@ table {
 th, td {
     text-align: left;
     padding: 8px;
+    margin: 5px;
 }
 
 tr:nth-child(even){background-color: #e3e8ea;}
@@ -219,4 +220,8 @@ th {
 }
 .formTable {
 	margin: 4px;
+	padding: 4px;
+}
+.invoiceTable{
+	background-color: #e3e8ea;
 }

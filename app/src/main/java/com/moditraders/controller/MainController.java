@@ -23,7 +23,9 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.moditraders.exceptions.ServiceExcpetion;
+import com.moditraders.models.Consignee;
 import com.moditraders.models.Customer;
+import com.moditraders.models.HSNModel;
 import com.moditraders.models.Product;
 import com.moditraders.services.IMainService;
 
@@ -110,6 +112,35 @@ public class MainController {
 			}
 		return customers;
 	}
+	
+	@ResponseBody
+	@RequestMapping(value="/getConsignees", method=RequestMethod.GET)
+	public Collection<Consignee> getConsignees() {
+		LOGGER.info("Getting product types from service");
+		Collection<Consignee> consignees = null;
+			try {
+				consignees = mainService.getConsignees();
+			} catch (ServiceException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		return consignees;
+	}
+
+	@ResponseBody
+	@RequestMapping(value="/getHSNCodes", method=RequestMethod.GET)
+	public Collection<HSNModel> getHSNCodes(@RequestParam String keyword) {
+		LOGGER.info("Request received for getting HSN Codes for Desc :"+keyword);
+		Collection<HSNModel> hsnModels = null;
+			try {
+				hsnModels = mainService.getHSNCodes(keyword);
+			} catch (ServiceException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		return hsnModels;
+	}
+
 	
 	private String convertToJson(Object object) throws JsonProcessingException {
 		ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();

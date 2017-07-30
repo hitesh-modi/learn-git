@@ -11,6 +11,14 @@ public class Product {
 	private String company;
 	private Date agencyStartDate;
 	private BigDecimal depositAmount;
+	private String hsnCode;
+	
+	public String getHsnCode() {
+		return hsnCode;
+	}
+	public void setHsnCode(String hsnCode) {
+		this.hsnCode = hsnCode;
+	}
 	public ProductType getType() {
 		return type;
 	}

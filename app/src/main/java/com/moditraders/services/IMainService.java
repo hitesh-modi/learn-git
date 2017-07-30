@@ -5,7 +5,9 @@ import java.util.Collection;
 import org.hibernate.service.spi.ServiceException;
 
 import com.moditraders.exceptions.ServiceExcpetion;
+import com.moditraders.models.Consignee;
 import com.moditraders.models.Customer;
+import com.moditraders.models.HSNModel;
 import com.moditraders.models.Product;
 
 public interface IMainService {
@@ -19,5 +21,9 @@ public interface IMainService {
 	public String generateInvoiceNumber()throws ServiceException;
 	
 	public Collection<Customer> getCustomers() throws ServiceException;
+
+	public Collection<Consignee> getConsignees() throws ServiceException;
+
+	public Collection<HSNModel> getHSNCodes(String keyword) throws ServiceException;
 	
 }

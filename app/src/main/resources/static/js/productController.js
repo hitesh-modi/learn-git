@@ -1,11 +1,12 @@
 angular.module('modiTradersApp')
-	.controller('ProductController', ['$http', '$scope',
-	                                  function($http, $scope) {
+	.controller('ProductController', ['$http', '$scope','$window',
+	                                  function($http, $scope, $window) {
 	                                	  var self = this;
 	                                	  self.showMessage = false;
 	                                	  self.message = "";
 	                                	  self.productTypes=[];
 	                                	  self.productId="";
+	                                	  self.hsnCodes=[];
 	                                		  console.log('Calling server for fetching product types.');
 	                                		  $http.get('/getProductTypes')
 	                                		  		.then(
@@ -41,5 +42,28 @@ angular.module('modiTradersApp')
 	                                		  console.log('Clearing message');
 	                                		  self.showMessage = false;
 	                                	  };
+	                                	  
+	                                	  $window.setSelectedHSN = function(hsnCode) {
+	                                		  console.log('Selected HSN Code', hsnCode);
+	                                		  self.product.hsnCode = hsnCode.hsnCode;
+	                                		  $scope.$digest();
+	                                	  };
+	                                	  
+	                                	  $scope.getHSNForProduct = function(keyword) {
+	                                			console.log('Get HSN called for input', keyword);
+	                                			 $http.get('/getHSNCodes?keyword='+keyword)
+	                               		  		.then(
+	                               		  				function(response){
+	                               		  					self.hsnCodes = response.data;
+	                               		  					console.log('HSN Received from Server', self.hsnCodes);
+	                               		  				    var $popup = $window.open("views/hsn.html", "popup", "width=500,height=200,left=10,top=150");
+	                               		  				    $popup.hsnCodes = self.hsnCodes;
+	                               		  				    console.log('opened new window with hsn list');
+	                               		  				    
+	                               		  				}, function(errResponse){
+	                               		  					console.log('Some error while fetching the list of hsn from server');
+	                               		  				}
+	                               		  		);
+	                                		};
 	                                  }
 	                                  ]);

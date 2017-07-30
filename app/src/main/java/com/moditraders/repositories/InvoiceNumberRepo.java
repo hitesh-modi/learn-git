@@ -1,6 +1,6 @@
 package com.moditraders.repositories;
 
-import java.util.Date;
+import java.sql.Date;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;

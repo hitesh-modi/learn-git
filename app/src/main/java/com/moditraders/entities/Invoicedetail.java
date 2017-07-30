@@ -40,6 +40,19 @@ public class Invoicedetail implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="ID_CustomerId")
 	private CustomerDetail customerDetail;
+	
+	//bi-directional many-to-one association to CustomerDetail
+		@ManyToOne
+		@JoinColumn(name="ID_ConsigneeId")
+		private ConsigneeDetail consigneeDetail;
+
+	public ConsigneeDetail getConsigneeDetail() {
+			return consigneeDetail;
+		}
+
+		public void setConsigneeDetail(ConsigneeDetail consigneeDetail) {
+			this.consigneeDetail = consigneeDetail;
+		}
 
 	//bi-directional many-to-one association to Taxrate
 	@ManyToOne

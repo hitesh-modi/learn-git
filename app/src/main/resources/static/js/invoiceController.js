@@ -4,6 +4,18 @@ angular.module('modiTradersApp')
 	                                	  var self = this;
 	                                	  self.invoice = {};
 	                                	  self.customers = [];
+	                                	  self.products = [];
+	                                	  self.invoice.invoiceItemDetails = [];
+	                                	  self.tempInvoiceDetails = [
+	                                		  {serialNumber:1}
+	                                	  ];
+	                                	  
+	                                	  $window.setSelectedConsignee = function(consignee) {
+	                                		  console.log('Selected Consignee', consignee);
+	                                		  self.invoice.consignee = consignee;
+	                                		  $scope.$digest();
+	                                	  };
+	                                	  
 	                                	  $window.setSelectedCustomer = function(customer) {
 	                                		  console.log('Selected Customer', customer);
 	                                		  self.invoice.customer = customer;
@@ -20,6 +32,16 @@ angular.module('modiTradersApp')
                               		  					console.log('Some error while fetching the invoice number from server');
                               		  				}
                               		  		);
+	                                		  
+	                                		  $http.get('/getProducts')
+	                              		  		.then(
+	                              		  				function(response){
+	                              		  					self.products = response.data;
+	                              		  					console.log('Products received from server', self.products);
+	                              		  				}, function(errResponse){
+	                              		  					console.log('Some error while fetching the invoice number from server');
+	                              		  				}
+	                              		  		);
 	                                		  
 	                                		self.submit = function() {
 	                                			console.log('Invoice Submitted with values', self.invoice);
@@ -47,8 +69,38 @@ angular.module('modiTradersApp')
 	                                		};
 	                                		
 	                                		$scope.getConsignees = function() {
-	                                			console.log('Get Consignees called.');
+	                                			console.log('Get Consignee called.');
+	                                			 $http.get('/getConsignees')
+	                               		  		.then(
+	                               		  				function(response){
+	                               		  					self.customers = response.data;
+	                               		  					console.log('Consignee list received from server', self.customers);
+	                               		  				    var $popup = $window.open("views/consignees.html", "popup", "width=500,height=200,left=10,top=150");
+	                               		  				    $popup.customers = self.customers;
+	                               		  				    console.log('opened new window with consignee list');
+	                               		  				    
+	                               		  				}, function(errResponse){
+	                               		  					console.log('Some error while fetching the list of consignee from server');
+	                               		  				}
+	                               		  		);
 	                                		};
-	                                	  
+	                                		
+	                                		$scope.copyCustomerToConsignee = function() {
+	                                			console.log('Copy the customer to consignee');
+	                                			self.invoice.consignee = self.invoice.customer;
+	                                		};
+	                                		
+	                                		self.addInvoiceItem = function(itemToAdd) {
+	                                			console.log('Adding invoice item.', itemToAdd);
+	                                			 
+	                                			var	serialNumber = self.invoice.invoiceItemDetails.length + 2;
+	                                			var invoiceItem = {};
+	                                			invoiceItem.serialNumber = serialNumber;
+	                                			self.invoice.invoiceItemDetails.push(itemToAdd);
+	                                			self.tempInvoiceDetails = [];
+	                                			self.tempInvoiceDetails.push(invoiceItem);
+	                                			console.log('Adding invoiceItemDetail', self.invoice.invoiceItemDetails.length);
+	                                		};
+	                                		
 	                                  }
 	                                  ]);

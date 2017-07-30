@@ -30,14 +30,8 @@ public class CustomerDetail implements Serializable {
 	@Column(name="CD_CUSTOMER_EMAIL")
 	private String cdCustomerEmail;
 
-	@Column(name="CD_CUSTOMER_FIRSTNAME")
-	private String cdCustomerFirstname;
-
-	@Column(name="CD_CUSTOMER_LASTNAME")
-	private String cdCustomerLastname;
-
-	@Column(name="CD_CUSTOMER_MIDDLENAME")
-	private String cdCustomerMiddlename;
+	@Column(name="CD_CUSTOMER_NAME")
+	private String cdCustomerName;
 
 	@Column(name="CD_CUSTOMER_MOBILE")
 	private String cdCustomerMobile;
@@ -120,28 +114,12 @@ public class CustomerDetail implements Serializable {
 		this.cdCustomerEmail = cdCustomerEmail;
 	}
 
-	public String getCdCustomerFirstname() {
-		return this.cdCustomerFirstname;
+	public String getCdCustomerName() {
+		return this.cdCustomerName;
 	}
 
-	public void setCdCustomerFirstname(String cdCustomerFirstname) {
-		this.cdCustomerFirstname = cdCustomerFirstname;
-	}
-
-	public String getCdCustomerLastname() {
-		return this.cdCustomerLastname;
-	}
-
-	public void setCdCustomerLastname(String cdCustomerLastname) {
-		this.cdCustomerLastname = cdCustomerLastname;
-	}
-
-	public String getCdCustomerMiddlename() {
-		return this.cdCustomerMiddlename;
-	}
-
-	public void setCdCustomerMiddlename(String cdCustomerMiddlename) {
-		this.cdCustomerMiddlename = cdCustomerMiddlename;
+	public void setCdCustomerName(String cdCustomerName) {
+		this.cdCustomerName = cdCustomerName;
 	}
 
 	public String getCdCustomerMobile() {

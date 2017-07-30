@@ -15,23 +15,23 @@
 <body>
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.9/angular.min.js"></script>
     <script type="text/javascript">
-        var app = angular.module('CutomerPopupApp', [])
-        app.controller('CustomerPopupController', function ($scope, $window) {
-            $scope.customers = $window.customers;
-            $scope.selectRow = function(customer) {
-            	console.log('Selected row',customer);
-            	$window.opener.setSelectedCustomer(customer);
+        var app = angular.module('ConsigneePopupApp', [])
+        app.controller('ConsigneePopupController', function ($scope, $window) {
+            $scope.consignees = $window.consignees;
+            $scope.selectRow = function(consignee) {
+            	console.log('Selected row',consignee);
+            	$window.opener.setSelectedConsignee(consignee);
             	$window.close();
             }
         });
     </script>
     
-    <div ng-app="CutomerPopupApp" ng-controller="CustomerPopupController">
+    <div ng-app="ConsigneePopupApp" ng-controller="ConsigneePopupController">
     
     <table class="table table-striped">
     	<tr>
     		<td>Search</td>
-    		<td colspan="2"><input type="text" ng-model="curCust" class="inputText"> </td>
+    		<td colspan="2"><input type="text" ng-model="curConsignee" class="inputText"> </td>
     	</tr>
     	<tr>
     		<th>Select</th>
@@ -44,16 +44,16 @@
     		<th>State Code</th>
     		<th>GSTIN</th>
     	</tr>
-    	<tr ng-repeat="customer in customers | filter: curCust">
-    		<td><input type="radio" name="selectedCustomer" value="{{customer}}" ng-model="selected.value" ng-change="selectRow({{customer}})">Select</td>
-    		<td>{{customer.name}}</td>
-    		<td>{{customer.email}}</td>
-    		<td>{{customer.mobileNo}}</td>
-    		<td>{{customer.phoneNo}}</td>
-    		<td>{{customer.address}}</td>
-    		<td>{{customer.state}}</td>
-    		<td>{{customer.stateCode}}</td>
-    		<td>{{customer.gstin}}</td>
+    	<tr ng-repeat="consignee in consignees | filter: curConsignee">
+    		<td><input type="radio" name="selectedCustomer" value="consignee" ng-model="selected.value" ng-change="selectRow({{consignee}})">Select</td>
+    		<td>{{consignee.name}}</td>
+    		<td>{{consignee.email}}</td>
+    		<td>{{consignee.mobileNo}}</td>
+    		<td>{{consignee.phoneNo}}</td>
+    		<td>{{consignee.address}}</td>
+    		<td>{{consignee.state}}</td>
+    		<td>{{consignee.stateCode}}</td>
+    		<td>{{consignee.gstin}}</td>
     	</tr>
     </table>
         

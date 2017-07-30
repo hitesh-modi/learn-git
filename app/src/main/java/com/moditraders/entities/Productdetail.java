@@ -41,6 +41,10 @@ public class Productdetail implements Serializable {
 
 	@Column(name="pd_producttype")
 	private String productType;
+	
+	@OneToOne
+	@JoinColumn(name="pd_hsn")
+	private HSN productHSN;
 
 	//bi-directional many-to-one association to Inventorydetail
 	@OneToMany(mappedBy="productdetail")
@@ -178,5 +182,14 @@ public class Productdetail implements Serializable {
 
 		return invoiceitemdetail;
 	}
+	
+	public HSN getProductHSN() {
+		return productHSN;
+	}
+
+	public void setProductHSN(HSN productHSN) {
+		this.productHSN = productHSN;
+	}
+
 
 }

@@ -40,7 +40,7 @@
 				<div class="col-sm-2">
 				</div>	
 				<div class="col-sm-4">
-					<table>
+					<table class="formTable">
 						<tr class="boldRow"><td colspan="2">Details of Receiver(Billed To)</td></tr>
 						<tr class="boldRow"><td colspan="2">Details of the person to whom the invoice is billed</td></tr>
 						<tr class="boldRow"><td colspan="2"><br/></td></tr>
@@ -54,40 +54,40 @@
 						</tr>
 						<tr>
 							<td class="boldRow">Name</td>
-							<td><input type="text" ng-model="controller.invoice.customer.name"></td>
+							<td><input type="text" ng-model="controller.invoice.customer.name" class="inputText"></td>
 						</tr>
 						<tr>
 							<td class="boldRow">Address</td>
-							<td><input type="text" ng-model="controller.invoice.customer.address"></td>
+							<td><input type="text" ng-model="controller.invoice.customer.address" class="inputText"></td>
 						</tr>
 						<tr>
 							<td class="boldRow">Mobile</td>
-							<td><input type="text" ng-model="controller.invoice.customer.mobileNo"></td>
+							<td><input type="text" ng-model="controller.invoice.customer.mobileNo" class="inputText"></td>
 						</tr>
 						<tr>
 							<td class="boldRow">Phone</td>
-							<td><input type="text" ng-model="controller.invoice.customer.phoneNo"></td>
+							<td><input type="text" ng-model="controller.invoice.customer.phoneNo" class="inputText"></td>
 						</tr>
 						<tr>
 							<td class="boldRow">Email</td>
-							<td><input type="text" ng-model="controller.invoice.customer.email"></td>
+							<td><input type="text" ng-model="controller.invoice.customer.email" class="inputText"></td>
 						</tr>
 						<tr>
 							<td class="boldRow">State</td>
-							<td><input type="text" ng-model="controller.invoice.customer.state"></td>
+							<td><input type="text" ng-model="controller.invoice.customer.state" class="inputText"></td>
 						</tr>
 						<tr>
 							<td class="boldRow">State Code</td>
-							<td><input type="text" ng-model="controller.invoice.customer.stateCode"></td>
+							<td><input type="text" ng-model="controller.invoice.customer.stateCode" class="inputText"></td>
 						</tr>
 						<tr>
 							<td class="boldRow">GSTIN</td>
-							<td><input type="text" ng-model="controller.invoice.customer.gstin"></td>
+							<td><input type="text" ng-model="controller.invoice.customer.gstin" class="inputText"></td>
 						</tr>
 					</table>
 				</div>	
-				<div class="col-sm-4 panel">
-					<table>
+				<div class="col-sm-4">
+					<table class="itemTable">
 						<tr class="boldRow"><td colspan="2">Details of Consignee(Shipped To)</td></tr>
 						<tr class="boldRow"><td colspan="2">Address of delivery, to be specified if different from billing address</td></tr>
 						<tr>
@@ -95,14 +95,119 @@
 								<input type="radio" name="isNewConsignee" value="true" ng-model="controller.invoice.isNewConsignee">New Consignee
 							</td>
 							<td>
-								<input type="radio" name="isNewConsignee" value="false" ng-model="controller.invoice.isNewConsignee" ng-change="getConsignees()>Existing Consignee
+								<input type="radio" name="isNewConsignee" value="false" ng-model="controller.invoice.isNewConsignee" ng-change="getConsignees()">Existing Consignee
 							</td>
 						</tr>
+						<tr>
+							<td colspan="2">
+								<input type="radio" name="isNewConsignee" value="sameAsCustomer" ng-model="controller.invoice.isNewConsignee" ng-change="copyCustomerToConsignee()">Same as Customer
+							</td>
+						</tr>
+						<tr>
+							<td class="boldRow">Name</td>
+							<td><input type="text" ng-model="controller.invoice.consignee.name" class="inputText"></td>
+						</tr>
+						<tr>
+							<td class="boldRow">Address</td>
+							<td><input type="text" ng-model="controller.invoice.consignee.address" class="inputText"></td>
+						</tr>
+						<tr>
+							<td class="boldRow">Mobile</td>
+							<td><input type="text" ng-model="controller.invoice.consignee.mobileNo" class="inputText"></td>
+						</tr>
+						<tr>
+							<td class="boldRow">Phone</td>
+							<td><input type="text" ng-model="controller.invoice.consignee.phoneNo" class="inputText"></td>
+						</tr>
+						<tr>
+							<td class="boldRow">Email</td>
+							<td><input type="text" ng-model="controller.invoice.consignee.email" class="inputText"></td>
+						</tr>
+						<tr>
+							<td class="boldRow">State</td>
+							<td><input type="text" ng-model="controller.invoice.consignee.state" class="inputText"></td>
+						</tr>
+						<tr>
+							<td class="boldRow">State Code</td>
+							<td><input type="text" ng-model="controller.invoice.consignee.stateCode" class="inputText"></td>
+						</tr>
+						<tr>
+							<td class="boldRow">GSTIN</td>
+							<td><input type="text" ng-model="controller.invoice.consignee.gstin" class="inputText"></td>
+						</tr>
+						
 					</table>
 				</div>	
 				<div class="col-sm-2">
 				</div>		
 			</div>
+			
+			<div class="row">
+				<div class="col-sm-12">
+					<table class="invoiceTable">
+						<tr>
+							<td>Sr.No</td>
+							<td>Product</td>
+							<td>Quantity</td>
+							<td>Unit</td>
+							<td>Rate</td>
+							<td>Total</td>
+							<td>Disc</td>
+							<td>Taxable Amount</td>
+							<td>CGST %</td>
+							<td>CGST Amount</td>
+							<td>SGST %</td>
+							<td>SGST Amount</td>
+							<td>IGST %</td>
+							<td>IGST Amount</td>
+						</tr>
+						
+						<tr ng-repeat="invoiceItem in controller.invoice.invoiceItemDetails track by invoiceItem.serialNumber">
+							<td>{{invoiceItem.serialNumber}}</td>
+							<td>
+								<select ng-model="controller.invoice.product" name="product" 
+								ng-options="product.company for product in controller.products">
+								</select>
+							</td>
+							<td><input style="width: 60px;" type="text" ng-model="invoiceItem.quantity"></td>
+							<td><input style="width: 30px;" type="text" ng-model="invoiceItem.unit"></td>
+							<td><input style="width: 30px;"type="text" ng-model="invoiceItem.rate"></td>
+							<td><input style="width: 50px;" type="text" ng-model="invoiceItem.total"></td>
+							<td><input style="width: 30px;" type="text" ng-model="invoiceItem.discount"></td>
+							<td><input style="width: 100px;" type="text" ng-model="invoiceItem.taxableValue"></td>
+							<td><input style="width: 40px;" type="text" ng-model="invoiceItem.cgstRate"></td>
+							<td><input style="width: 100px;" type="text" ng-model="invoiceItem.cgstAmount"></td>
+							<td><input style="width: 40px;" type="text" ng-model="invoiceItem.sgstRate"></td>
+							<td><input style="width: 100px;" type="text" ng-model="invoiceItem.sgstAmount"></td>
+							<td><input style="width: 40px;" type="text" ng-model="invoiceItem.igstRate"></td>
+							<td><input style="width: 100px;" type="text" ng-model="invoiceItem.igstAmount"></td>
+						</tr>
+						
+						<tr ng-repeat="invoiceItem in controller.tempInvoiceDetails track by invoiceItem.serialNumber">
+							<td>{{invoiceItem.serialNumber}}</td>
+							<td>
+								<select ng-model="controller.invoice.product" name="product" 
+								ng-options="product.company for product in controller.products">
+								</select>
+							</td>
+							<td><input style="width: 60px;" type="text" ng-model="invoiceItem.quantity"></td>
+							<td><input style="width: 30px;" type="text" ng-model="invoiceItem.unit"></td>
+							<td><input style="width: 30px;"type="text" ng-model="invoiceItem.rate"></td>
+							<td><input style="width: 50px;" type="text" ng-model="invoiceItem.total"></td>
+							<td><input style="width: 30px;" type="text" ng-model="invoiceItem.discount"></td>
+							<td><input style="width: 100px;" type="text" ng-model="invoiceItem.taxableValue"></td>
+							<td><input style="width: 40px;" type="text" ng-model="invoiceItem.cgstRate"></td>
+							<td><input style="width: 100px;" type="text" ng-model="invoiceItem.cgstAmount"></td>
+							<td><input style="width: 40px;" type="text" ng-model="invoiceItem.sgstRate"></td>
+							<td><input style="width: 100px;" type="text" ng-model="invoiceItem.sgstAmount"></td>
+							<td><input style="width: 40px;" type="text" ng-model="invoiceItem.igstRate"></td>
+							<td><input style="width: 100px;" type="text" ng-model="invoiceItem.igstAmount"></td>
+							<td><input type="button" value="Add Item" class="btn btn-sm btn-success" ng-click="controller.addInvoiceItem(invoiceItem)"></td>
+						</tr>
+					</table>
+				</div>
+			</div>
+			
 		</div>
 		<button type="submit" class="btn btn-default">Submit</button>
 	</form>
