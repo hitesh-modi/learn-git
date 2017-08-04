@@ -49,7 +49,7 @@
 								<input type="radio" name="isNewCustomer" value="true" ng-model="controller.invoice.isNewCustomer" ng-change="clearCustomer()">New Customer
 							</td>
 							<td>
-								<input type="radio" name="isNewCustomer" value="false" ng-model="controller.invoice.isNewCustomer" ng-change="getCustomers()">Existing Customer
+								<input type="radio" name="isNewCustomer" value="false" ng-model="controller.invoice.isNewCustomer" ng-change="getCustomers()" data-toggle="modal" data-target="#customerModal"">Existing Customer
 							</td>
 						</tr>
 						<tr>
@@ -92,10 +92,10 @@
 						<tr class="boldRow"><td colspan="2">Address of delivery, to be specified if different from billing address</td></tr>
 						<tr>
 							<td>
-								<input type="radio" name="isNewConsignee" value="true" ng-model="controller.invoice.isNewConsignee">New Consignee
+								<input type="radio" name="isNewConsignee" value="true" ng-model="controller.invoice.isNewConsignee" ng-change="clearConsignee()">New Consignee
 							</td>
 							<td>
-								<input type="radio" name="isNewConsignee" value="false" ng-model="controller.invoice.isNewConsignee" ng-change="getConsignees()">Existing Consignee
+								<input type="radio" name="isNewConsignee" value="false" ng-model="controller.invoice.isNewConsignee" data-toggle="modal" data-target="#consigneeModal"">Existing Consignee
 							</td>
 						</tr>
 						<tr>
@@ -165,7 +165,7 @@
 						<tr ng-repeat="invoiceItem in controller.invoice.invoiceItemDetails track by invoiceItem.serialNumber">
 							<td>{{invoiceItem.serialNumber}}</td>
 							<td>
-								<select ng-model="controller.invoice.product" name="product" 
+								<select ng-model="invoiceItem.product" name="product" 
 								ng-options="product.company for product in controller.products">
 								</select>
 							</td>
@@ -186,7 +186,7 @@
 						<tr ng-repeat="invoiceItem in controller.tempInvoiceDetails track by invoiceItem.serialNumber">
 							<td>{{invoiceItem.serialNumber}}</td>
 							<td>
-								<select ng-model="controller.invoice.product" name="product" 
+								<select ng-model="invoiceItem.product" name="product" 
 								ng-options="product.company for product in controller.products">
 								</select>
 							</td>
@@ -211,4 +211,95 @@
 		</div>
 		<button type="submit" class="btn btn-default">Submit</button>
 	</form>
+	
+	<!--Customer Modal -->
+<div id="customerModal" class="modal fade" role="dialog"">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content modal-lg">
+      <div class="modal-header">
+        <h4 class="modal-title">Select the Customer from the list</h4>
+      </div>
+      <div class="modal-body">
+        <table class="table-responsive table-striped">
+    	<tr>
+    		<td>Search</td>
+    		<td colspan="2"><input type="text" ng-model="curCustomer" class="inputText"> </td>
+    	</tr>
+    	<tr>
+    		<th>Select</th>
+    		<th>Name</th>
+    		<th>Email</th>
+    		<th>Mobile</th>
+    		<th>Phone</th>
+    		<th>Address</th>
+    		<th>State</th>
+    		<th>State Code</th>
+    		<th>GSTIN</th>
+    	</tr>
+    	<tr ng-repeat="customer in controller.customers | filter: curCustomer">
+    		<td><input type="radio" name="selectedCustomer" value="consignee" ng-model="selected.value" ng-change="setSelectedCustomer({{customer}})" data-dismiss="modal">Select</td>
+    		<td>{{customer.name}}</td>
+    		<td>{{customer.email}}</td>
+    		<td>{{customer.mobileNo}}</td>
+    		<td>{{customer.phoneNo}}</td>
+    		<td>{{customer.address}}</td>
+    		<td>{{customer.state}}</td>
+    		<td>{{customer.stateCode}}</td>
+    		<td>{{customer.gstin}}</td>
+    	</tr>
+    </table>
+      </div>
+    </div>
+
+  </div>
 </div>
+
+	<!--Consignee Modal -->
+<div id="consigneeModal" class="modal fade" role="dialog"">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content modal-lg">
+      <div class="modal-header">
+        <h4 class="modal-title">Select the Customer from the list</h4>
+      </div>
+      <div class="modal-body">
+        <table class="table-responsive table-striped">
+    	<tr>
+    		<td>Search</td>
+    		<td colspan="2"><input type="text" ng-model="curConsignee" class="inputText"> </td>
+    	</tr>
+    	<tr>
+    		<th>Select</th>
+    		<th>Name</th>
+    		<th>Email</th>
+    		<th>Mobile</th>
+    		<th>Phone</th>
+    		<th>Address</th>
+    		<th>State</th>
+    		<th>State Code</th>
+    		<th>GSTIN</th>
+    	</tr>
+    	<tr ng-repeat="consignee in controller.consignees | filter: curConsignee">
+    		<td><input type="radio" name="selectedConsignee" value="consignee" ng-model="selected.value" ng-change="setSelectedConsignee({{consignee}})" data-dismiss="modal">Select</td>
+    		<td>{{consignee.name}}</td>
+    		<td>{{consignee.email}}</td>
+    		<td>{{consignee.mobileNo}}</td>
+    		<td>{{consignee.phoneNo}}</td>
+    		<td>{{consignee.address}}</td>
+    		<td>{{consignee.state}}</td>
+    		<td>{{consignee.stateCode}}</td>
+    		<td>{{consignee.gstin}}</td>
+    	</tr>
+    </table>
+      </div>
+    </div>
+
+  </div>
+</div>
+	
+	
+</div>
+

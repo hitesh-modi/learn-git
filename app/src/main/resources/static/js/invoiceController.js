@@ -16,10 +16,9 @@ angular.module('modiTradersApp')
 	                                		  $scope.$digest();
 	                                	  };
 	                                	  
-	                                	  $window.setSelectedCustomer = function(customer) {
+	                                	  $scope.setSelectedCustomer = function(customer) {
 	                                		  console.log('Selected Customer', customer);
 	                                		  self.invoice.customer = customer;
-	                                		  $scope.$digest();
 	                                	  };
 	                                	  console.log('Invoice controller loaded.');
 	                                	  
@@ -54,8 +53,8 @@ angular.module('modiTradersApp')
 	                               		  				function(response){
 	                               		  					self.customers = response.data;
 	                               		  					console.log('Customers list received from server', self.customers);
-	                               		  				    var $popup = $window.open("views/customers.html", "popup", "width=500,height=200,left=10,top=150");
-	                               		  				    $popup.customers = self.customers;
+	                               		  				  //  var $popup = $window.open("views/customers.html", "popup", "width=500,height=200,left=10,top=150");
+	                               		  				  //  $popup.customers = self.customers;
 	                               		  				    console.log('opened new window with customer list');
 	                               		  				    
 	                               		  				}, function(errResponse){
@@ -64,8 +63,14 @@ angular.module('modiTradersApp')
 	                               		  		);
 	                                		};
 	                                		
+	                                		
+	                                		
 	                                		$scope.clearCustomer = function() {
 	                                			self.invoice.customer={};
+	                                		};
+	                                		
+	                                		$scope.clearConsignee = function() {
+	                                			self.invoice.consignee={};
 	                                		};
 	                                		
 	                                		$scope.getConsignees = function() {
