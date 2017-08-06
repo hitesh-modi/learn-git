@@ -27,6 +27,9 @@ import com.moditraders.models.Consignee;
 import com.moditraders.models.Customer;
 import com.moditraders.models.HSNModel;
 import com.moditraders.models.Product;
+import com.moditraders.models.SacGroupModel;
+import com.moditraders.models.SacHeadingModel;
+import com.moditraders.models.SacModel;
 import com.moditraders.services.IMainService;
 
 @Controller
@@ -141,6 +144,48 @@ public class MainController {
 		return hsnModels;
 	}
 
+	@ResponseBody
+	@RequestMapping(value="/getSacHeadings", method=RequestMethod.GET)
+	public Collection<SacHeadingModel> getSacHeadings() {
+		LOGGER.info("Request received for getting Headings for Service accounting codes");
+		Collection<SacHeadingModel> sacHeadings = null;
+			try {
+				sacHeadings = mainService.getHeadingsForAllAccountingCodes();
+			} catch (ServiceException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		return sacHeadings;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="/getGroupsForHeading", method=RequestMethod.GET)
+	public Collection<SacGroupModel> getSacGroup(@RequestParam String headingId) {
+		LOGGER.info("Request received for getting Groups for Heading : " + headingId);
+		Collection<SacGroupModel> sacHeadings = null;
+			try {
+				sacHeadings = mainService.getGroupsForHeading(headingId);
+			} catch (ServiceException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		return sacHeadings;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="/getSacsFromGroupId", method=RequestMethod.GET)
+	public Collection<SacModel> getSacs(@RequestParam String groupId) {
+		LOGGER.info("Request received for getting Sacs for Group Id : " + groupId);
+		Collection<SacModel> sacs = null;
+			try {
+				sacs = mainService.getSacs(groupId);
+			} catch (ServiceException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		return sacs;
+	}
+	
 	
 	private String convertToJson(Object object) throws JsonProcessingException {
 		ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();

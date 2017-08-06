@@ -7,6 +7,9 @@ angular.module('modiTradersApp')
 	                                	  self.productTypes=[];
 	                                	  self.productId="";
 	                                	  self.hsnCodes=[];
+	                                	  self.sacHeadings=[];
+	                                	  self.sacGroups=[];
+	                                	  self.sacs=[];
 	                                		  console.log('Calling server for fetching product types.');
 	                                		  $http.get('/getProductTypes')
 	                                		  		.then(
@@ -56,8 +59,8 @@ angular.module('modiTradersApp')
 	                               		  				function(response){
 	                               		  					self.hsnCodes = response.data;
 	                               		  					console.log('HSN Received from Server', self.hsnCodes);
-	                               		  				    var $popup = $window.open("views/hsn.html", "popup", "width=500,height=200,left=10,top=150");
-	                               		  				    $popup.hsnCodes = self.hsnCodes;
+	                               		  				  //  var $popup = $window.open("views/hsn.html", "popup", "width=500,height=200,left=10,top=150");
+	                               		  				   // $popup.hsnCodes = self.hsnCodes;
 	                               		  				    console.log('opened new window with hsn list');
 	                               		  				    
 	                               		  				}, function(errResponse){
@@ -65,5 +68,51 @@ angular.module('modiTradersApp')
 	                               		  				}
 	                               		  		);
 	                                		};
+	                                		
+	                                		 $scope.getSacHeadings = function(keyword) {
+		                                			console.log('Get Sac Headings called');
+		                                			 $http.get('/getSacHeadings')
+		                               		  		.then(
+		                               		  				function(response){
+		                               		  					self.sacHeadings = response.data;
+		                               		  					self.showSacHeadings = true;
+		                               		  					console.log('Sac Headings Received from server', self.sacHeadings);
+		                               		  				    
+		                               		  				}, function(errResponse){
+		                               		  					console.log('Some error while fetching the list of hsn from server');
+		                               		  				}
+		                               		  		);
+		                                		};
+	                                		
+		                                		$scope.getGroupsForHeading = function(keyword) {
+		                                			console.log('Get Sac Headings called');
+		                                			 $http.get('/getGroupsForHeading?headingId='+keyword)
+		                               		  		.then(
+		                               		  				function(response){
+		                               		  					self.sacGroups = response.data;
+		                               		  					self.showSacGroups = true;
+		                               		  					console.log('Sac Groups Received from server', self.sacGroups);
+		                               		  				    
+		                               		  				}, function(errResponse){
+		                               		  					console.log('Some error while fetching the list of hsn from server');
+		                               		  				}
+		                               		  		);
+		                                		};
+		                                		
+		                                		$scope.getSacCodesForGroup = function(groupId) {
+		                                			console.log('Get Sac Headings called');
+		                                			 $http.get('/getSacsFromGroupId?groupId='+groupId)
+		                               		  		.then(
+		                               		  				function(response){
+		                               		  					self.sacs = response.data;
+		                               		  					self.showSACCodes = true;
+		                               		  					console.log('Sac Received from server', self.sacs);
+		                               		  				    
+		                               		  				}, function(errResponse){
+		                               		  					console.log('Some error while fetching the list of hsn from server');
+		                               		  				}
+		                               		  		);
+		                                		};
+		                                		
 	                                  }
 	                                  ]);

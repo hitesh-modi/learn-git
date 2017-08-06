@@ -16,15 +16,24 @@ import com.moditraders.entities.ConsigneeDetail;
 import com.moditraders.entities.CustomerDetail;
 import com.moditraders.entities.HSN;
 import com.moditraders.entities.Productdetail;
+import com.moditraders.entities.SacAccountingcodeGroupMap;
+import com.moditraders.entities.SacGroupHeadinMap;
+import com.moditraders.entities.SacHeadingMaster;
 import com.moditraders.models.Consignee;
 import com.moditraders.models.Customer;
 import com.moditraders.models.HSNModel;
 import com.moditraders.models.Product;
+import com.moditraders.models.SacGroupModel;
+import com.moditraders.models.SacHeadingModel;
+import com.moditraders.models.SacModel;
 import com.moditraders.repositories.ConsigneeRepository;
 import com.moditraders.repositories.CustomerRepository;
 import com.moditraders.repositories.HSNRepository;
 import com.moditraders.repositories.InvoiceNumberRepo;
 import com.moditraders.repositories.ProductRepository;
+import com.moditraders.repositories.SacGroupRepository;
+import com.moditraders.repositories.SacHeadingRepository;
+import com.moditraders.repositories.SacRepository;
 import com.moditraders.types.ProductType;
 import com.moditraders.utility.Util;
 
@@ -34,19 +43,28 @@ public class MainService implements IMainService{
 	private static final Logger LOGGER = Logger.getLogger(MainService.class);
 	
 	@Resource(name="productRepository")
-	ProductRepository productRepository;
+	private ProductRepository productRepository;
 	
 	@Resource(name="invoiceNumberRepo")
-	InvoiceNumberRepo invoiceNumberRepo;
+	private InvoiceNumberRepo invoiceNumberRepo;
 	
 	@Resource(name="customerRepository")
-	CustomerRepository customerRepository;
+	private CustomerRepository customerRepository;
 	
 	@Resource(name="consigneeRepository")
-	ConsigneeRepository consigneeRepo;
+	private ConsigneeRepository consigneeRepo;
 	
 	@Resource(name="hsnRepo")
-	HSNRepository hsnRepo;
+	private HSNRepository hsnRepo;
+	
+	@Resource(name="sacHeadingRepo")
+	private SacHeadingRepository sacHeadingRepo;
+	
+	@Resource(name="sacGroupRepo")
+	private SacGroupRepository sacGroupRepo;
+	
+	@Resource(name="sacRepo")
+	private SacRepository sacRepo;
 	
 	@Override
 	public String[] getProductTypes() {
@@ -165,5 +183,50 @@ public class MainService implements IMainService{
 		return hsnModels;
 	}
 	
+	@Override
+	public Collection<SacHeadingModel> getHeadingsForAllAccountingCodes() {
+		LOGGER.info("Getting All Headings for SACs");
+		Collection<SacHeadingModel> sacHeadings = new ArrayList<SacHeadingModel>();
+		Iterable<SacHeadingMaster> allSacHeadings = sacHeadingRepo.findAll();
+		for (SacHeadingMaster sacHeadingMaster : allSacHeadings) {
+			SacHeadingModel model = new SacHeadingModel();
+			model.setHeadingCode(sacHeadingMaster.getHeadingId());
+			model.setHeadingDesc(sacHeadingMaster.getHeadingDesc());
+			sacHeadings.add(model);
+		}
+		LOGGER.info("Got " + sacHeadings.size() + " Headings from database");
+		return sacHeadings;
+	}
+	
+	@Override
+	public Collection<SacGroupModel> getGroupsForHeading(String headingId) {
+		LOGGER.info("Getting SAC groups for Heading : " + headingId);
+		Collection<SacGroupHeadinMap> groupHeadingMap = sacGroupRepo.getGroupsByHeading(headingId);
+		Collection<SacGroupModel> groups = new ArrayList<SacGroupModel>();
+		for(SacGroupHeadinMap sacGroupHeadinMap : groupHeadingMap) {
+			SacGroupModel groupModel = new SacGroupModel();
+			groupModel.setGroupCode(sacGroupHeadinMap.getSacGroupMaster().getGroupId());
+			groupModel.setGroupDesc(sacGroupHeadinMap.getSacGroupMaster().getGroupDesc());
+			groups.add(groupModel);
+		}
+		LOGGER.info("Received "+ groups.size() +" Groups from Database.");
+		return groups;
+	}
+	
+	@Override
+	public Collection<SacModel> getSacs(String groupId) {
+		LOGGER.info("Getting SAC for group id  : " + groupId);
+		Collection<SacAccountingcodeGroupMap> accountingCodes = sacRepo.getSacByGroupId(groupId);
+		Collection<SacModel> sacModels = new ArrayList<SacModel>();
+		
+		for(SacAccountingcodeGroupMap sacFromDB : accountingCodes) {
+			SacModel accountingCodeModel = new SacModel();
+			accountingCodeModel.setSacCode(sacFromDB.getSacMaster().getSacId());
+			accountingCodeModel.setSacDesc(sacFromDB.getSacMaster().getSacDesc());
+			sacModels.add(accountingCodeModel);
+		}
+		LOGGER.info("Received " + sacModels.size() + " from database");
+		return sacModels;
+	}
 	
 }
