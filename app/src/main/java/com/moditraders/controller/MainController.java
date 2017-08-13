@@ -25,7 +25,9 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import com.moditraders.exceptions.ServiceExcpetion;
 import com.moditraders.models.Consignee;
 import com.moditraders.models.Customer;
+import com.moditraders.models.HSNChapterModel;
 import com.moditraders.models.HSNModel;
+import com.moditraders.models.HSNSectionModel;
 import com.moditraders.models.Product;
 import com.moditraders.models.SacGroupModel;
 import com.moditraders.models.SacHeadingModel;
@@ -131,20 +133,6 @@ public class MainController {
 	}
 
 	@ResponseBody
-	@RequestMapping(value="/getHSNCodes", method=RequestMethod.GET)
-	public Collection<HSNModel> getHSNCodes(@RequestParam String keyword) {
-		LOGGER.info("Request received for getting HSN Codes for Desc :"+keyword);
-		Collection<HSNModel> hsnModels = null;
-			try {
-				hsnModels = mainService.getHSNCodes(keyword);
-			} catch (ServiceException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		return hsnModels;
-	}
-
-	@ResponseBody
 	@RequestMapping(value="/getSacHeadings", method=RequestMethod.GET)
 	public Collection<SacHeadingModel> getSacHeadings() {
 		LOGGER.info("Request received for getting Headings for Service accounting codes");
@@ -184,6 +172,48 @@ public class MainController {
 				e.printStackTrace();
 			}
 		return sacs;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="/getHSNSections", method=RequestMethod.GET)
+	public Collection<HSNSectionModel> getAllHSNSections() {
+		LOGGER.info("Request received for getting HSN-Sections");
+		Collection<HSNSectionModel> hsnSections = null;
+			try {
+				hsnSections = mainService.getHSNSections();
+			} catch (ServiceException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		return hsnSections;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="/getHsnChapter", method=RequestMethod.GET)
+	public Collection<HSNChapterModel> getHsnChapter(@RequestParam String sectionId) {
+		LOGGER.info("Request received for getting HSN-Chapters for section id " + sectionId);
+		Collection<HSNChapterModel> hsnChapters = null;
+			try {
+				hsnChapters = mainService.getHSNChapters(sectionId);
+			} catch (ServiceException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		return hsnChapters;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="/getHsn", method=RequestMethod.GET)
+	public Collection<HSNModel> getHsns(@RequestParam String chapterId) {
+		LOGGER.info("Request received for getting HSN-Chapters for section id " + chapterId);
+		Collection<HSNModel> hsns = null;
+			try {
+				hsns = mainService.getHSNs(chapterId);
+			} catch (ServiceException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		return hsns;
 	}
 	
 	

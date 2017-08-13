@@ -18,7 +18,7 @@
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="control-label col-xs-4">Product Comapany </label>
+				<label class="control-label col-xs-4">Product Company </label>
 				<div class="col-xs-8">
 					<input class="form-control" type="text"
 						ng-model="productController.product.company" name="productCompany"
@@ -45,16 +45,15 @@
 
 			<div class="form-group">
 				<div class="row">
-					<label class="control-label col-xs-4">HSN Code</label>
+					<label class="control-label col-xs-4">HSN/SAC Code</label>
 					<div class="col-xs-4">
 						<input class="form-control" type="text"
 							ng-model="productController.product.hsnCode" name="hsnCode"
-							placeholder="Type the description of Product, e.g. Cement, Milk etc">
+							disabled="disabled">
 					</div>
 					<div class="col-xs-4">
-						<input type="button" class="btn" value="Get HSN"
-							data-toggle="modal" data-target="#accountingCodeModal"
-							ng-click="getHSNForProduct(productController.product.hsnCode)">
+						<input type="button" class="btn" value="Get HSN/SAC"
+							data-toggle="modal" data-target="#accountingCodeModal">
 					</div>
 				</div>
 			</div>
@@ -76,7 +75,8 @@
 				</div>
 				<div class="modal-body">
 					<ul class="nav nav-tabs" id="tabContent">
-						<li class="active"><a data-toggle="tab">HSN for Goods</a></li>
+						<li class="active"><a data-toggle="tab"
+							ng-click="getHsnSections()">HSN for Goods</a></li>
 						<li><a data-toggle="tab" ng-click="getSacHeadings()">Service
 								Accounting Code (SAC)</a></li>
 					</ul>
@@ -84,23 +84,95 @@
 					<div class="tab-content">
 						<div class="tab-pane active"
 							ng-show="productController.showSacHeadings">
-							<select class="form-control"
-								ng-model="productController.selectedSacHeading" name="sacHeadings"
-								ng-options="heading.headingDesc for heading in productController.sacHeadings">
-								<option value="" label="Select Heading" ng-change="getGroupsForHeading(productController.selectedSacHeading)"></option>
-							</select>
+							<div class="form-group">
+								<select class="form-control"
+									ng-model="productController.selectedSacHeading"
+									name="sacHeadings"
+									ng-options="heading.headingDesc for heading in productController.sacHeadings"
+									ng-change="getGroupsForHeading(productController.selectedSacHeading.headingCode)">
+									<option value="" label="Select Heading"></option>
+								</select>
+							</div>
 
+							<div class="form-group" ng-show="productController.showSacGroups">
+								<select class="form-control"
+									ng-model="productController.selectedGroup" name="sacGroups"
+									ng-options="group.groupDesc for group in productController.sacGroups"
+									ng-change="getSacCodesForGroup(productController.selectedGroup.groupCode)">
+									<option value="" label="Select Heading"></option>
+								</select>
+							</div>
 
+							<div ng-show="productController.showSACCodes">
+								<div>
+									<label>Search</label> <input type="text" ng-model="sacToSearch"
+										class="inputText">
+								</div>
+								<table>
+									<tr>
+										<th>Select</th>
+										<th>SAC Code</th>
+										<th>SAC Description</th>
+									</tr>
+									<tr
+										ng-repeat="sac in productController.sacs | filter: sacToSearch">
+										<td><input type="radio"
+											ng-click="productController.product.hsnCode = sac.sacCode"
+											data-dismiss="modal"></td>
+										<td>{{sac.sacCode}}</td>
+										<td>{{sac.sacDesc | lowercase}}</td>
+									</tr>
+								</table>
+							</div>
 						</div>
 
-						<div class="tab-pane" id="access-security">content 0</div>
+					</div>
+					<div class="tab-pane" ng-show="productController.showHSNSections">
+						<div class="form-group">
+							<select class="form-control"
+								ng-model="productController.selectedHSNSection"
+								name="hsnSections"
+								ng-options="section.sectionDesc for section in productController.hsnSections"
+								ng-change="getHSNChapter(productController.selectedHSNSection.sectionCode)">
+								<option value="" label="Select Section"></option>
+							</select>
+						</div>
 
+						<div class="form-group"
+							ng-show="productController.showHSNChapters">
+							<select class="form-control"
+								ng-model="productController.selectedChapter" name="sacGroups"
+								ng-options="chapter.chapterDesc for chapter in productController.hsnChapters"
+								ng-change="getHSNs(productController.selectedChapter.chapterId)">
+								<option value="" label="Select Chapter"></option>
+							</select>
+						</div>
 
-						<div class="tab-pane" id="networking">content 1</div>
+						<div ng-show="productController.showHSN">
+							<div>
+								<label>Search</label> <input type="text" ng-model="hsnToSearch"
+									class="inputText">
+							</div>
+							<table>
+								<tr>
+									<th>Select</th>
+									<th>HSN Code</th>
+									<th>HSN Description</th>
+								</tr>
+								<tr
+									ng-repeat="hsn in productController.hsns | filter: hsnToSearch">
+									<td><input type="radio"
+										ng-click="productController.product.hsnCode = hsn.hsnCode"
+										data-dismiss="modal"></td>
+									<td>{{hsn.hsnCode}}</td>
+									<td>{{hsn.hsnDesc | lowercase}}</td>
+								</tr>
+							</table>
+						</div>
 					</div>
 				</div>
 
 			</div>
 		</div>
-
 	</div>
+</div>

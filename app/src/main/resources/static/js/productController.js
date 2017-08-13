@@ -10,6 +10,9 @@ angular.module('modiTradersApp')
 	                                	  self.sacHeadings=[];
 	                                	  self.sacGroups=[];
 	                                	  self.sacs=[];
+	                                	  self.hsnSections=[];
+	                                	  self.hsnChapters=[];
+	                                	  self.hsns = [];
 	                                		  console.log('Calling server for fetching product types.');
 	                                		  $http.get('/getProductTypes')
 	                                		  		.then(
@@ -71,6 +74,7 @@ angular.module('modiTradersApp')
 	                                		
 	                                		 $scope.getSacHeadings = function(keyword) {
 		                                			console.log('Get Sac Headings called');
+		                                			self.showHSNSections = false;
 		                                			 $http.get('/getSacHeadings')
 		                               		  		.then(
 		                               		  				function(response){
@@ -85,7 +89,9 @@ angular.module('modiTradersApp')
 		                                		};
 	                                		
 		                                		$scope.getGroupsForHeading = function(keyword) {
-		                                			console.log('Get Sac Headings called');
+		                                			console.log('Get Sac Groups called');
+		                                			self.showSacGroups = false;
+		                                			self.showSACCodes = false;
 		                                			 $http.get('/getGroupsForHeading?headingId='+keyword)
 		                               		  		.then(
 		                               		  				function(response){
@@ -100,7 +106,7 @@ angular.module('modiTradersApp')
 		                                		};
 		                                		
 		                                		$scope.getSacCodesForGroup = function(groupId) {
-		                                			console.log('Get Sac Headings called');
+		                                			console.log('Get Sac called');
 		                                			 $http.get('/getSacsFromGroupId?groupId='+groupId)
 		                               		  		.then(
 		                               		  				function(response){
@@ -110,6 +116,54 @@ angular.module('modiTradersApp')
 		                               		  				    
 		                               		  				}, function(errResponse){
 		                               		  					console.log('Some error while fetching the list of hsn from server');
+		                               		  				}
+		                               		  		);
+		                                		};
+		                                		
+		                                		$scope.getHsnSections = function() {
+		                                			console.log('Get all HSN Sections called');
+		                                			self.showSacHeadings = false;
+		                                			 $http.get('/getHSNSections')
+		                               		  		.then(
+		                               		  				function(response){
+		                               		  					self.hsnSections = response.data;
+		                               		  					self.showHSNSections = true;
+		                               		  					console.log('HSN Sections received from server', self.sacs);
+		                               		  				    
+		                               		  				}, function(errResponse){
+		                               		  					console.log('Some error while fetching the list of hsn-sections from server');
+		                               		  				}
+		                               		  		);
+		                                		};
+		                                		
+		                                		$scope.getHSNChapter = function(sectionId) {
+		                                			console.log('Get Sac called');
+		                                			self.showHSNChapters = false;
+		                                			self.showHSN = false;
+		                                			 $http.get('/getHsnChapter?sectionId='+sectionId)
+		                               		  		.then(
+		                               		  				function(response){
+		                               		  					self.hsnChapters = response.data;
+		                               		  					self.showHSNChapters = true;
+		                               		  					console.log('HSN Chapters Received from server', self.sacs);
+		                               		  				    
+		                               		  				}, function(errResponse){
+		                               		  					console.log('Some error while fetching the list of hsn chapters from server');
+		                               		  				}
+		                               		  		);
+		                                		};
+		                                		
+		                                		$scope.getHSNs = function(chapterId) {
+		                                			console.log('Get HSN called');
+		                                			 $http.get('/getHsn?chapterId='+chapterId)
+		                               		  		.then(
+		                               		  				function(response){
+		                               		  					self.hsns = response.data;
+		                               		  					self.showHSN = true;
+		                               		  					console.log('HSN Codes Received from server', self.sacs);
+		                               		  				    
+		                               		  				}, function(errResponse){
+		                               		  					console.log('Some error while fetching the list of hsn chapters from server');
 		                               		  				}
 		                               		  		);
 		                                		};

@@ -12,23 +12,30 @@ import org.hibernate.service.spi.ServiceException;
 import org.springframework.stereotype.Service;
 
 import com.google.common.collect.Iterables;
+import com.moditraders.entities.ChapterSectionMap;
 import com.moditraders.entities.ConsigneeDetail;
 import com.moditraders.entities.CustomerDetail;
 import com.moditraders.entities.HSN;
+import com.moditraders.entities.HsnChapterMap;
 import com.moditraders.entities.Productdetail;
 import com.moditraders.entities.SacAccountingcodeGroupMap;
 import com.moditraders.entities.SacGroupHeadinMap;
 import com.moditraders.entities.SacHeadingMaster;
+import com.moditraders.entities.SectionMaster;
 import com.moditraders.models.Consignee;
 import com.moditraders.models.Customer;
+import com.moditraders.models.HSNChapterModel;
 import com.moditraders.models.HSNModel;
+import com.moditraders.models.HSNSectionModel;
 import com.moditraders.models.Product;
 import com.moditraders.models.SacGroupModel;
 import com.moditraders.models.SacHeadingModel;
 import com.moditraders.models.SacModel;
 import com.moditraders.repositories.ConsigneeRepository;
 import com.moditraders.repositories.CustomerRepository;
+import com.moditraders.repositories.HSNChapterRepository;
 import com.moditraders.repositories.HSNRepository;
+import com.moditraders.repositories.HSNSectionRepository;
 import com.moditraders.repositories.InvoiceNumberRepo;
 import com.moditraders.repositories.ProductRepository;
 import com.moditraders.repositories.SacGroupRepository;
@@ -54,9 +61,6 @@ public class MainService implements IMainService{
 	@Resource(name="consigneeRepository")
 	private ConsigneeRepository consigneeRepo;
 	
-	@Resource(name="hsnRepo")
-	private HSNRepository hsnRepo;
-	
 	@Resource(name="sacHeadingRepo")
 	private SacHeadingRepository sacHeadingRepo;
 	
@@ -65,6 +69,15 @@ public class MainService implements IMainService{
 	
 	@Resource(name="sacRepo")
 	private SacRepository sacRepo;
+	
+	@Resource(name="hsnSectionRepo")
+	private HSNSectionRepository hsSectionRepo;
+	
+	@Resource(name="hsnChapterRepo")
+	private HSNChapterRepository hsnChapterRepo;
+	
+	@Resource(name="hsnRepo")
+	private HSNRepository hsnRepo;
 	
 	@Override
 	public String[] getProductTypes() {
@@ -169,21 +182,6 @@ public class MainService implements IMainService{
 	}
 	
 	@Override
-	public Collection<HSNModel> getHSNCodes(final String keyword) {
-		LOGGER.info("Getting HSN For keyword : " + keyword);
-		List<HSNModel> hsnModels = new ArrayList<HSNModel>();
-		List<HSN> hsns = hsnRepo.getHSNForCodes(keyword.toUpperCase());
-		for(HSN hsn : hsns) {
-			HSNModel hsnModel = new HSNModel();
-			hsnModel.setHsnCode(hsn.getHsnCode());
-			hsnModel.setHsnDesc(hsn.getHsnDesc());
-			hsnModels.add(hsnModel);
-		}
-		LOGGER.info("Got " + hsnModels.size() + " HSN Codes for keyword: " + keyword);
-		return hsnModels;
-	}
-	
-	@Override
 	public Collection<SacHeadingModel> getHeadingsForAllAccountingCodes() {
 		LOGGER.info("Getting All Headings for SACs");
 		Collection<SacHeadingModel> sacHeadings = new ArrayList<SacHeadingModel>();
@@ -227,6 +225,51 @@ public class MainService implements IMainService{
 		}
 		LOGGER.info("Received " + sacModels.size() + " from database");
 		return sacModels;
+	}
+	
+	@Override
+	public Collection<HSNSectionModel> getHSNSections() {
+		LOGGER.info("Getting list of all HSN Sections");
+		Iterable<SectionMaster> sections = hsSectionRepo.findAll();
+		Collection<HSNSectionModel> hsnAllSections = new ArrayList<HSNSectionModel>();
+		for(SectionMaster secMaster : sections) {
+			HSNSectionModel sectionModel = new HSNSectionModel();
+			sectionModel.setSectionCode(secMaster.getSectionId());
+			sectionModel.setSectionDesc(secMaster.getSectionDesc());
+			hsnAllSections.add(sectionModel);
+		}
+		LOGGER.info("Retreived " + hsnAllSections.size() + " sections from the database.");
+		return hsnAllSections;
+	}
+	
+	@Override
+	public Collection<HSNChapterModel> getHSNChapters(String sectionId) {
+		LOGGER.info("Getting HSN Chapters for section id : " + sectionId);
+		Collection<ChapterSectionMap> hsnChapters = hsnChapterRepo.getChaptersBySectionId(sectionId);
+		Collection<HSNChapterModel> chapters = new ArrayList<HSNChapterModel>();
+		for(ChapterSectionMap chapter : hsnChapters) {
+			HSNChapterModel chapterModel = new HSNChapterModel();
+			chapterModel.setChapterId(chapter.getChapterId());
+			chapterModel.setChapterDesc(chapter.getHsnchapterMaster().getHsnchapterDesc());
+			chapters.add(chapterModel);
+		}
+		LOGGER.info("Retreived " + chapters.size() + " chapters from database.");
+		return chapters;
+	}
+	
+	@Override
+	public Collection<HSNModel> getHSNs(String chapterId) {
+		LOGGER.info("Getting HSN Chapters for chapter id : " + chapterId);
+		Collection<HsnChapterMap> hsns = hsnRepo.getHSNByChapter(chapterId);
+		Collection<HSNModel> hsnModels = new ArrayList<HSNModel>();
+		for(HsnChapterMap hsnEntity : hsns) {
+			HSNModel hsnModel = new HSNModel();
+			hsnModel.setHsnCode(hsnEntity.getHsncode());
+			hsnModel.setHsnDesc(hsnEntity.getHsnmaster().getHsndesc());
+			hsnModels.add(hsnModel);
+		}
+		LOGGER.info("Retreived "+ hsnModels.size() + " from database.");
+		return hsnModels;
 	}
 	
 }
