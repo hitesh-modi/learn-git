@@ -7,53 +7,63 @@
 	<div class="container-fluid" style="max-width: 600px;">
 		<form name="productForm" class="form-horizontal"
 			ng-submit="productController.submitProductForm()">
+			
+			<div class="form-group">
+				<input type="radio" name="isGood" ng-value="true" ng-model="productController.product.good"> Goods
+				<input type="radio" name="isGood" ng-value="false" ng-model="productController.product.good"> Service
+			</div>
+			
 			<div class="form-group">
 				<label class="control-label col-xs-4">Product Type</label>
 				<div class="col-xs-8">
-					<select class="form-control"
+					<input class="form-control" type="text"
 						ng-model="productController.product.type" name="productType"
-						ng-options="productType for productType in productController.productTypes">
-						<option value="" label="Select Product Type"></option>
-					</select>
+						placeholder="e.g. Cement, Milk, Software">
 				</div>
 			</div>
+			
+			<div class="form-group">
+				<label class="control-label col-xs-4">Product Name</label>
+				<div class="col-xs-8">
+					<input class="form-control" type="text"
+						ng-model="productController.product.name" name="productName"
+						placeholder="e.g. Lafarge, Amul">
+				</div>
+			</div>
+			
 			<div class="form-group">
 				<label class="control-label col-xs-4">Product Company </label>
 				<div class="col-xs-8">
 					<input class="form-control" type="text"
 						ng-model="productController.product.company" name="productCompany"
-						placeholder="e.g. Ambuja, Birla Gold">
+						placeholder="Company of the Product">
 				</div>
 			</div>
+			
 			<div class="form-group">
-				<label class="control-label col-xs-4">Agency Start Date</label>
-				<div class="col-xs-8">
-					<input class="form-control" type="date"
-						ng-model="productController.product.agencyStartDate"
-						name="productStartDate"
-						placeholder="Start Date of the Agency of the Product">
-				</div>
-			</div>
-			<div class="form-group">
-				<label class="control-label col-xs-4">Security Deposit</label>
+				<label class="control-label col-xs-4">Tax Rate</label>
 				<div class="col-xs-8">
 					<input class="form-control" type="text"
-						ng-model="productController.product.depositAmount"
-						name="depositAmount" placeholder="Amount deposoited as security">
+						ng-model="productController.product.taxRate" name="productTaxRate"
+						placeholder="Tax Rate of the Product">
 				</div>
 			</div>
 
 			<div class="form-group">
 				<div class="row">
-					<label class="control-label col-xs-4">HSN/SAC Code</label>
+					<label class="control-label col-xs-4" ng-show="productController.product.good">HSN Code</label>
+					<label class="control-label col-xs-4" ng-hide="productController.product.good">SAC Code</label>
 					<div class="col-xs-4">
 						<input class="form-control" type="text"
 							ng-model="productController.product.hsnCode" name="hsnCode"
 							disabled="disabled">
 					</div>
 					<div class="col-xs-4">
-						<input type="button" class="btn" value="Get HSN/SAC"
-							data-toggle="modal" data-target="#accountingCodeModal">
+						<input type="button" class="btn btn-sm btn-success" value="Get HSN"
+							data-toggle="modal" data-target="#accountingCodeModal" ng-show="productController.product.good" ng-click="clearData()">
+						
+						<input type="button" class="btn btn-sm btn-success" value="Get SAC"
+							data-toggle="modal" data-target="#accountingCodeModal" ng-hide="productController.product.good" ng-click="clearData()">
 					</div>
 				</div>
 			</div>
@@ -64,20 +74,20 @@
 	</div>
 
 	<!--Accounting Code Modal -->
-	<div id="accountingCodeModal" class="modal fade" role="dialog"">
+	<div id="accountingCodeModal" class="modal fade" role="dialog">
 		<div class="modal-dialog">
 
 			<!-- Modal content-->
 			<div class="modal-content modal-lg">
 				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<button type="button" class="close" data-dismiss="modal" ng-click="clearData()">&times;</button>
 					<h4 class="modal-title">Select the HSN/SAC from the list</h4>
 				</div>
 				<div class="modal-body">
 					<ul class="nav nav-tabs" id="tabContent">
-						<li class="active"><a data-toggle="tab"
+						<li class="active" ng-show="productController.product.good"><a data-toggle="tab"
 							ng-click="getHsnSections()">HSN for Goods</a></li>
-						<li><a data-toggle="tab" ng-click="getSacHeadings()">Service
+						<li ng-hide="productController.product.good"><a data-toggle="tab" ng-click="getSacHeadings()">Service
 								Accounting Code (SAC)</a></li>
 					</ul>
 
@@ -99,7 +109,7 @@
 									ng-model="productController.selectedGroup" name="sacGroups"
 									ng-options="group.groupDesc for group in productController.sacGroups"
 									ng-change="getSacCodesForGroup(productController.selectedGroup.groupCode)">
-									<option value="" label="Select Heading"></option>
+									<option value="" label="Select Groups"></option>
 								</select>
 							</div>
 

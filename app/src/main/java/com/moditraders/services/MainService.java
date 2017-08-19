@@ -93,10 +93,17 @@ public class MainService implements IMainService{
 	public long saveProduct(Product product) {
 		LOGGER.info("Saving Product");
 		Productdetail productDetail = new Productdetail();
-		productDetail.setProductType(product.getType().getType());
+		productDetail.setProductType(product.getType());
 		productDetail.setAgencySecurityDeposit(product.getDepositAmount());
 		productDetail.setAgencyStartDate(product.getAgencyStartDate());
 		productDetail.setProductCompany(product.getCompany());
+		productDetail.setProductTaxRate(product.getTaxRate());
+		if(product.isGood())
+			productDetail.setProductServiceOrGood("G");
+		else {
+			productDetail.setProductServiceOrGood("S");
+		}
+		productDetail.setProductName(product.getName());
 		HSN hsn = new HSN();
 		hsn.setHsnCode(product.getHsnCode());
 		productDetail.setProductHSN(hsn);
@@ -114,11 +121,13 @@ public class MainService implements IMainService{
 		for (Productdetail productdetail : productsFromDB) {
 			Product product = new Product();
 			product.setProductId(productdetail.getProductId());
-			product.setType(ProductType.valueOf(productdetail.getProductType().toUpperCase()));
+			product.setType(productdetail.getProductType().toUpperCase());
 			product.setAgencyStartDate(productdetail.getAgencyStartDate());
 			product.setCompany(productdetail.getProductCompany());
 			product.setDepositAmount(productdetail.getAgencySecurityDeposit());
 			product.setHsnCode(productdetail.getProductHSN().getHsnCode());
+			product.setName(productdetail.getProductName());
+			product.setTaxRate(productdetail.getProductTaxRate());
 			products.add(product);
 		}
 		return products;

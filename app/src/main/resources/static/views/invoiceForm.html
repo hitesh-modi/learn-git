@@ -166,7 +166,7 @@
 							<td>{{invoiceItem.serialNumber}}</td>
 							<td>
 								<select ng-model="invoiceItem.product" name="product" 
-								ng-options="product.company for product in controller.products">
+								ng-options="product.name for product in controller.products">
 								</select>
 							</td>
 							<td><input style="width: 60px;" type="text" ng-model="invoiceItem.quantity"></td>
@@ -187,7 +187,7 @@
 							<td>{{invoiceItem.serialNumber}}</td>
 							<td>
 								<select ng-model="invoiceItem.product" name="product" 
-								ng-options="product.company for product in controller.products">
+								ng-options="product.name for product in controller.products">
 								</select>
 							</td>
 							<td><input style="width: 60px;" type="text" ng-model="invoiceItem.quantity"></td>

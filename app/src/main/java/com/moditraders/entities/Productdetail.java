@@ -25,6 +25,9 @@ public class Productdetail implements Serializable {
 
 	@Column(name="pd_agencysecuritydeposit")
 	private BigDecimal agencySecurityDeposit;
+	
+	@Column(name="pd_serviceorgood")
+	private String productServiceOrGood;
 
 	@Temporal(TemporalType.DATE)
 	@Column(name="pd_agencystartdate")
@@ -41,6 +44,12 @@ public class Productdetail implements Serializable {
 
 	@Column(name="pd_producttype")
 	private String productType;
+	
+	@Column(name="pd_productname")
+	private String productName;
+	
+	@Column(name="pd_taxrate")
+	private float productTaxRate;
 	
 	@OneToOne
 	@JoinColumn(name="pd_hsn")
@@ -190,6 +199,30 @@ public class Productdetail implements Serializable {
 	public void setProductHSN(HSN productHSN) {
 		this.productHSN = productHSN;
 	}
+	
+	public String getProductName() {
+		return productName;
+	}
 
+	public void setProductName(String productName) {
+		this.productName = productName;
+	}
+
+	public float getProductTaxRate() {
+		return productTaxRate;
+	}
+
+	public void setProductTaxRate(float productTaxRate) {
+		this.productTaxRate = productTaxRate;
+	}
+
+
+	public String getProductServiceOrGood() {
+		return productServiceOrGood;
+	}
+
+	public void setProductServiceOrGood(String productServiceOrGood) {
+		this.productServiceOrGood = productServiceOrGood;
+	}
 
 }

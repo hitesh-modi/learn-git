@@ -13,18 +13,6 @@ angular.module('modiTradersApp')
 	                                	  self.hsnSections=[];
 	                                	  self.hsnChapters=[];
 	                                	  self.hsns = [];
-	                                		  console.log('Calling server for fetching product types.');
-	                                		  $http.get('/getProductTypes')
-	                                		  		.then(
-	                                		  				function(response){
-	                                		  					self.productTypes = response.data;
-	                                		  					console.log('data received from server', response.data);
-	                                		  				}, function(errResponse){
-	                                		  					console.log('Some error while fetching the data from server');
-	                                		  				}
-	                                		  		);
-	                                	  
-	                                	  
 	                                	  self.submitProductForm = function() {
 	                                		  console.log('User clicked submit with product ', self.product);
 	                                		  $http.post('/createProduct', self.product)
@@ -75,6 +63,8 @@ angular.module('modiTradersApp')
 	                                		 $scope.getSacHeadings = function(keyword) {
 		                                			console.log('Get Sac Headings called');
 		                                			self.showHSNSections = false;
+		                                			self.sacGroups=[];
+		  	                                	    self.sacs=[];
 		                                			 $http.get('/getSacHeadings')
 		                               		  		.then(
 		                               		  				function(response){
@@ -123,6 +113,8 @@ angular.module('modiTradersApp')
 		                                		$scope.getHsnSections = function() {
 		                                			console.log('Get all HSN Sections called');
 		                                			self.showSacHeadings = false;
+		                                			self.hsnChapters=[];
+		   	                                	    self.hsns = [];
 		                                			 $http.get('/getHSNSections')
 		                               		  		.then(
 		                               		  				function(response){
@@ -166,6 +158,22 @@ angular.module('modiTradersApp')
 		                               		  					console.log('Some error while fetching the list of hsn chapters from server');
 		                               		  				}
 		                               		  		);
+		                                		};
+		                                		
+		                                		$scope.clearData = function() {
+		                                		  self.hsnCodes=[];
+		  	                                	  self.sacHeadings=[];
+		  	                                	  self.sacGroups=[];
+		  	                                	  self.sacs=[];
+		  	                                	  self.hsnSections=[];
+		  	                                	  self.hsnChapters=[];
+		  	                                	  self.hsns = [];
+		  	                                	  self.showSacGroups = false;
+	                                			  self.showSACCodes = false;
+	                                			  self.showHSN = false;
+	                                			  self.showHSNChapters = false;
+	                                			  self.showHSNSections = false;
+	                                			  self.showSacHeadings = false;
 		                                		};
 		                                		
 	                                  }

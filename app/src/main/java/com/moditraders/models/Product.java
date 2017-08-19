@@ -3,26 +3,45 @@ package com.moditraders.models;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import com.moditraders.types.ProductType;
-
 public class Product {
 	private long productId;
-	private ProductType type;
+	private String type;
+	private String name;
 	private String company;
 	private Date agencyStartDate;
 	private BigDecimal depositAmount;
 	private String hsnCode;
+	private float taxRate;
+	private boolean isGood;
 	
+	public float getTaxRate() {
+		return taxRate;
+	}
+	public void setTaxRate(float taxRate) {
+		this.taxRate = taxRate;
+	}
+	public boolean isGood() {
+		return isGood;
+	}
+	public void setGood(boolean isGood) {
+		this.isGood = isGood;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
 	public String getHsnCode() {
 		return hsnCode;
 	}
 	public void setHsnCode(String hsnCode) {
 		this.hsnCode = hsnCode;
 	}
-	public ProductType getType() {
+	public String getType() {
 		return type;
 	}
-	public void setType(ProductType productType) {
+	public void setType(String productType) {
 		this.type = productType;
 	}
 	public String getCompany() {
