@@ -7,15 +7,16 @@ import javax.annotation.Resource;
 import javax.validation.Valid;
 
 import org.apache.log4j.Logger;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.hibernate.service.spi.ServiceException;
 import org.springframework.http.MediaType;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -34,7 +35,8 @@ import com.moditraders.models.SacHeadingModel;
 import com.moditraders.models.SacModel;
 import com.moditraders.services.IMainService;
 
-@Controller
+@RestController
+@RequestMapping("/services")
 public class MainController {
 	
 	private static Logger LOGGER = Logger.getLogger(MainController.class);
@@ -42,14 +44,8 @@ public class MainController {
 	@Resource(name="mainService")
 	private IMainService mainService;
 	
-	@RequestMapping("/greeting")
-	public String hello(@RequestParam(value="name", required=false, defaultValue="World") String name, Model model) {
-		model.addAttribute("name", name);
-		return "greeting";
-	}
-	
-	
-	@RequestMapping(value="/createProduct", method=RequestMethod.POST, produces=MediaType.APPLICATION_JSON_VALUE)
+	@RequiresPermissions("create-product")
+	@PostMapping(value="/createProduct", produces=MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody String createProduct(@Valid @RequestBody String productJson) throws JsonProcessingException {
 		LOGGER.info("Request received for Product Creation with data " + productJson);
 		Long id = -1L;
@@ -70,7 +66,8 @@ public class MainController {
 	} 
 	
 	@ResponseBody
-	@RequestMapping(value="/getProductTypes", method=RequestMethod.GET)
+	@RequiresPermissions("read-product")
+	@GetMapping(value="/getProductTypes")
 	public String[] getProductTypes() {
 		LOGGER.info("Getting product types from service");
 		String[] productTypes = null;
@@ -84,7 +81,8 @@ public class MainController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value="/getProducts", method=RequestMethod.GET)
+	@RequiresPermissions("read-product")
+	@GetMapping(value="/getProducts")
 	public Collection<Product> getProducts() {
 		LOGGER.info("Getting product types from service");
 		Collection<Product> products = null;
@@ -98,14 +96,16 @@ public class MainController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value="/getInvoiceNumber", method=RequestMethod.GET)
+	@RequiresPermissions("create-invoice")
+	@GetMapping(value="/getInvoiceNumber")
 	public String getInvoiceNumber() throws ServiceException, JsonProcessingException {
 		LOGGER.info("Request received for generating the invoice number");
 		return convertToJson(mainService.generateInvoiceNumber());
 	}
 	
 	@ResponseBody
-	@RequestMapping(value="/getCustomers", method=RequestMethod.GET)
+	@RequiresPermissions("read-customer")
+	@GetMapping(value="/getCustomers")
 	public Collection<Customer> getCustomers() {
 		LOGGER.info("Getting product types from service");
 		Collection<Customer> customers = null;
@@ -119,7 +119,8 @@ public class MainController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value="/getConsignees", method=RequestMethod.GET)
+	@RequiresPermissions("read-consignee")
+	@GetMapping(value="/getConsignees")
 	public Collection<Consignee> getConsignees() {
 		LOGGER.info("Getting product types from service");
 		Collection<Consignee> consignees = null;
@@ -133,7 +134,8 @@ public class MainController {
 	}
 
 	@ResponseBody
-	@RequestMapping(value="/getSacHeadings", method=RequestMethod.GET)
+	@RequiresPermissions("read-accounting-codes")
+	@GetMapping(value="/getSacHeadings")
 	public Collection<SacHeadingModel> getSacHeadings() {
 		LOGGER.info("Request received for getting Headings for Service accounting codes");
 		Collection<SacHeadingModel> sacHeadings = null;
@@ -147,7 +149,8 @@ public class MainController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value="/getGroupsForHeading", method=RequestMethod.GET)
+	@RequiresPermissions("read-accounting-codes")
+	@GetMapping(value="/getGroupsForHeading")
 	public Collection<SacGroupModel> getSacGroup(@RequestParam String headingId) {
 		LOGGER.info("Request received for getting Groups for Heading : " + headingId);
 		Collection<SacGroupModel> sacHeadings = null;
@@ -161,7 +164,8 @@ public class MainController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value="/getSacsFromGroupId", method=RequestMethod.GET)
+	@RequiresPermissions("read-accounting-codes")
+	@GetMapping(value="/getSacsFromGroupId")
 	public Collection<SacModel> getSacs(@RequestParam String groupId) {
 		LOGGER.info("Request received for getting Sacs for Group Id : " + groupId);
 		Collection<SacModel> sacs = null;
@@ -175,7 +179,8 @@ public class MainController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value="/getHSNSections", method=RequestMethod.GET)
+	@RequiresPermissions("read-accounting-codes")
+	@GetMapping(value="/getHSNSections")
 	public Collection<HSNSectionModel> getAllHSNSections() {
 		LOGGER.info("Request received for getting HSN-Sections");
 		Collection<HSNSectionModel> hsnSections = null;
@@ -189,7 +194,8 @@ public class MainController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value="/getHsnChapter", method=RequestMethod.GET)
+	@RequiresPermissions("read-accounting-codes")
+	@GetMapping(value="/getHsnChapter")
 	public Collection<HSNChapterModel> getHsnChapter(@RequestParam String sectionId) {
 		LOGGER.info("Request received for getting HSN-Chapters for section id " + sectionId);
 		Collection<HSNChapterModel> hsnChapters = null;
@@ -203,7 +209,8 @@ public class MainController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value="/getHsn", method=RequestMethod.GET)
+	@RequiresPermissions("read-accounting-codes")
+	@GetMapping(value="/getHsn")
 	public Collection<HSNModel> getHsns(@RequestParam String chapterId) {
 		LOGGER.info("Request received for getting HSN-Chapters for section id " + chapterId);
 		Collection<HSNModel> hsns = null;

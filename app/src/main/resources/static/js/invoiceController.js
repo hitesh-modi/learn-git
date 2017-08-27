@@ -22,7 +22,7 @@ angular.module('modiTradersApp')
 	                                	  };
 	                                	  console.log('Invoice controller loaded.');
 	                                	  
-	                                		  $http.get('/getInvoiceNumber')
+	                                		  $http.get('/services/getInvoiceNumber')
                               		  		.then(
                               		  				function(response){
                               		  					self.invoice.invoiceNumber = response.data;
@@ -32,7 +32,7 @@ angular.module('modiTradersApp')
                               		  				}
                               		  		);
 	                                		  
-	                                		  $http.get('/getProducts')
+	                                		  $http.get('/services/getProducts')
 	                              		  		.then(
 	                              		  				function(response){
 	                              		  					self.products = response.data;
@@ -48,7 +48,7 @@ angular.module('modiTradersApp')
 	                                		
 	                                		$scope.getCustomers = function() {
 	                                			console.log('Get Customers called.');
-	                                			 $http.get('/getCustomers')
+	                                			 $http.get('/services/getCustomers')
 	                               		  		.then(
 	                               		  				function(response){
 	                               		  					self.customers = response.data;
@@ -75,7 +75,7 @@ angular.module('modiTradersApp')
 	                                		
 	                                		$scope.getConsignees = function() {
 	                                			console.log('Get Consignee called.');
-	                                			 $http.get('/getConsignees')
+	                                			 $http.get('/services/getConsignees')
 	                               		  		.then(
 	                               		  				function(response){
 	                               		  					self.customers = response.data;
