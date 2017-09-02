@@ -22,7 +22,7 @@ angular.module('modiTradersApp')
 	                                	  };
 	                                	  console.log('Invoice controller loaded.');
 	                                	  
-	                                		  $http.get('/services/getInvoiceNumber')
+	                                		$http.get('/services/getInvoiceNumber')
                               		  		.then(
                               		  				function(response){
                               		  					self.invoice.invoiceNumber = response.data;

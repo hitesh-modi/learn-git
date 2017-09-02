@@ -1,6 +1,7 @@
 package com.moditraders.controller;
 
 import java.io.IOException;
+import java.util.Collection;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
@@ -18,6 +19,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.moditraders.models.AuthInfo;
 import com.moditraders.models.AuthResponse;
+import com.moditraders.models.StateModel;
 import com.moditraders.models.UserModel;
 import com.moditraders.services.IUserService;
 
@@ -60,6 +62,11 @@ public class UserController {
 	@RequiresPermissions("dashboard")
 	public @ResponseBody UserModel getUserName() {
 		return userService.getUserInfo();
+	}
+	
+	@RequestMapping(value="/getStates")
+	public @ResponseBody Collection<StateModel> getStates() {
+		return userService.getStates();
 	}
 	
 	@RequestMapping(value="/greeting")

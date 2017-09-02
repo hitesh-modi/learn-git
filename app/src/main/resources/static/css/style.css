@@ -81,17 +81,17 @@ body {
 }
 
 h2 {
-	font-family: "Book Antiqua";
+	font-family: 'Montserrat', sans-serif;
 	color: #3c3c58;
 }
 
 nav a:first-child {
-	font-family: "Book Antiqua";
+	font-family: 'Montserrat', sans-serif ;
 	border-radius: 10px 0 0 10px;
 }
 
 nav a:last-child {
-	font-family: "Book Antiqua";
+	font-family: 'Montserrat', sans-serif;
 	border-radius: 0 10px 10px 0;
 }
 
@@ -123,11 +123,11 @@ nav a:last-child {
 }
 
 p {
-	font-family: "Book Antiqua";
+	font-family: 'Montserrat', sans-serif ;
 }
 
 p b {
-	font-family: "Book Antiqua";
+	font-family: 'Montserrat', sans-serif ;
 	color: #ffffff;
 	display: inline-block;
 	padding: 5px 10px;

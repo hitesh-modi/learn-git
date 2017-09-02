@@ -1,5 +1,10 @@
 package com.moditraders.services;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
+import javax.annotation.Resource;
+
 import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
@@ -7,13 +12,19 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Component;
 
+import com.moditraders.entities.State;
 import com.moditraders.models.AuthInfo;
+import com.moditraders.models.StateModel;
 import com.moditraders.models.UserModel;
+import com.moditraders.repositories.StateRepository;
 
 @Component("userService")
 public class UserService implements IUserService {
 
 	private static final Logger LOGGER = Logger.getLogger(UserService.class);
+	
+	@Resource(name="stateRepo")
+	private StateRepository stateRepo;
 	
 	@Override
 	public boolean login(AuthInfo authInfo) {
@@ -44,6 +55,21 @@ public class UserService implements IUserService {
 		userModel.setUserid(userid);
 		userModel.setUserName("Test User");
 		return userModel;
+	}
+	
+	@Override
+	public Collection<StateModel> getStates() {
+		Iterable<State> states = stateRepo.findAll();
+		LOGGER.info("Getting states from database");
+		Collection<StateModel> stateList = new ArrayList<>();
+		for (State state : states) {
+			StateModel stateModel = new StateModel();
+			stateModel.setStatecode(state.getStatecode());
+			stateModel.setStatename(state.getStatename());
+			stateList.add(stateModel);
+		}
+		LOGGER.info("Got " + stateList.size() + " states from DB.");
+		return stateList;
 	}
 
 }
