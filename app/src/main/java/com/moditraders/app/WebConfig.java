@@ -11,7 +11,7 @@ public class WebConfig extends WebMvcConfigurerAdapter{
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		registry
-        .addResourceHandler("/services/**")
+        .addResourceHandler("/**/*")
         .addResourceLocations("classpath:static/js/", "classpath:static/css/", "classpath:static/views/", "classpath:static/images/"); 
 		
 		registry

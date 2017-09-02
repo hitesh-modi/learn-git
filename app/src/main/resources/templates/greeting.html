@@ -19,7 +19,7 @@
 <body ng-app="modiTradersApp">
 	<!-- The navigation menu will get the value of the "active" variable as a class.
          The $event.preventDefault() stops the page from jumping when a link is clicked. -->
-	<div class="mainbody">
+	<div class="mainbody" ng-controller="UserController as ctrl">
 		<div class="logo">
 			<img src="final-logo-cropped.png"></img>
 		</div>
@@ -46,6 +46,7 @@
 				
 				<a href="#contactUs" tabindex="8">Contact</a>
 		</div>
+		<div>Welcome {{ctrl.userDetails.userName}} ({{ctrl.userDetails.userid}})</div>
 		<div ng-view="true"></div>
 		<!-- ng-show will show an element if the value in the quotes is truthful,
             while ng-hide does the opposite. Because the active variable is not set
