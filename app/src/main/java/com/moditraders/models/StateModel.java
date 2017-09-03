@@ -2,6 +2,7 @@ package com.moditraders.models;
 
 public class StateModel {
 
+
 	private String statename;
 	
 	private String statecode;
@@ -22,6 +23,10 @@ public class StateModel {
 		this.statecode = statecode;
 	}
 	
+	@Override
+	public String toString() {
+		return "StateModel [statename=" + statename + ", statecode=" + statecode + "]";
+	}
 	
 	
 }

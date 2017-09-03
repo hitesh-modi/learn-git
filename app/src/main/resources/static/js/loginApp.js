@@ -13,11 +13,15 @@ angular.module('loginApp', ['ngRoute'])
 			}
 		]
 	)
-	.controller('UserController', function($http, $window) {
+	.controller('UserController', function($http, $window, $scope) {
 		
 		var self = this;
 		self.credentials;
 		self.stateList;
+		self.showRegistrationResponse;
+		self.registrationResponse;
+		$scope.arePasswordsSame = true;
+		
 		console.log('Getting state list');
 		$http.get('/getStates')
 			 .then(
@@ -30,7 +34,14 @@ angular.module('loginApp', ['ngRoute'])
 					}
 			);
 		
-		
+		$scope.checkPasswords = function(obj1, obj2) {
+			
+			console.log("Compare",obj1, obj2);
+			if(obj1 == obj2)
+				$scope.arePasswordsSame = true;
+			else 
+				$scope.arePasswordsSame = false;
+		}
 		
 		self.login = function() {
 			console.log('User Login');
@@ -69,4 +80,46 @@ angular.module('loginApp', ['ngRoute'])
 			);
 		};
 		
+		self.register = function() {
+			console.log('Register Called', self.user);
+			
+			var password = self.user.password;
+			var encodedPassword = "Basic "
+				+ btoa(self.user.password)
+			self.user.password = encodedPassword;
+			
+			$http.post('/registerUser', self.user).
+			then(
+					function(successResponse) {
+						console.log('Success', successResponse.data);
+						if(successResponse.data.status == 'user_email_exists') {
+							console.log('User with same email id exists.');
+							self.registrationSuccess = false;
+							self.showRegistrationResponse = true;
+							self.registrationResponse = 'User Already Exists with the Email Id';
+							$window.alert(self.registrationResponse);
+							
+						}
+						if(successResponse.data.status == 'user_mobile_exists') {
+							console.log('User with same mobile number exists.');
+							self.registrationSuccess = false;
+							self.showRegistrationResponse = true;
+							self.registrationResponse = 'User Already Exists with the Contact Number';
+							$window.alert(self.registrationResponse);
+						}
+						if(successResponse.data.status == 'success') {
+							console.log('User registered successfully');
+							self.registrationSuccess = true;
+							self.showRegistrationResponse = true;
+							self.registrationResponse = 'User registered successfully, email notification sent.';
+							$window.alert(self.registrationResponse);
+						}
+					},
+					function(failureResponse) {
+						console.log('Error', failureResponse)
+					}
+			);
+			
+		};
+				
 	});

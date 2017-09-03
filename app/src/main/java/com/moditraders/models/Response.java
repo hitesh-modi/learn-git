@@ -1,8 +1,8 @@
 package com.moditraders.models;
 
-public class AuthResponse {
+public class Response {
 
-	public AuthResponse(String status) {
+	public Response(String status) {
 		this.status = status;
 	}
 	

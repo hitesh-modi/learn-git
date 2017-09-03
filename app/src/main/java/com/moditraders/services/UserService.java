@@ -2,6 +2,7 @@ package com.moditraders.services;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import javax.annotation.Resource;
 
@@ -13,10 +14,17 @@ import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Component;
 
 import com.moditraders.entities.State;
+import com.moditraders.entities.User;
+import com.moditraders.entities.UserRole;
+import com.moditraders.exceptions.UserWithEmailExistsException;
+import com.moditraders.exceptions.UserWithMobileExistsException;
 import com.moditraders.models.AuthInfo;
 import com.moditraders.models.StateModel;
 import com.moditraders.models.UserModel;
 import com.moditraders.repositories.StateRepository;
+import com.moditraders.repositories.UserRepository;
+import com.moditraders.repositories.UserRoleRepository;
+import com.moditraders.utility.Util;
 
 @Component("userService")
 public class UserService implements IUserService {
@@ -25,6 +33,12 @@ public class UserService implements IUserService {
 	
 	@Resource(name="stateRepo")
 	private StateRepository stateRepo;
+	
+	@Resource(name="userRepo")
+	private UserRepository userRepo;
+	
+	@Resource(name="userRoleRepo")
+	private UserRoleRepository userRoleRepo;
 	
 	@Override
 	public boolean login(AuthInfo authInfo) {
@@ -72,4 +86,44 @@ public class UserService implements IUserService {
 		return stateList;
 	}
 
+	@Override
+	public void registerUser(UserModel userToRegister) throws UserWithEmailExistsException, UserWithMobileExistsException{
+		
+		LOGGER.info("Checking if user with email id or phone number already exists.");
+		User existingUserByEmail = userRepo.checkUserExistenceByEmail(userToRegister.getEmail());
+		if(existingUserByEmail != null) {
+			throw new UserWithEmailExistsException("User already exists with email id");
+		}
+		
+		User existingUserByContact = userRepo.checkUserExistenceByContactNumber(userToRegister.getContactNumber());
+		if(existingUserByContact != null) {
+			throw new UserWithMobileExistsException("User already exists with contact");
+		}
+		
+		LOGGER.info("Registering user : "+ userToRegister);
+		User user = new User();
+		user.setAddress(userToRegister.getAddress());
+		user.setBusinessname(userToRegister.getFirmName());
+		user.setFirstname(userToRegister.getFname());
+		user.setMiddlename(userToRegister.getMname());
+		user.setLastname(userToRegister.getLname());
+		user.setGstin(userToRegister.getGstin());
+		user.setContactnumber(userToRegister.getContactNumber());
+		user.setState(userToRegister.getState().getStatename());
+		user.setUsername(userToRegister.getEmail());
+		user.setPassword(Util.getDecodedPassword(userToRegister.getPassword()));
+		userRepo.save(user);
+		
+		List<UserRole> roles = new ArrayList<>();
+		UserRole role = new UserRole();
+		role.setRoleName("normalUser");
+		role.setUsername(userToRegister.getEmail());
+		roles.add(role);
+		user.setUserRoles(roles);
+		
+		userRoleRepo.save(role);
+		
+		LOGGER.info("User registered successfully");
+	}
+	
 }

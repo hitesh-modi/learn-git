@@ -12,13 +12,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.moditraders.exceptions.UserWithEmailExistsException;
+import com.moditraders.exceptions.UserWithMobileExistsException;
 import com.moditraders.models.AuthInfo;
-import com.moditraders.models.AuthResponse;
+import com.moditraders.models.Response;
+import com.moditraders.models.ResponseStatus;
 import com.moditraders.models.StateModel;
 import com.moditraders.models.UserModel;
 import com.moditraders.services.IUserService;
@@ -37,7 +41,7 @@ public class UserController {
 	}
 	
 	@PostMapping("/login")
-	public @ResponseBody AuthResponse login(@Valid @RequestBody String data) {
+	public @ResponseBody Response login(@Valid @RequestBody String data) {
 		LOGGER.info("Login method called with data : " + data);
 		String returnStatus = "failure";
 		try {
@@ -55,7 +59,7 @@ public class UserController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return new AuthResponse(returnStatus);
+		return new Response(returnStatus);
 	}
 	
 	@RequestMapping(value="/getUserName")
@@ -73,6 +77,28 @@ public class UserController {
 	@RequiresPermissions("dashboard")
 	public String hello() {
 		return "greeting";
+	}
+	
+	@RequestMapping(value="/registerUser")
+	public @ResponseBody Response registerUser(@Valid @RequestBody String userjson) {
+		Response response = null;
+		try {
+			LOGGER.info("Request recieved for registering user: "+userjson);
+			UserModel user = new ObjectMapper().readValue(userjson, UserModel.class);
+			userService.registerUser(user);
+			response = new Response(ResponseStatus.RESPONSE_SUCCESS.getStatus());
+			LOGGER.info("User registered successfully : " + user);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UserWithEmailExistsException e) {
+			LOGGER.info(e.getMessage());
+			response = new Response(ResponseStatus.RESPONSE_USER_EMAIL_EXISTS.getStatus());
+		} catch (UserWithMobileExistsException e) {
+			LOGGER.info(e.getMessage());
+			response = new Response(ResponseStatus.RESPONSE_USER_MOBILE_EXISTS.getStatus());
+		}
+		return response;
 	}
 	
 }
