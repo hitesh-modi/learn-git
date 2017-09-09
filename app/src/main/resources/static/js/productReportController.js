@@ -9,7 +9,7 @@ angular.module('modiTradersApp')
 	                                		  $scope.reverse = !$scope.reverse;
 	                                	  };
 	                                	  
-	                                	  $http.get('/getProducts')
+	                                	  $http.get('/services/getProducts')
 	                                	  .then(
                           		  				function(response){
                         		  					self.products = response.data;
