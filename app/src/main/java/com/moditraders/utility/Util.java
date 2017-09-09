@@ -6,6 +6,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import org.springframework.util.Base64Utils;
+
 public class Util {
 
 	public static String getInvoiceNumber(int sequenceNumber) {
@@ -38,6 +40,13 @@ public class Util {
 		}
 		
 		return sb.toString();
+	}
+	
+	public static String getDecodedPassword(String encodedPassword) {
+		String encodedPassWithoutBasic = encodedPassword.replace("Basic ", "");
+		byte[] passwordBytes = Base64Utils.decodeFromString(encodedPassWithoutBasic);
+		String decodedPassword = new String(passwordBytes);
+		return decodedPassword;
 	}
 	
 }

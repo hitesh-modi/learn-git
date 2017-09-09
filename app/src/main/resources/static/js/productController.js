@@ -15,7 +15,7 @@ angular.module('modiTradersApp')
 	                                	  self.hsns = [];
 	                                	  self.submitProductForm = function() {
 	                                		  console.log('User clicked submit with product ', self.product);
-	                                		  $http.post('/createProduct', self.product)
+	                                		  $http.post('/services/createProduct', self.product)
 	                                		  .then(
 	                                		  				function(response){
 	                                		  					self.productId = response.data;
@@ -45,7 +45,7 @@ angular.module('modiTradersApp')
 	                                	  
 	                                	  $scope.getHSNForProduct = function(keyword) {
 	                                			console.log('Get HSN called for input', keyword);
-	                                			 $http.get('/getHSNCodes?keyword='+keyword)
+	                                			 $http.get('/services/getHSNCodes?keyword='+keyword)
 	                               		  		.then(
 	                               		  				function(response){
 	                               		  					self.hsnCodes = response.data;
@@ -65,7 +65,7 @@ angular.module('modiTradersApp')
 		                                			self.showHSNSections = false;
 		                                			self.sacGroups=[];
 		  	                                	    self.sacs=[];
-		                                			 $http.get('/getSacHeadings')
+		                                			 $http.get('/services/getSacHeadings')
 		                               		  		.then(
 		                               		  				function(response){
 		                               		  					self.sacHeadings = response.data;
@@ -82,7 +82,7 @@ angular.module('modiTradersApp')
 		                                			console.log('Get Sac Groups called');
 		                                			self.showSacGroups = false;
 		                                			self.showSACCodes = false;
-		                                			 $http.get('/getGroupsForHeading?headingId='+keyword)
+		                                			 $http.get('/services/getGroupsForHeading?headingId='+keyword)
 		                               		  		.then(
 		                               		  				function(response){
 		                               		  					self.sacGroups = response.data;
@@ -97,7 +97,7 @@ angular.module('modiTradersApp')
 		                                		
 		                                		$scope.getSacCodesForGroup = function(groupId) {
 		                                			console.log('Get Sac called');
-		                                			 $http.get('/getSacsFromGroupId?groupId='+groupId)
+		                                			 $http.get('/services/getSacsFromGroupId?groupId='+groupId)
 		                               		  		.then(
 		                               		  				function(response){
 		                               		  					self.sacs = response.data;
@@ -115,7 +115,7 @@ angular.module('modiTradersApp')
 		                                			self.showSacHeadings = false;
 		                                			self.hsnChapters=[];
 		   	                                	    self.hsns = [];
-		                                			 $http.get('/getHSNSections')
+		                                			 $http.get('/services/getHSNSections')
 		                               		  		.then(
 		                               		  				function(response){
 		                               		  					self.hsnSections = response.data;
@@ -132,7 +132,7 @@ angular.module('modiTradersApp')
 		                                			console.log('Get Sac called');
 		                                			self.showHSNChapters = false;
 		                                			self.showHSN = false;
-		                                			 $http.get('/getHsnChapter?sectionId='+sectionId)
+		                                			 $http.get('/services/getHsnChapter?sectionId='+sectionId)
 		                               		  		.then(
 		                               		  				function(response){
 		                               		  					self.hsnChapters = response.data;
@@ -147,7 +147,7 @@ angular.module('modiTradersApp')
 		                                		
 		                                		$scope.getHSNs = function(chapterId) {
 		                                			console.log('Get HSN called');
-		                                			 $http.get('/getHsn?chapterId='+chapterId)
+		                                			 $http.get('/services/getHsn?chapterId='+chapterId)
 		                               		  		.then(
 		                               		  				function(response){
 		                               		  					self.hsns = response.data;
