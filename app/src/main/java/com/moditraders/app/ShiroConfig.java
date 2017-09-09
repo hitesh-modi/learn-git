@@ -62,7 +62,7 @@ public class ShiroConfig {
 	    shiroFilter.setSuccessUrl("/index");
 	    shiroFilter.setUnauthorizedUrl("/forbidden");
 	    Map<String, String> filterChainDefinitionMapping = new HashMap<String, String>();
-	    filterChainDefinitionMapping.put("/services/**", "authcBasic");
+	   // filterChainDefinitionMapping.put("/services/**", "authcBasic");
 	    shiroFilter.setFilterChainDefinitionMap(filterChainDefinitionMapping);
 	    shiroFilter.setSecurityManager(securityManager());
 	    /*Map<String, Filter> filters = new HashMap<String, Filter>();
