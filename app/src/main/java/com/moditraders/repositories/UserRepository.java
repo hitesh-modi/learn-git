@@ -14,4 +14,7 @@ public interface UserRepository extends CrudRepository<User, String>{
 	
 	@Query("select u from User u where u.contactnumber=:contactnumber")
 	public User checkUserExistenceByContactNumber(@Param("contactnumber") String contactnumber);
+	
+	@Query("select u from User u where u.username=:username")
+	public User getUser(@Param("username") String username);
 }

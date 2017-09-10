@@ -39,6 +39,17 @@ public class UserController {
 		return "index";
 	}
 	
+
+	@RequestMapping("/logout")
+	public String logout() {
+		LOGGER.info("Logout request recieved");
+		if(userService.logout()) {
+				return "redirect:/";
+		}
+		return "";
+	}
+	
+	
 	@PostMapping("/login")
 	public @ResponseBody Response login(@Valid @RequestBody String data) {
 		LOGGER.info("Login method called with data : " + data);

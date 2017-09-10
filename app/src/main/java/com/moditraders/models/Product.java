@@ -13,7 +13,14 @@ public class Product {
 	private String hsnCode;
 	private float taxRate;
 	private boolean isGood;
+	private String accountingCodeDesc;
 	
+	public String getAccountingCodeDesc() {
+		return accountingCodeDesc;
+	}
+	public void setAccountingCodeDesc(String accountingCodeDesc) {
+		this.accountingCodeDesc = accountingCodeDesc;
+	}
 	public float getTaxRate() {
 		return taxRate;
 	}

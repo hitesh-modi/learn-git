@@ -11,36 +11,45 @@
 						ng-class="{'glyphicon-circle-arrow-up':reverse,'glyphicon-circle-arrow-down':!reverse}">
 					</span>
 					</th>
-					<th ng-click="sort('type.type')">Product Type <span
-						class="glyphicon sort-icon" ng-show="sortKey=='type.type'"
+					<th ng-click="sort('name')">Product Name <span
+						class="glyphicon sort-icon" ng-show="sortKey=='name'"
+						ng-class="{'glyphicon-circle-arrow-up':reverse,'glyphicon-circle-arrow-down':!reverse}"></span>
+					</th>
+					<th ng-click="sort('type')">Product Type <span
+						class="glyphicon sort-icon" ng-show="sortKey=='type'"
 						ng-class="{'glyphicon-circle-arrow-up':reverse,'glyphicon-circle-arrow-down':!reverse}"></span>
 					</th>
 					<th ng-click="sort('company')">Product Company <span
 						class="glyphicon sort-icon" ng-show="sortKey=='company'"
 						ng-class="{'glyphicon-circle-arrow-up':reverse,'glyphicon-circle-arrow-down':!reverse}"></span>
 					</th>
-					<th ng-click="sort('depositAmount')">Deposit Amount <span
-						class="glyphicon sort-icon" ng-show="sortKey=='depositAmount'"
-						ng-class="{'glyphicon-circle-arrow-up':reverse,'glyphicon-circle-arrow-down':!reverse}"></span>
-					</th>
-					<th ng-click="sort('agencyStartDate')">Agency Start Date <span
-						class="glyphicon sort-icon" ng-show="sortKey=='agencyStartDate'"
-						ng-class="{'glyphicon-circle-arrow-up':reverse,'glyphicon-circle-arrow-down':!reverse}"></span>
-					</th>
-					<th ng-click="sort('hsnCode')">HSN Code<span
+					<th ng-click="sort('hsnCode')">HSN/SAC Code<span
 						class="glyphicon sort-icon" ng-show="sortKey=='hsnCode'"
+						ng-class="{'glyphicon-circle-arrow-up':reverse,'glyphicon-circle-arrow-down':!reverse}"></span>
+					</th>
+					<th ng-click="sort('accountingCodeDesc')">Desc<span
+						class="glyphicon sort-icon" ng-show="sortKey=='accountingCodeDesc'"
+						ng-class="{'glyphicon-circle-arrow-up':reverse,'glyphicon-circle-arrow-down':!reverse}"></span>
+					</th>
+					<th ng-click="sort('taxRate')">Tax Rate<span
+						class="glyphicon sort-icon" ng-show="sortKey=='taxRate'"
+						ng-class="{'glyphicon-circle-arrow-up':reverse,'glyphicon-circle-arrow-down':!reverse}"></span>
+					</th>
+					<th ng-click="sort('good')">Goods/Service<span
+						class="glyphicon sort-icon" ng-show="sortKey=='good'"
 						ng-class="{'glyphicon-circle-arrow-up':reverse,'glyphicon-circle-arrow-down':!reverse}"></span>
 					</th>
 				</tr>
 				<tr
 					dir-paginate="product in productReportController.products | orderBy:sortKey:reverse | itemsPerPage: 10">
 					<td>{{product.productId}}</td>
-					<td>{{product.type.type}}</td>
+					<td>{{product.type}}</td>
+					<td>{{product.name}}</td>
 					<td>{{product.company}}</td>
-					<td><i class="fa fa-inr"></i>{{product.depositAmount |
-						currency:' '}}</td>
-					<td>{{product.agencyStartDate | date: 'medium'}}</td>
 					<td>{{product.hsnCode}}</td>
+					<td>{{product.accountingCodeDesc}}</td>
+					<td>{{product.taxRate}}</td>
+					<td><span ng-show="product.good==true">Good</span><span ng-show="product.good==false">Service</span></td>
 				</tr>
 			</table>
 			<dir-pagination-controls max-size="10" direction-links="true"

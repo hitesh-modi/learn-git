@@ -10,8 +10,10 @@ import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.session.InvalidSessionException;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import com.moditraders.entities.State;
 import com.moditraders.entities.User;
@@ -43,9 +45,9 @@ public class UserService implements IUserService {
 	@Override
 	public boolean login(AuthInfo authInfo) {
 		boolean loginSuccess = false;
-		LOGGER.info("Login service called for user : ");
 		try {
 			Subject currentUser = SecurityUtils.getSubject();
+			LOGGER.info("Login service called for user : " + currentUser.getPrincipal());
 			
 			if(!currentUser.isAuthenticated()) {
 				LOGGER.info("User " + authInfo.getUser() + " is not authenticated hence logging the user into the system.");
@@ -53,6 +55,9 @@ public class UserService implements IUserService {
 				currentUser.login(token);
 				loginSuccess = true;
 				LOGGER.info("User " + authInfo.getUser() + " logged in successfully.");
+			} 
+			else {
+				loginSuccess = true;
 			}
 		} catch (AuthenticationException e) {
 			LOGGER.error("Error while loging in the user " + authInfo.getUser());
@@ -65,9 +70,16 @@ public class UserService implements IUserService {
 	@Override
 	public UserModel getUserInfo() {
 		String userid = (String)SecurityUtils.getSubject().getPrincipal();
+		
+		User user = userRepo.getUser(userid);
 		UserModel userModel = new UserModel();
-		userModel.setUserid(userid);
-		userModel.setUserName("Test User");
+		userModel.setUserid(user.getUsername());
+		userModel.setUserName(constructUserName(user.getFirstname(), user.getMiddlename(), user.getLastname()));
+		userModel.setAddress(user.getAddress());
+		userModel.setGstin(user.getGstin());
+		StateModel state = new StateModel();
+		state.setStatename(user.getState());
+		userModel.setState(state);
 		return userModel;
 	}
 	
@@ -124,6 +136,33 @@ public class UserService implements IUserService {
 		userRoleRepo.save(role);
 		
 		LOGGER.info("User registered successfully");
+	}
+
+	@Override
+	public boolean logout() {
+		Subject currUser = SecurityUtils.getSubject();
+		boolean returnValue = false;
+		LOGGER.info("Logging out user : " + currUser.getPrincipal());
+		try {
+			currUser.getSession().stop();
+			returnValue = true;
+		} catch (InvalidSessionException e) {
+			e.printStackTrace();
+		}
+		LOGGER.info("Logged out user : " + currUser.getPrincipal());
+		return returnValue;
+	}
+	
+	private String constructUserName(String fname, String mname, String lname) {
+		StringBuilder nameBuilder = new StringBuilder();
+		nameBuilder.append(fname);
+		if(!StringUtils.isEmpty(mname)) {
+			nameBuilder.append(" ");
+			nameBuilder.append(mname);
+		}
+		nameBuilder.append(" ");
+		nameBuilder.append(lname);
+		return nameBuilder.toString();
 	}
 	
 }

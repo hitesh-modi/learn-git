@@ -21,6 +21,7 @@ import com.moditraders.entities.Productdetail;
 import com.moditraders.entities.SacAccountingcodeGroupMap;
 import com.moditraders.entities.SacGroupHeadinMap;
 import com.moditraders.entities.SacHeadingMaster;
+import com.moditraders.entities.SacMaster;
 import com.moditraders.entities.SectionMaster;
 import com.moditraders.models.Consignee;
 import com.moditraders.models.Customer;
@@ -98,15 +99,19 @@ public class MainService implements IMainService{
 		productDetail.setAgencyStartDate(product.getAgencyStartDate());
 		productDetail.setProductCompany(product.getCompany());
 		productDetail.setProductTaxRate(product.getTaxRate());
-		if(product.isGood())
+		if(product.isGood()) {
+			HSN hsn = new HSN();
+			hsn.setHsnCode(product.getHsnCode());
 			productDetail.setProductServiceOrGood("G");
+			productDetail.setProductHSN(hsn);
+		}
 		else {
+			SacMaster sac = new SacMaster();
+			sac.setSacId(product.getHsnCode());
+			productDetail.setProductSac(sac);
 			productDetail.setProductServiceOrGood("S");
 		}
 		productDetail.setProductName(product.getName());
-		HSN hsn = new HSN();
-		hsn.setHsnCode(product.getHsnCode());
-		productDetail.setProductHSN(hsn);
 		Productdetail savedProduct = productRepository.save(productDetail);
 		LOGGER.info("Saved Product with ID " + savedProduct.getProductId());
 		return savedProduct.getProductId();
@@ -118,6 +123,7 @@ public class MainService implements IMainService{
 		Collection<Product> products = new ArrayList<Product>();
 		Iterable<Productdetail> productsFromDB = productRepository.findAll();
 		LOGGER.info("Found " + Iterables.size(productsFromDB) + " from Database.");
+		String goodsOrService = "";
 		for (Productdetail productdetail : productsFromDB) {
 			Product product = new Product();
 			product.setProductId(productdetail.getProductId());
@@ -125,9 +131,20 @@ public class MainService implements IMainService{
 			product.setAgencyStartDate(productdetail.getAgencyStartDate());
 			product.setCompany(productdetail.getProductCompany());
 			product.setDepositAmount(productdetail.getAgencySecurityDeposit());
-			product.setHsnCode(productdetail.getProductHSN().getHsnCode());
+			
+			goodsOrService = productdetail.getProductServiceOrGood();
+			
+			if(goodsOrService.equalsIgnoreCase("G")) {
+				product.setHsnCode(productdetail.getProductHSN().getHsnCode());
+				product.setAccountingCodeDesc(productdetail.getProductHSN().getHsnDesc());
+			}
+			else if(goodsOrService.equalsIgnoreCase("S")) {
+				product.setHsnCode(productdetail.getProductSac().getSacId());
+				product.setAccountingCodeDesc(productdetail.getProductSac().getSacDesc());
+			}
 			product.setName(productdetail.getProductName());
 			product.setTaxRate(productdetail.getProductTaxRate());
+			product.setGood(goodsOrService.equalsIgnoreCase("G")?true:false);
 			products.add(product);
 		}
 		return products;

@@ -5,10 +5,28 @@ angular.module('modiTradersApp')
 	                                	  self.invoice = {};
 	                                	  self.customers = [];
 	                                	  self.products = [];
+	                                	  self.invoice.grandTotal = 0.0;
+	                                	  self.invoice.totalTax = 0.0;
+	                                	  self.invoice.amountReceived = 0.0;
 	                                	  self.invoice.invoiceItemDetails = [];
+	                                	  self.tempGrandTotal = 0.0;
+	                                	  self.tempTotalTax = 0.0;
 	                                	  self.tempInvoiceDetails = [
 	                                		  {serialNumber:1}
 	                                	  ];
+	                                	  self.stateList;
+	                                	  
+	                                	console.log('Getting state list');
+	                              		$http.get('/getStates')
+	                              			 .then(
+	                              					function(successResponse){
+	                              						console.log('Got states from server', successResponse);
+	                              						self.stateList = successResponse.data;
+	                              					},
+	                              					function(failureResponse){
+	                              						console.log('Request for fetching states failed', successResponse);
+	                              					}
+	                              			);
 	                                	  
 	                                	  $window.setSelectedConsignee = function(consignee) {
 	                                		  console.log('Selected Consignee', consignee);
@@ -104,7 +122,84 @@ angular.module('modiTradersApp')
 	                                			self.invoice.invoiceItemDetails.push(itemToAdd);
 	                                			self.tempInvoiceDetails = [];
 	                                			self.tempInvoiceDetails.push(invoiceItem);
+	                                			
+	                                			self.tempGrandTotal = parseFloat(self.tempGrandTotal) + parseFloat(itemToAdd.total);
+	                                			self.tempTotalTax = parseFloat(self.tempTotalTax) + parseFloat(itemToAdd.cgstAmount) + parseFloat(itemToAdd.sgstAmount);
+	                                			
 	                                			console.log('Adding invoiceItemDetail', self.invoice.invoiceItemDetails.length);
+	                                		};
+	                                		
+	                                		$scope.calculateTotal = function(invoiceItem) {
+	                                			console.log('Rate:'+invoiceItem.rate+', Quantity: ' + invoiceItem.quantity);
+	                                			invoiceItem.total = parseFloat(invoiceItem.rate) * parseFloat(invoiceItem.quantity);
+	                                		};
+	                                		
+	                                		$scope.calculateTaxableAmount = function(invoiceItem) {
+	                                			if(invoiceItem.discount != "") {
+	                                				invoiceItem.taxableValue = parseFloat(invoiceItem.total) - parseFloat(invoiceItem.discount);
+	                                			}
+	                                			else {
+	                                				invoiceItem.taxableValue = invoiceItem.total;
+	                                			}
+	                                		};
+	                                		
+	                                		$scope.calculateCgst = function(invoiceItem) {
+	                                			if(invoiceItem.cgstRate != "") {
+	                                				invoiceItem.cgstAmount = parseFloat(invoiceItem.taxableValue) * parseFloat(invoiceItem.cgstRate) / 100;
+	                                			}
+	                                			else {
+	                                				invoiceItem.cgstAmount = "";
+	                                			}
+	                                		};
+	                                		
+	                                		$scope.calculateSgst = function(invoiceItem) {
+	                                			if(invoiceItem.sgstRate != "") {
+	                                				invoiceItem.sgstAmount = parseFloat(invoiceItem.taxableValue) * parseFloat(invoiceItem.sgstRate) / 100;
+	                                			}
+	                                			else {
+	                                				invoiceItem.sgstAmount = "";
+	                                			}
+	                                		};
+	                                		
+	                                		$scope.calculateIgst = function(invoiceItem) {
+	                                			if(invoiceItem.igstRate != "") {
+	                                				invoiceItem.igstAmount = parseFloat(invoiceItem.taxableValue) * parseFloat(invoiceItem.igstRate) / 100;
+	                                			}
+	                                			else {
+	                                				invoiceItem.igstAmount = "";
+	                                			}
+	                                		};
+	                                		
+	                                		$scope.checkValidityOfInvoiceItem = function() {
+	                                			console.log('Checking validity for add item button', $scope.invoiceForm.productCop.$valid);
+	                                			if(
+	                                					$scope.invoiceForm.productCop.$valid &&
+	                                					$scope.invoiceForm.iquantCop.$valid &&
+	                                					$scope.invoiceForm.irateCop.$valid &&
+	                                					$scope.invoiceForm.itotalCop.$valid &&
+	                                					$scope.invoiceForm.idiscCop.$valid &&
+	                                					$scope.invoiceForm.itaxableValCop.$valid &&
+	                                					$scope.invoiceForm.icgstRateCop.$valid &&
+	                                					$scope.invoiceForm.isgstRateCop.$valid &&
+	                                					$scope.invoiceForm.iigstRateCop.$valid
+	                                			) {
+	                                				console.log('Returning true');
+	                                				return false;
+	                                			}
+	                                			else {
+	                                				console.log('Returning true');
+	                                				return true;
+	                                			}
+	                                		};
+	                                		
+	                                		$scope.deleteInvoiceItem = function(invoiceItemToDelete) {
+	                                			var tempItem;
+	                                			for (var i = 0; i < self.invoice.invoiceItemDetails; i++) {
+	                                				tempItem = self.invoice.invoiceItemDetails[i];
+	                                				if(tempItem.serialNumber == invoiceItemToDelete.serialNumber) {
+	                                					self.invoice.invoiceItemDetails.splice(i,1);
+	                                				}
+	                                			}
 	                                		};
 	                                		
 	                                  }

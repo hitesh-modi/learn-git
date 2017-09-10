@@ -39,14 +39,14 @@ angular.module('modiTradersApp',['ngRoute', 'angularUtils.directives.dirPaginati
 	)
 	.controller(
 			'UserController',
-			[	'$http',
-				function($http) {
+			[	'$http', '$rootScope',
+				function($http, $rootScope) {
 					var self = this;
-					self.userDetails;
+					
 					$http.get('/getUserName').then(
 							function(successResponse){
 								console.log('Success Response for get user name', successResponse);
-								self.userDetails = successResponse.data;
+								$rootScope.userDetails = successResponse.data;
 							},
 							function(failedResponse){
 								console.log('Failure Response for get user name', failedResponse);
