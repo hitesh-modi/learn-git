@@ -173,6 +173,7 @@ public class MainService implements IMainService{
 		LOGGER.info("Received " + Iterables.size(cutomersFromDb) + " cutomers from DB");
 		for (CustomerDetail customerDetail : cutomersFromDb) {
 			Customer customer = new Customer();
+			customer.setCustomerId(customerDetail.getCdCustomerId());
 			customer.setName(customerDetail.getCdCustomerName());
 			customer.setAddress(customerDetail.getCdCustomerAddress());
 			customer.setState(customerDetail.getCdCustomerState());

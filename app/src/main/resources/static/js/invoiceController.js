@@ -11,10 +11,25 @@ angular.module('modiTradersApp')
 	                                	  self.invoice.invoiceItemDetails = [];
 	                                	  self.tempGrandTotal = 0.0;
 	                                	  self.tempTotalTax = 0.0;
-	                                	  self.tempInvoiceDetails = [
-	                                		  {serialNumber:1}
+	                                	  $scope.tempInvoiceDetails = [
+	                                		 {serialNumber:1}
 	                                	  ];
+	                                	  
+	                                	  $scope.invoiceItemNumbers = 0;
+	                                	  
+	                                	  $scope.invoiceItemDetails = [];
+	                                	  
 	                                	  self.stateList;
+	                                	  self.invoice.addtionalTaxes = [];
+	                                	  self.additionalTaxType = [
+	                                		  {taxType: 'Service Tax'},
+	                                		  {taxType: 'VAT'},
+	                                		  {taxType: 'Excise Duty'}
+	                                	  ];
+	                                	  
+	                                	  self.tempAdditionalTax = [
+	                                		  {taxType:'Service Tax'}
+	                                	  ];
 	                                	  
 	                                	console.log('Getting state list');
 	                              		$http.get('/getStates')
@@ -115,18 +130,27 @@ angular.module('modiTradersApp')
 	                                		
 	                                		self.addInvoiceItem = function(itemToAdd) {
 	                                			console.log('Adding invoice item.', itemToAdd);
-	                                			 
-	                                			var	serialNumber = self.invoice.invoiceItemDetails.length + 2;
-	                                			var invoiceItem = {};
-	                                			invoiceItem.serialNumber = serialNumber;
-	                                			self.invoice.invoiceItemDetails.push(itemToAdd);
-	                                			self.tempInvoiceDetails = [];
-	                                			self.tempInvoiceDetails.push(invoiceItem);
-	                                			
+	                                			$scope.invoiceItemDetails.push(itemToAdd);
+	                                			$scope.tempInvoiceDetails = [];
 	                                			self.tempGrandTotal = parseFloat(self.tempGrandTotal) + parseFloat(itemToAdd.total);
 	                                			self.tempTotalTax = parseFloat(self.tempTotalTax) + parseFloat(itemToAdd.cgstAmount) + parseFloat(itemToAdd.sgstAmount);
-	                                			
-	                                			console.log('Adding invoiceItemDetail', self.invoice.invoiceItemDetails.length);
+	                                			console.log('Adding invoiceItemDetail', $scope.invoiceItemDetails.length);
+	                                		};
+	                                		
+	                                		$scope.$watchCollection(
+	                                				"invoiceItemDetails",
+	                                				function(newValue, oldValue) {
+	                                					console.log('New Length',newValue.length);
+	                                					$scope.invoiceItemNumbers = newValue.length+1;
+	                                				}
+	                                		);
+	                                		
+	                                		self.createInvoiceItem = function() {
+	                                			console.log('Creating a temp invoice item.');
+	                                			var invoiceItem = {};
+	                                			invoiceItem.serialNumber = $scope.invoiceItemNumbers;
+	                                			$scope.tempInvoiceDetails = [];
+	                                			$scope.tempInvoiceDetails.push(invoiceItem);
 	                                		};
 	                                		
 	                                		$scope.calculateTotal = function(invoiceItem) {
@@ -171,7 +195,6 @@ angular.module('modiTradersApp')
 	                                		};
 	                                		
 	                                		$scope.checkValidityOfInvoiceItem = function() {
-	                                			console.log('Checking validity for add item button', $scope.invoiceForm.productCop.$valid);
 	                                			if(
 	                                					$scope.invoiceForm.productCop.$valid &&
 	                                					$scope.invoiceForm.iquantCop.$valid &&
@@ -183,24 +206,31 @@ angular.module('modiTradersApp')
 	                                					$scope.invoiceForm.isgstRateCop.$valid &&
 	                                					$scope.invoiceForm.iigstRateCop.$valid
 	                                			) {
-	                                				console.log('Returning true');
 	                                				return false;
 	                                			}
 	                                			else {
-	                                				console.log('Returning true');
 	                                				return true;
 	                                			}
 	                                		};
 	                                		
 	                                		$scope.deleteInvoiceItem = function(invoiceItemToDelete) {
 	                                			var tempItem;
-	                                			for (var i = 0; i < self.invoice.invoiceItemDetails; i++) {
-	                                				tempItem = self.invoice.invoiceItemDetails[i];
+	                                			console.log('Deleting item ', invoiceItemToDelete)
+	                                			for (var i = 0; i < $scope.invoiceItemDetails.length; i++) {
+	                                				tempItem = $scope.invoiceItemDetails[i];
 	                                				if(tempItem.serialNumber == invoiceItemToDelete.serialNumber) {
-	                                					self.invoice.invoiceItemDetails.splice(i,1);
+	                                					console.log('Removing item', tempItem);
+	                                					$scope.invoiceItemDetails.splice(i,1);
 	                                				}
 	                                			}
 	                                		};
 	                                		
+	                                		$scope.addOtherTax = function(additionalTax) {
+	                                			self.invoice.addtionalTaxes.push(additionalTax);
+	                                			self.tempAdditionalTax = [
+	                                				{taxType:'Service Tax'}
+	                                			];
+	                                			console.log('Added tax', self.invoice.addtionalTaxes);
+	                                		};
 	                                  }
 	                                  ]);

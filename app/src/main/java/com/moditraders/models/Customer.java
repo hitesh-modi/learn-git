@@ -2,6 +2,8 @@ package com.moditraders.models;
 
 public class Customer {
 	
+	private int customerId;
+
 	private String name;
 	
 	private String address;
@@ -82,4 +84,12 @@ public class Customer {
 		this.gstin = gstin;
 	}
 	
+
+	public int getCustomerId() {
+		return customerId;
+	}
+
+	public void setCustomerId(int customerId) {
+		this.customerId = customerId;
+	}
 }

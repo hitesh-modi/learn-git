@@ -107,7 +107,7 @@ public class MainController {
 	@RequiresPermissions("read-customer")
 	@GetMapping(value="/getCustomers")
 	public Collection<Customer> getCustomers() {
-		LOGGER.info("Getting product types from service");
+		LOGGER.info("Getting Customers from service");
 		Collection<Customer> customers = null;
 			try {
 				customers = mainService.getCustomers();
