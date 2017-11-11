@@ -207,3 +207,9 @@ th {
 .invoiceTable{
 	background-color: #e3e8ea;
 }
+
+.bordered-div{
+	border-radius: 20px; 
+	border: 3px solid #57c1c2;
+	padding: 10px;
+}

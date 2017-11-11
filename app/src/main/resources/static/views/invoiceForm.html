@@ -48,8 +48,7 @@
 				</div>
 
 				<div class="row">
-					<div class="col-sm-6"
-						style="border-radius: 20px; border: 3px solid #57c1c2;">
+					<div class="col-sm-6 bordered-div">
 						<div class="row">
 
 							<div class="col-sm-12">
@@ -133,8 +132,7 @@
 
 						</div>
 					</div>
-					<div class="col-sm-6"
-						style="border-radius: 20px; border: 3px solid #57c1c2;">
+					<div class="col-sm-6 bordered-div">
 						<div class="row">
 
 							<div class="col-sm-12">
@@ -232,102 +230,142 @@
 				<br />
 				<!-- Invoice Items -->
 
-				<div class="row"
-					ng-repeat="invoiceItem in invoiceItemDetails track by invoiceItem.serialNumber">
-					<div class="col-sm-12">
-						<div class="form-group">
-							<div class="col-sm-2">
-								<div class="row">
+				<div ng-show="invoiceItemDetails.length > 0">
+
+					<div
+						ng-repeat="invoiceItem in invoiceItemDetails track by invoiceItem.serialNumber">
+						<div class="row">
+							<div class="col-sm-12">
+								<div class="form-group">
 									<div class="col-sm-2">
-										<label>{{invoiceItem.serialNumber}}</label>
+										<div class="row">
+											<div class="col-sm-2">
+												<label>{{invoiceItem.serialNumber}}</label>
+											</div>
+											<div class="col-sm-10">
+												<select ng-model="invoiceItem.product" name="productCop"
+													class="form-control"
+													ng-options="product.name for product in controller.products track by product.name"
+													ng-required="true" placeholder="Select Product">
+												</select>
+											</div>
+										</div>
 									</div>
-									<div class="col-sm-10">
-										<select ng-model="invoiceItem.product" name="productCop"
-											class="form-control"
-											ng-options="product.name for product in controller.products track by product.name"
-											ng-required="true" placeholder="Select Product">
-										</select>
+
+									<div class="col-sm-2">
+										<input class="form-control" name="iquantOrg" id="iquantOrg"
+											type="text" placeholder="Quantity"
+											ng-model="invoiceItem.quantity" ng-pattern="/^[0-9]+$/">
+									</div>
+
+									<div class="col-sm-1">
+										<input class="form-control" name="iunitOrg" id="iunitOrg"
+											type="text" placeholder="Unit" ng-model="invoiceItem.unit">
+									</div>
+
+									<div class="col-sm-2">
+										<input class="form-control" name="irateOrg" id="irateOrg"
+											type="text" placeholder="Rate" ng-model="invoiceItem.rate">
+									</div>
+
+									<div class="col-sm-2">
+										<input class="form-control" name="itotalOrg" id="itotalOrg"
+											type="text" placeholder="Total" ng-model="invoiceItem.total">
+									</div>
+
+									<div class="col-sm-1">
+										<input class="form-control" name="idiscOrg" id="idiscOrg"
+											type="text" placeholder="Discount"
+											ng-model="invoiceItem.discount">
+									</div>
+
+									<div class="col-sm-2">
+										<input class="form-control" name="itaxableValOrg"
+											id="itaxableValOrg" type="text" placeholder="Taxable Amount"
+											ng-model="invoiceItem.taxableValue">
 									</div>
 								</div>
 							</div>
+						</div>
 
-							<div class="col-sm-1">
-								<input class="form-control" name="iquantOrg" id="iquantOrg"
-									type="text" placeholder="Quantity"
-									ng-model="invoiceItem.quantity" ng-pattern="/^[0-9]+$/">
-							</div>
-
-							<div class="col-sm-1">
-								<input class="form-control" name="iunitOrg" id="iunitOrg"
-									type="text" placeholder="Unit" ng-model="invoiceItem.unit">
-							</div>
-
-							<div class="col-sm-1">
-								<input class="form-control" name="irateOrg" id="irateOrg"
-									type="text" placeholder="Rate" ng-model="invoiceItem.rate">
-							</div>
-
-							<div class="col-sm-1">
-								<input class="form-control" name="itotalOrg" id="itotalOrg"
-									type="text" placeholder="Total" ng-model="invoiceItem.total">
-							</div>
-
-							<div class="col-sm-1">
-								<input class="form-control" name="idiscOrg" id="idiscOrg"
-									type="text" placeholder="Discount"
-									ng-model="invoiceItem.discount">
-							</div>
-
-							<div class="col-sm-1">
-								<input class="form-control" name="itaxableValOrg"
-									id="itaxableValOrg" type="text" placeholder="Taxable Amount"
-									ng-model="invoiceItem.taxableValue">
-							</div>
-
-							<div class="col-sm-2">
+						<div class="row">
+							<div class="col-sm-6 form-group">
 								<div class="row">
-									<div class="col-sm-6">
+									<div class="col-sm-3">CGST Rate</div>
+									<div class="col-sm-3">
 										<input class="form-control" name="icgstRateOrg"
 											id="icgstRateOrg" placeholder="CGST %" type="text"
 											ng-model="invoiceItem.cgstRate">
 									</div>
-									<div class="col-sm-6">
+									<div class="col-sm-3">CGST Amount</div>
+									<div class="col-sm-3">
 										<input class="form-control" name="icgstAmountOrg"
 											id="icgstAmountOrg" placeholder="CGST Amount" type="text"
 											ng-model="invoiceItem.cgstAmount">
 									</div>
-									<div class="col-sm-6">
+								</div>
+								<div class="row">
+									<div class="col-sm-3">SGST Rate</div>
+									<div class="col-sm-3">
 										<input class="form-control" name="isgstRateOrg"
 											id="isgstRateOrg" placeholder="SGST %" type="text"
 											ng-model="invoiceItem.sgstRate">
 									</div>
-									<div class="col-sm-6">
+									<div class="col-sm-3">SGST Amount</div>
+									<div class="col-sm-3">
 										<input class="form-control" name="isgstAmountOrg"
 											id="isgstAmountOrg" placeholder="SGST Amount" type="text"
 											ng-model="invoiceItem.sgstAmount">
 									</div>
-									<div class="col-sm-6">
+								</div>
+								<div class="row">
+									<div class="col-sm-3">ISGST Rate</div>
+									<div class="col-sm-3">
 										<input class="form-control" name="iigstRateOrg"
 											id="iigstRateOrg" placeholder="IGST %" type="text"
 											ng-model="invoiceItem.igstRate">
 									</div>
-									<div class="col-sm-6">
+									<div class="col-sm-3">ISGST Amount</div>
+									<div class="col-sm-3">
 										<input class="form-control" name="iigstAmountOrg"
 											id="iigstAmuontOrg" placeholder="IGST Amount" type="text"
 											ng-model="invoiceItem.igstAmount">
 									</div>
 								</div>
 							</div>
-							<div class="col-sm-1">
-								<a ng-click="deleteInvoiceItem(invoiceItem)"><button
-										class="btn btn-danger navbar-btn">Delete</button></a>
+
+							<div class="col-sm-6 form-group">
+								<div ng-repeat="additionalTax in invoiceItem.additionalTaxes track by $index">
+									<div class="row">
+										<div class="col-sm-2">{{additionalTax.type.taxType}}%</div>
+										<div class="col-sm-2">
+											<input class="form-control" name="iAddTaxRate"
+												id="icgstRateOrg" type="text"
+												ng-model="additionalTax.rate">
+										</div>
+										<div class="col-sm-3">{{additionalTax.type.taxType}} Amount</div>
+										<div class="col-sm-3">
+											<input class="form-control" name="icgstAmountOrg"
+												id="icgstAmountOrg" placeholder="CGST Amount" type="text"
+												ng-model="additionalTax.amount">
+										</div>
+									</div>
+								</div>
 							</div>
+
+						</div>
+						<div class="col-sm-12">
+							<a ng-click="deleteInvoiceItem(invoiceItem)"><button
+									class="btn btn-danger navbar-btn">Delete Invoice Item</button></a>
 						</div>
 					</div>
+
 				</div>
+
 
 				<div class="row"
 					ng-repeat="invoiceItemTemp in tempInvoiceDetails track by invoiceItemTemp.serialNumber">
+
 					<div class="col-sm-12">
 						<div class="form-group">
 
@@ -348,7 +386,7 @@
 								</div>
 							</div>
 
-							<div class="col-sm-1"
+							<div class="col-sm-2"
 								ng-class="{'has-error': invoiceForm.iquantCop.$error.required || invoiceForm.iquantCop.$error.pattern, 'has-success': invoiceForm.iquantCop.$valid }">
 								<input class="form-control" name="iquantCop" id="iquantCop"
 									type="text" placeholder="Quantity" ng-required="true"
@@ -360,7 +398,7 @@
 									type="text" placeholder="Unit" ng-model="invoiceItemTemp.unit">
 							</div>
 
-							<div class="col-sm-1"
+							<div class="col-sm-2"
 								ng-class="{'has-error': invoiceForm.irateCop.$error.required || invoiceForm.irateCop.$error.pattern, 'has-success': invoiceForm.irateCop.$valid }">
 								<input class="form-control" name="irateCop" id="irateCop"
 									type="text" placeholder="Rate" ng-required="true"
@@ -368,7 +406,7 @@
 									ng-blur="calculateTotal(invoiceItemTemp)">
 							</div>
 
-							<div class="col-sm-1"
+							<div class="col-sm-2"
 								ng-class="{'has-error': invoiceForm.itotalCop.$error.required || invoiceForm.itotalCop.$error.pattern, 'has-success': invoiceForm.itotalCop.$valid }">
 								<input class="form-control" name="itotalCop" id="itotalCop"
 									type="text" placeholder="Total"
@@ -384,7 +422,7 @@
 									ng-blur="calculateTaxableAmount(invoiceItemTemp)">
 							</div>
 
-							<div class="col-sm-1"
+							<div class="col-sm-2"
 								ng-class="{'has-error': invoiceForm.itaxableValCop.$error.pattern || invoiceForm.itaxableValCop.$error.required, 'has-success': invoiceForm.itaxableValCop.$valid }">
 								<input class="form-control" name="itaxableValCop"
 									id="itaxableValCop" type="text" ng-required="true"
@@ -392,59 +430,70 @@
 									ng-model="invoiceItemTemp.taxableValue">
 							</div>
 
-							<div class="col-sm-2">
-								<div class="row">
-									<div class="col-sm-6"
-										ng-class="{'has-error': invoiceForm.icgstRateCop.$error.pattern, 'has-success': invoiceForm.icgstRateCop.$valid }">
-										<input class="form-control" name="icgstRateCop"
-											id="icgstRateCop" placeholder="CGST %" type="text"
-											ng-blur="calculateCgst(invoiceItemTemp)"
-											ng-pattern="/^[0-9.]+$/" ng-model="invoiceItemTemp.cgstRate">
-									</div>
-									<div class="col-sm-6">
-										<input class="form-control" name="icgstAmountCop"
-											id="icgstAmountCop" placeholder="CGST Amount" type="text"
-											ng-model="invoiceItemTemp.cgstAmount">
-									</div>
-									<div class="col-sm-6"
-										ng-class="{'has-error': invoiceForm.isgstRateCop.$error.pattern, 'has-success': invoiceForm.isgstRateCop.$valid }">
-										<input class="form-control" name="isgstRateCop"
-											id="isgstRateCop" placeholder="SGST %"
-											ng-pattern="/^[0-9.]+$/"
-											ng-blur="calculateSgst(invoiceItemTemp)" type="text"
-											ng-model="invoiceItemTemp.sgstRate">
-									</div>
-									<div class="col-sm-6">
-										<input class="form-control" name="isgstAmountCop"
-											id="isgstAmountCop" placeholder="SGST Amount" type="text"
-											ng-model="invoiceItemTemp.sgstAmount">
-									</div>
-									<div class="col-sm-6"
-										ng-class="{'has-error': invoiceForm.iigstRateCop.$error.pattern, 'has-success': invoiceForm.iigstRateCop.$valid }">
-										<input class="form-control" name="iigstRateCop"
-											id="iigstRateCop" placeholder="IGST %"
-											ng-pattern="/^[0-9.]+$/"
-											ng-blur="calculateIgst(invoiceItemTemp)" type="text"
-											ng-model="invoiceItemTemp.igstRate">
-									</div>
-									<div class="col-sm-6">
-										<input class="form-control" name="iigstAmountCop"
-											id="iigstAmuontCop" placeholder="IGST Amount" type="text"
-											ng-model="invoiceItemTemp.igstAmount">
-									</div>
+						</div>
+					</div>
+
+					<div class="col-sm-12">
+						<div class="col-sm-4">
+							<div class="row form-group">
+								<div class="col-sm-4"
+									ng-class="{'has-error': invoiceForm.icgstRateCop.$error.pattern, 'has-success': invoiceForm.icgstRateCop.$valid }">
+									<input class="form-control" name="icgstRateCop"
+										id="icgstRateCop" placeholder="CGST %" type="text"
+										ng-blur="calculateCgst(invoiceItemTemp)"
+										ng-pattern="/^[0-9.]+$/" ng-model="invoiceItemTemp.cgstRate">
+								</div>
+								<div class="col-sm-8">
+									<input class="form-control" name="icgstAmountCop"
+										id="icgstAmountCop" placeholder="CGST Amount" type="text"
+										ng-model="invoiceItemTemp.cgstAmount">
 								</div>
 							</div>
+							<div class="row form-group">
+								<div class="col-sm-4"
+									ng-class="{'has-error': invoiceForm.isgstRateCop.$error.pattern, 'has-success': invoiceForm.isgstRateCop.$valid }">
+									<input class="form-control" name="isgstRateCop"
+										id="isgstRateCop" placeholder="SGST %"
+										ng-pattern="/^[0-9.]+$/"
+										ng-blur="calculateSgst(invoiceItemTemp)" type="text"
+										ng-model="invoiceItemTemp.sgstRate">
+								</div>
+								<div class="col-sm-8">
+									<input class="form-control" name="isgstAmountCop"
+										id="isgstAmountCop" placeholder="SGST Amount" type="text"
+										ng-model="invoiceItemTemp.sgstAmount">
+								</div>
+							</div>
+							<div class="row form-group">
+								<div class="col-sm-4"
+									ng-class="{'has-error': invoiceForm.iigstRateCop.$error.pattern, 'has-success': invoiceForm.iigstRateCop.$valid }">
+									<input class="form-control" name="iigstRateCop"
+										id="iigstRateCop" placeholder="IGST %"
+										ng-pattern="/^[0-9.]+$/"
+										ng-blur="calculateIgst(invoiceItemTemp)" type="text"
+										ng-model="invoiceItemTemp.igstRate">
+								</div>
+								<div class="col-sm-8">
+									<input class="form-control" name="iigstAmountCop"
+										id="iigstAmuontCop" placeholder="IGST Amount" type="text"
+										ng-model="invoiceItemTemp.igstAmount">
+								</div>
+							</div>
+						</div>
 
-							<div class="col-sm-2">
-								<div class="row"
-									ng-repeat="additionalTax in controller.invoice.addtionalTaxes track by $index">
+
+
+						<div class="col-sm-6">
+							<div
+								ng-repeat="additionalTax in controller.invoice.addtionalTaxes track by $index">
+								<div class="row form-group">
 									<div class="col-sm-4">
 										<select name="additionalTaxTypeOrg" class="form-control"
 											ng-options="extraTax.taxType for extraTax in controller.additionalTaxType"
 											ng-required="false" placeholder="Tax Type"
 											ng-model="additionalTax.type"></select>
 									</div>
-									<div class="col-sm-4">
+									<div class="col-sm-3">
 										<input class="form-control" name="iAdditionalTaxRateOrg"
 											id="iAdditionalTaxRateOrg" type="text" placeholder="Rate %"
 											ng-model="additionalTax.rate" ng-pattern="/^[0-9.]+$/"
@@ -456,17 +505,24 @@
 											ng-model="additionalTax.amount" ng-pattern="/^[0-9.]+$/"
 											ng-blur="">
 									</div>
+									<div class="col-sm-1">
+										<button type="button" class="btn btn-default btn-sm">
+											<span class="glyphicon glyphicon-remove"></span> Remove
+										</button>
+									</div>
 								</div>
-
-								<div class="row"
-									ng-repeat="tempExtraTax in controller.tempAdditionalTax track by $index">
+							</div>
+							<div
+								ng-repeat="tempExtraTax in controller.tempAdditionalTax track by $index">
+								<div class="row form-group">
 									<div class="col-sm-4">
 										<select name="additionalTaxTypeCop" class="form-control"
 											ng-options="extraTax.taxType for extraTax in controller.additionalTaxType"
 											ng-required="false" placeholder="Tax Type"
-											ng-model="tempExtraTax.type"></select>
+											ng-model="tempExtraTax.type">
+										</select>
 									</div>
-									<div class="col-sm-4">
+									<div class="col-sm-3">
 										<input class="form-control" name="iAdditionalTaxRateCop"
 											id="iAdditionalTaxRateCop" type="text" placeholder="Rate %"
 											ng-model="tempExtraTax.rate" ng-pattern="/^[0-9.]+$/"
@@ -478,6 +534,8 @@
 											ng-model="tempExtraTax.amount" ng-pattern="/^[0-9.]+$/"
 											ng-blur="">
 									</div>
+								</div>
+								<div class="row form-group">
 									<div class="col-sm-4">
 										<input type="button" value="Add Tax"
 											class="btn btn-sm btn-success"
@@ -487,18 +545,21 @@
 
 							</div>
 
+
 						</div>
 					</div>
+
 					<div class="col-sm-1">
 						<input type="button" ng-disabled="checkValidityOfInvoiceItem()"
 							value="Add Item to Invoice" class="btn btn-sm btn-success"
 							ng-click="controller.addInvoiceItem(invoiceItemTemp)">
 					</div>
 				</div>
+				<br>
 				<div class="col-sm-1">
-						<input type="button" ng-disabled="checkValidityOfInvoiceItem()"
-							value="Create Item" class="btn btn-sm btn-success"
-							ng-click="controller.createInvoiceItem()">
+					<input type="button" ng-disabled="checkValidityOfInvoiceItem()"
+						value="Create Item" class="btn btn-sm btn-success"
+						ng-click="controller.createInvoiceItem()">
 				</div>
 				<!-- Invoice Items -->
 
@@ -571,11 +632,9 @@
 						</tr>
 						<tr
 							ng-repeat="customer in controller.customers track by customer.customerId | filter: curCustomer">
-							<td>
-								<input type="button"
-									value="Select" class="btn btn-sm btn-success"
-									ng-click="setSelectedCustomer(customer)"
-									data-dismiss="modal">
+							<td><input type="button" value="Select"
+								class="btn btn-sm btn-success"
+								ng-click="setSelectedCustomer(customer)" data-dismiss="modal">
 							</td>
 							<td>{{customer.name}}</td>
 							<td>{{customer.email}}</td>
@@ -623,11 +682,9 @@
 						</tr>
 						<tr
 							ng-repeat="consignee in controller.consignees | filter: curConsignee">
-							<td>
-								<input type="button"
-									value="Select" class="btn btn-sm btn-success"
-									ng-click="setSelectedConsignee(consignee)"
-									data-dismiss="modal">
+							<td><input type="button" value="Select"
+								class="btn btn-sm btn-success"
+								ng-click="setSelectedConsignee(consignee)" data-dismiss="modal">
 							</td>
 							<td>{{consignee.name}}</td>
 							<td>{{consignee.email}}</td>

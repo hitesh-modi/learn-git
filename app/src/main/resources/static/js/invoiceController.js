@@ -130,6 +130,8 @@ angular.module('modiTradersApp')
 	                                		
 	                                		self.addInvoiceItem = function(itemToAdd) {
 	                                			console.log('Adding invoice item.', itemToAdd);
+	                                			itemToAdd.additionalTaxes = self.invoice.addtionalTaxes;
+	                                			self.invoice.addtionalTaxes = [];
 	                                			$scope.invoiceItemDetails.push(itemToAdd);
 	                                			$scope.tempInvoiceDetails = [];
 	                                			self.tempGrandTotal = parseFloat(self.tempGrandTotal) + parseFloat(itemToAdd.total);
@@ -142,6 +144,10 @@ angular.module('modiTradersApp')
 	                                				function(newValue, oldValue) {
 	                                					console.log('New Length',newValue.length);
 	                                					$scope.invoiceItemNumbers = newValue.length+1;
+	                                					var invoiceItem = {};
+	    	                                			invoiceItem.serialNumber = $scope.invoiceItemNumbers;
+	    	                                			$scope.tempInvoiceDetails = [];
+	    	                                			$scope.tempInvoiceDetails.push(invoiceItem);
 	                                				}
 	                                		);
 	                                		
@@ -222,6 +228,10 @@ angular.module('modiTradersApp')
 	                                					console.log('Removing item', tempItem);
 	                                					$scope.invoiceItemDetails.splice(i,1);
 	                                				}
+	                                			}
+	                                			// Recalculate serial number
+	                                			for (var i = 0; i < $scope.invoiceItemDetails.length; i++) {
+	                                				$scope.invoiceItemDetails[i].serialNumber = i+1;
 	                                			}
 	                                		};
 	                                		
