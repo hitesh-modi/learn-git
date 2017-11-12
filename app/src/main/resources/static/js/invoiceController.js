@@ -5,12 +5,11 @@ angular.module('modiTradersApp')
 	                                	  self.invoice = {};
 	                                	  self.customers = [];
 	                                	  self.products = [];
-	                                	  self.invoice.grandTotal = 0.0;
-	                                	  self.invoice.totalTax = 0.0;
 	                                	  self.invoice.amountReceived = 0.0;
 	                                	  self.invoice.invoiceItemDetails = [];
-	                                	  self.tempGrandTotal = 0.0;
-	                                	  self.tempTotalTax = 0.0;
+	                                	  self.invoice.grandTotal = 0.0;
+	                                	  self.invoice.totalTax = 0.0;
+	                                	  
 	                                	  $scope.tempInvoiceDetails = [
 	                                		 {serialNumber:1}
 	                                	  ];
@@ -148,8 +147,72 @@ angular.module('modiTradersApp')
 	    	                                			invoiceItem.serialNumber = $scope.invoiceItemNumbers;
 	    	                                			$scope.tempInvoiceDetails = [];
 	    	                                			$scope.tempInvoiceDetails.push(invoiceItem);
+	    	                                			
+	    	                                			self.invoice.grandTotal = 0.0;
+	    	                                			self.invoice.totalTax = 0.0;
+	    	                                			
+	    	                                			self.calculateGrandTotal(newValue);
+	    	                                			self.calculateToTalTax(newValue);
 	                                				}
 	                                		);
+	                                		
+	                                		self.calculateGrandTotal = function(invoiceItems) {
+	                                			var tempInvoiceItem;
+	                                			for(var i = 0 ; i < invoiceItems.length ; i++) {
+	                                				tempInvoiceItem = invoiceItems[i];
+	                                				self.invoice.grandTotal = self.invoice.grandTotal + parseFloat(tempInvoiceItem.taxableValue);
+	                                			}
+	                                		};
+	                                		
+	                                		self.calculateToTalTax = function(invoiceItems) {
+	                                			var tempInvoiceItem;
+	                                			var tempCGSTAmount;
+	                                			var tempSGSTAmount;
+	                                			var tempIGSTAmount;
+	                                			var tempTotalTax;
+	                                			
+	                                			for(var i = 0 ; i < invoiceItems.length ; i++) {
+	                                				
+	                                				tempInvoiceItem = invoiceItems[i];
+	                                				
+	                                				if(isNaN(parseFloat(tempInvoiceItem.cgstAmount))) {
+	                                					tempCGSTAmount = 0.0;
+	                                				} else {
+	                                					tempCGSTAmount = parseFloat(tempInvoiceItem.cgstAmount);
+	                                				}
+	                                				
+	                                				if(isNaN(parseFloat(tempInvoiceItem.sgstAmount))) {
+	                                					tempSGSTAmount = 0.0;
+	                                				} else {
+	                                					tempSGSTAmount = parseFloat(tempInvoiceItem.sgstAmount);
+	                                				}
+	                                				
+	                                				if(isNaN(parseFloat(tempInvoiceItem.igstAmount))) {
+	                                					tempIGSTAmount = 0.0;
+	                                				} else {
+	                                					tempIGSTAmount = parseFloat(tempInvoiceItem.igstAmount);
+	                                				}
+	                                				
+	                                				if(isNaN(parseFloat(self.invoice.totalTax))) {
+	                                					tempTotalTax = 0.0;
+	                                				} else {
+	                                					tempTotalTax = parseFloat(self.invoice.totalTax);
+	                                				}
+	                                				
+	                                				
+	                                				self.invoice.totalTax = tempTotalTax + tempCGSTAmount
+	                                				+ tempSGSTAmount
+	                                				+ tempIGSTAmount;
+	                                				
+	                                				var tempAdditionalTax;
+	                                				for(var j = 0 ; j < tempInvoiceItem.additionalTaxes.length ; j++) {
+	                                					tempAdditionalTax = tempInvoiceItem.additionalTaxes[j];
+	                                					self.invoice.totalTax = self.invoice.totalTax + parseFloat(tempAdditionalTax.amount);
+	                                				}
+	                                				
+	                                			}
+	                                		};
+	                                		
 	                                		
 	                                		self.createInvoiceItem = function() {
 	                                			console.log('Creating a temp invoice item.');
@@ -165,11 +228,11 @@ angular.module('modiTradersApp')
 	                                		};
 	                                		
 	                                		$scope.calculateTaxableAmount = function(invoiceItem) {
-	                                			if(invoiceItem.discount != "") {
+	                                			if(invoiceItem.discount != "" && typeof invoiceItem.discount != 'undefined') {
 	                                				invoiceItem.taxableValue = parseFloat(invoiceItem.total) - parseFloat(invoiceItem.discount);
 	                                			}
 	                                			else {
-	                                				invoiceItem.taxableValue = invoiceItem.total;
+	                                				invoiceItem.taxableValue = parseFloat(invoiceItem.total);
 	                                			}
 	                                		};
 	                                		
@@ -199,6 +262,17 @@ angular.module('modiTradersApp')
 	                                				invoiceItem.igstAmount = "";
 	                                			}
 	                                		};
+	                                		
+	                                		$scope.calculateExtraTaxAmount = function(totalAmount, tempExtraTax) {
+	                                			console.log('Calculating percentage from total amount, ', totalAmount, tempExtraTax);
+	                                			if(tempExtraTax.rate != "") {
+	                                				tempExtraTax.amount = parseFloat(totalAmount) * parseFloat(tempExtraTax.rate) / 100;
+	                                			}
+	                                			else {
+	                                				tempExtraTax.amount = "";
+	                                			}
+	                                		};
+	                                		
 	                                		
 	                                		$scope.checkValidityOfInvoiceItem = function() {
 	                                			if(
@@ -241,6 +315,29 @@ angular.module('modiTradersApp')
 	                                				{taxType:'Service Tax'}
 	                                			];
 	                                			console.log('Added tax', self.invoice.addtionalTaxes);
+	                                		};
+	                                		
+	                                		
+	                                		$scope.deleteAdditionalTax = function(taxToDelete) {
+	                                			var tempItem;
+	                                			console.log('Deleting item ', taxToDelete)
+	                                			for (var i = 0; i < self.invoice.addtionalTaxes.length; i++) {
+	                                				tempItem = self.invoice.addtionalTaxes[i];
+	                                				if(tempItem.type.taxType == taxToDelete.type.taxType
+	                                						&& tempItem.amount == taxToDelete.amount) {
+	                                					console.log('Removing item', tempItem);
+	                                					self.invoice.addtionalTaxes.splice(i,1);
+	                                				}
+	                                			}
+	                                		};
+	                                		
+	                                		$scope.checkTaxableAmount = function(taxableAmount) {
+	                                			if(taxableAmount != "" && typeof taxableAmount != 'undefined') {
+	                                				return false;
+	                                			}
+	                                			else {
+	                                				return true;
+	                                			}
 	                                		};
 	                                  }
 	                                  ]);

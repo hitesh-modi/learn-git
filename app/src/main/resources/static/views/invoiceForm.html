@@ -335,15 +335,16 @@
 							</div>
 
 							<div class="col-sm-6 form-group">
-								<div ng-repeat="additionalTax in invoiceItem.additionalTaxes track by $index">
+								<div
+									ng-repeat="additionalTax in invoiceItem.additionalTaxes track by $index">
 									<div class="row">
 										<div class="col-sm-2">{{additionalTax.type.taxType}}%</div>
 										<div class="col-sm-2">
 											<input class="form-control" name="iAddTaxRate"
-												id="icgstRateOrg" type="text"
-												ng-model="additionalTax.rate">
+												id="icgstRateOrg" type="text" ng-model="additionalTax.rate">
 										</div>
-										<div class="col-sm-3">{{additionalTax.type.taxType}} Amount</div>
+										<div class="col-sm-3">{{additionalTax.type.taxType}}
+											Amount</div>
 										<div class="col-sm-3">
 											<input class="form-control" name="icgstAmountOrg"
 												id="icgstAmountOrg" placeholder="CGST Amount" type="text"
@@ -441,12 +442,14 @@
 									<input class="form-control" name="icgstRateCop"
 										id="icgstRateCop" placeholder="CGST %" type="text"
 										ng-blur="calculateCgst(invoiceItemTemp)"
-										ng-pattern="/^[0-9.]+$/" ng-model="invoiceItemTemp.cgstRate">
+										ng-pattern="/^[0-9.]+$/" ng-model="invoiceItemTemp.cgstRate"
+										ng-disabled="checkTaxableAmount(invoiceItemTemp.taxableValue)">
 								</div>
 								<div class="col-sm-8">
 									<input class="form-control" name="icgstAmountCop"
 										id="icgstAmountCop" placeholder="CGST Amount" type="text"
-										ng-model="invoiceItemTemp.cgstAmount">
+										ng-model="invoiceItemTemp.cgstAmount"
+										ng-disabled="checkTaxableAmount(invoiceItemTemp.taxableValue)">
 								</div>
 							</div>
 							<div class="row form-group">
@@ -456,12 +459,14 @@
 										id="isgstRateCop" placeholder="SGST %"
 										ng-pattern="/^[0-9.]+$/"
 										ng-blur="calculateSgst(invoiceItemTemp)" type="text"
-										ng-model="invoiceItemTemp.sgstRate">
+										ng-model="invoiceItemTemp.sgstRate"
+										ng-disabled="checkTaxableAmount(invoiceItemTemp.taxableValue)">
 								</div>
 								<div class="col-sm-8">
 									<input class="form-control" name="isgstAmountCop"
 										id="isgstAmountCop" placeholder="SGST Amount" type="text"
-										ng-model="invoiceItemTemp.sgstAmount">
+										ng-model="invoiceItemTemp.sgstAmount"
+										ng-disabled="checkTaxableAmount(invoiceItemTemp.taxableValue)">
 								</div>
 							</div>
 							<div class="row form-group">
@@ -471,12 +476,14 @@
 										id="iigstRateCop" placeholder="IGST %"
 										ng-pattern="/^[0-9.]+$/"
 										ng-blur="calculateIgst(invoiceItemTemp)" type="text"
-										ng-model="invoiceItemTemp.igstRate">
+										ng-model="invoiceItemTemp.igstRate"
+										ng-disabled="checkTaxableAmount(invoiceItemTemp.taxableValue)">
 								</div>
 								<div class="col-sm-8">
 									<input class="form-control" name="iigstAmountCop"
 										id="iigstAmuontCop" placeholder="IGST Amount" type="text"
-										ng-model="invoiceItemTemp.igstAmount">
+										ng-model="invoiceItemTemp.igstAmount"
+										ng-disabled="checkTaxableAmount(invoiceItemTemp.taxableValue)">
 								</div>
 							</div>
 						</div>
@@ -506,9 +513,11 @@
 											ng-blur="">
 									</div>
 									<div class="col-sm-1">
-										<button type="button" class="btn btn-default btn-sm">
-											<span class="glyphicon glyphicon-remove"></span> Remove
-										</button>
+										<a ng-click="deleteAdditionalTax(additionalTax)">
+											<button type="button" class="btn btn-default btn-sm">
+												<span class="glyphicon glyphicon-remove"></span> Remove
+											</button>
+										</a>
 									</div>
 								</div>
 							</div>
@@ -519,20 +528,23 @@
 										<select name="additionalTaxTypeCop" class="form-control"
 											ng-options="extraTax.taxType for extraTax in controller.additionalTaxType"
 											ng-required="false" placeholder="Tax Type"
-											ng-model="tempExtraTax.type">
+											ng-model="tempExtraTax.type"
+											ng-disabled="checkTaxableAmount(invoiceItemTemp.taxableValue)">
 										</select>
 									</div>
 									<div class="col-sm-3">
 										<input class="form-control" name="iAdditionalTaxRateCop"
 											id="iAdditionalTaxRateCop" type="text" placeholder="Rate %"
 											ng-model="tempExtraTax.rate" ng-pattern="/^[0-9.]+$/"
-											ng-blur="">
+											ng-blur="calculateExtraTaxAmount(invoiceItemTemp.taxableValue, tempExtraTax)"
+											ng-disabled="checkTaxableAmount(invoiceItemTemp.taxableValue)">
 									</div>
 									<div class="col-sm-4">
 										<input class="form-control" name="iAdditionalTaxValCop"
 											id="iAdditionalTaxValCop" type="text" placeholder="Amount"
 											ng-model="tempExtraTax.amount" ng-pattern="/^[0-9.]+$/"
-											ng-blur="">
+											ng-blur=""
+											ng-disabled="checkTaxableAmount(invoiceItemTemp.taxableValue)">
 									</div>
 								</div>
 								<div class="row form-group">
@@ -582,7 +594,7 @@
 							<div class="row">Total Amount:</div>
 						</div>
 						<div class="col-sm-4">
-							<div class="row">{{controller.tempGrandTotal}}</div>
+							<div class="row">{{controller.invoice.grandTotal}}</div>
 						</div>
 					</div>
 				</div>
@@ -593,7 +605,7 @@
 							<div class="row">Total Tax:</div>
 						</div>
 						<div class="col-sm-4">
-							<div class="row">{{controller.tempTotalTax}}</div>
+							<div class="row">{{controller.invoice.totalTax}}</div>
 						</div>
 					</div>
 				</div>
