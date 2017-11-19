@@ -6,8 +6,7 @@
 			<div class="container">
 				<div class="row">
 
-					<div class="col-sm-12"
-						style="background-color: #3c3c58; color: white">
+					<div class="col-sm-12 highlightedSection">
 
 						<div class="col-sm-3">
 							<p>GSTIN: {{userDetails.gstin}}</p>
@@ -42,7 +41,7 @@
 						<label for="invoiceDate" class="col-sm-4">Invoice Date</label>
 						<div class="col-sm-4">
 							<input type="date" name="invoiceDate" id="invoiceDate"
-								ng-model="controller.invoice.invoiceDate" class="form-control" />
+								ng-model="controller.invoice.invoiceDate" class="form-control" ng-required="true"/>
 						</div>
 					</div>
 				</div>
@@ -72,7 +71,7 @@
 								<label class="col-sm-6">Name</label>
 								<div class="col-sm-5">
 									<input type="text" ng-model="controller.invoice.customer.name"
-										class="form-control">
+										class="form-control" ng-required="true">
 								</div>
 							</div>
 
@@ -80,7 +79,7 @@
 								<label class="col-sm-6">Address</label>
 								<div class="col-sm-5">
 									<textarea ng-model="controller.invoice.customer.address"
-										class="form-control"></textarea>
+										class="form-control" ng-required="true"></textarea>
 								</div>
 							</div>
 
@@ -89,7 +88,7 @@
 								<div class="col-sm-5">
 									<input type="text"
 										ng-model="controller.invoice.customer.mobileNo"
-										class="form-control">
+										class="form-control" ng-required="true">
 								</div>
 							</div>
 
@@ -113,10 +112,14 @@
 							<div class="form-group">
 								<label for="state" class="col-sm-6">State</label>
 								<div class="col-sm-5">
-									<select ng-model="controller.invoice.customer.state"
+									<select ng-model="controller.invoice.customer.stateCode"
 										name="state"
-										ng-options="(state.statename+' ('+state.statecode+')') for state in controller.stateList"
 										class="form-control" ng-required="true">
+
+                                        <option ng-repeat="state in controller.stateList track by state.statecode"
+                                                ng-value="state.statecode"
+                                                ng-selected="controller.invoice.customer.stateCode == state.statecode">{{state.statename+' ('+state.statecode+')'}}</option>
+
 									</select>
 
 								</div>
@@ -126,7 +129,7 @@
 								<label class="col-sm-6">GSTIN</label>
 								<div class="col-sm-5">
 									<input type="text" ng-model="controller.invoice.customer.gstin"
-										class="form-control">
+										class="form-control" >
 								</div>
 							</div>
 
@@ -145,7 +148,7 @@
 								<label class="col-sm-4"> <input type="radio"
 									name="isNewCustomer" value="true"
 									ng-model="controller.invoice.isNewConsignee"
-									ng-change="clearCustomer()"> New Consignee
+									ng-change="clearConsignee()"> New Consignee
 								</label> <label class="col-sm-4"> <input type="radio"
 									name="isNewCustomer" value="false"
 									ng-model="controller.invoice.isNewConsignee"
@@ -162,7 +165,7 @@
 								<label class="col-sm-6">Name</label>
 								<div class="col-sm-5">
 									<input type="text" ng-model="controller.invoice.consignee.name"
-										class="form-control">
+										class="form-control" ng-required="true">
 								</div>
 							</div>
 
@@ -170,7 +173,7 @@
 								<label class="col-sm-6">Address</label>
 								<div class="col-sm-5">
 									<textarea ng-model="controller.invoice.consignee.address"
-										class="form-control"></textarea>
+										class="form-control" ng-required="true"></textarea>
 								</div>
 							</div>
 
@@ -179,7 +182,7 @@
 								<div class="col-sm-5">
 									<input type="text"
 										ng-model="controller.invoice.consignee.mobileNo"
-										class="form-control">
+										class="form-control" ng-required="true">
 								</div>
 							</div>
 
@@ -204,11 +207,16 @@
 							<div class="form-group">
 								<label for="state" class="col-sm-6">State</label>
 								<div class="col-sm-5">
-									<select ng-model="controller.invoice.consignee.state"
+									<select ng-model="controller.invoice.consignee.stateCode"
 										name="state"
-										ng-options="(state.statename+' ('+state.statecode+')') for state in controller.stateList"
 										class="form-control" ng-required="true">
-									</select>
+
+                                        <option ng-repeat="state in controller.stateList track by state.statecode"
+                                                ng-value="state.statecode"
+                                                ng-selected="controller.invoice.consignee.stateCode == state.statecode">{{state.statename+' ('+state.statecode+')'}}</option>
+
+
+                                    </select>
 
 								</div>
 							</div>
@@ -355,11 +363,18 @@
 							</div>
 
 						</div>
-						<div class="col-sm-12">
-							<a ng-click="deleteInvoiceItem(invoiceItem)"><button
-									class="btn btn-danger navbar-btn">Delete Invoice Item</button></a>
-						</div>
-					</div>
+                        <div>
+                            <div class="col-sm-6">
+                                <a ng-click="deleteInvoiceItem(invoiceItem)"><button
+                                        class="btn btn-danger navbar-btn">Delete Invoice Item</button></a>
+                            </div>
+                            <div class="col-sm-6">
+                                <input type="button"
+                                       value="Create New invoice item" class="btn btn-sm btn-success"
+                                       ng-click="controller.createInvoiceItem()">
+                            </div>
+                        </div>
+                    </div>
 
 				</div>
 
@@ -560,58 +575,59 @@
 
 						</div>
 					</div>
+                    <div class="col-sm-1">
+                        <input type="button" ng-disabled="checkValidityOfInvoiceItem()"
+                               value="Add Item to Invoice" class="btn btn-sm btn-success"
+                               ng-click="controller.addInvoiceItem(invoiceItemTemp)">
+                    </div>
+				</div>
 
-					<div class="col-sm-1">
-						<input type="button" ng-disabled="checkValidityOfInvoiceItem()"
-							value="Add Item to Invoice" class="btn btn-sm btn-success"
-							ng-click="controller.addInvoiceItem(invoiceItemTemp)">
-					</div>
-				</div>
 				<br>
-				<div class="col-sm-1">
-					<input type="button" ng-disabled="checkValidityOfInvoiceItem()"
-						value="Create Item" class="btn btn-sm btn-success"
-						ng-click="controller.createInvoiceItem()">
-				</div>
 				<!-- Invoice Items -->
 
-				<div class="col-sm-12">
-					<div class="row">
-						<div class="col-sm-4">
-							<div class="row">Amount received:</div>
-						</div>
-						<div class="col-sm-4">
-							<div class="row">
-								<input type="text" ng-model="controller.invoice.amountReceived" />
+				<!-- Total Amount Section -->
+				<div class="row highlightedSection">
+
+					<div class="col-sm-12">
+						<div class="row">
+							<div class="col-sm-4">
+								<div class="row">Amount received:</div>
+							</div>
+							<div class="col-sm-4">
+								<div class="row">
+									<input class="form-control" type="text" ng-model="controller.invoice.amountReceived" />
+								</div>
 							</div>
 						</div>
 					</div>
-				</div>
 
-				<div class="col-sm-12">
-					<div class="row">
-						<div class="col-sm-4">
-							<div class="row">Total Amount:</div>
-						</div>
-						<div class="col-sm-4">
-							<div class="row">{{controller.invoice.grandTotal}}</div>
+					<div class="col-sm-12">
+						<div class="row">
+							<div class="col-sm-4">
+								<div class="row">Total Amount:</div>
+							</div>
+							<div class="col-sm-4">
+								<div class="row">{{controller.invoice.grandTotal}}</div>
+							</div>
 						</div>
 					</div>
-				</div>
 
-				<div class="col-sm-12">
-					<div class="row">
-						<div class="col-sm-4">
-							<div class="row">Total Tax:</div>
-						</div>
-						<div class="col-sm-4">
-							<div class="row">{{controller.invoice.totalTax}}</div>
+					<div class="col-sm-12">
+						<div class="row">
+							<div class="col-sm-4">
+								<div class="row">Total Tax:</div>
+							</div>
+							<div class="col-sm-4">
+								<div class="row">{{controller.invoice.totalTax}}</div>
+							</div>
 						</div>
 					</div>
+
 				</div>
 
-			</div>
-			<button type="submit" class="btn btn-default">Submit</button>
+				</div>
+            <br />
+			<button type="submit" class="btn btn-success">Submit</button>
 		</div>
 	</form>
 	<!--Customer Modal -->

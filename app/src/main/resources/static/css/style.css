@@ -213,3 +213,8 @@ th {
 	border: 3px solid #57c1c2;
 	padding: 10px;
 }
+
+.highlightedSection {
+    background-color: #3c3c58 !important;
+    color: white;
+}

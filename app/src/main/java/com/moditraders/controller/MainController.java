@@ -117,6 +117,14 @@ public class MainController {
 			}
 		return customers;
 	}
+
+	@ResponseBody
+	@RequiresPermissions("rw-invoice")
+	@PostMapping(value="/createInvoice")
+	public void createInvoice(@Valid @RequestBody String invoiceJson) {
+		LOGGER.info("Create Invoice received for " + invoiceJson);
+
+	}
 	
 	@ResponseBody
 	@RequiresPermissions("read-consignee")

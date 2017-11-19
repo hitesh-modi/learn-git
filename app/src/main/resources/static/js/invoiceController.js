@@ -75,7 +75,16 @@ angular.module('modiTradersApp')
 	                              		  		);
 	                                		  
 	                                		self.submit = function() {
-	                                			console.log('Invoice Submitted with values', self.invoice);
+	                                			self.invoice.invoiceItemDetails = $scope.invoiceItemDetails;
+                                                        console.log('Invoice Submitted with values', self.invoice);
+                                                        $http.post('/services/createInvoice', self.invoice)
+                                                        	                                		  .then(
+                                                        	                                		  				function(response){
+                                                        	                                		  					console.log('Invoice created successfully.');
+                                                        	                                		  				}, function(errResponse){
+                                                        	                                		  					console.log('Some error while creating invoice');
+                                                        	                                		  				}
+                                                        	                                		  		);
 	                                		};
 	                                		
 	                                		$scope.getCustomers = function() {
@@ -143,11 +152,11 @@ angular.module('modiTradersApp')
 	                                				function(newValue, oldValue) {
 	                                					console.log('New Length',newValue.length);
 	                                					$scope.invoiceItemNumbers = newValue.length+1;
-	                                					var invoiceItem = {};
-	    	                                			invoiceItem.serialNumber = $scope.invoiceItemNumbers;
-	    	                                			$scope.tempInvoiceDetails = [];
-	    	                                			$scope.tempInvoiceDetails.push(invoiceItem);
-	    	                                			
+
+	                                					if(newValue.length == 0) {
+                                                            self.createInvoiceItem();
+	                                					}
+
 	    	                                			self.invoice.grandTotal = 0.0;
 	    	                                			self.invoice.totalTax = 0.0;
 	    	                                			
@@ -217,9 +226,23 @@ angular.module('modiTradersApp')
 	                                		self.createInvoiceItem = function() {
 	                                			console.log('Creating a temp invoice item.');
 	                                			var invoiceItem = {};
-	                                			invoiceItem.serialNumber = $scope.invoiceItemNumbers;
-	                                			$scope.tempInvoiceDetails = [];
-	                                			$scope.tempInvoiceDetails.push(invoiceItem);
+                                                invoiceItem.serialNumber = $scope.invoiceItemNumbers;
+                                                $scope.tempInvoiceDetails = [];
+                                                $scope.tempInvoiceDetails.push(invoiceItem);
+
+	                                		};
+
+	                                		$scope.checkValidityOfCreateInvoiceItem = function() {
+	                                		console.log('Checking validity for button Create new item');
+	                                		    if(typeof invoiceItems == 'undefined') {
+	                                		        return true;
+	                                		    }
+	                                		    else if(invoiceItems.length > 0) {
+	                                		        return false;
+	                                		    }
+	                                		     else if(invoiceItems.length == 0){
+	                                		        return true;
+	                                		     }
 	                                		};
 	                                		
 	                                		$scope.calculateTotal = function(invoiceItem) {
@@ -275,6 +298,9 @@ angular.module('modiTradersApp')
 	                                		
 	                                		
 	                                		$scope.checkValidityOfInvoiceItem = function() {
+	                                		if($scope.tempInvoiceDetails.length == 0) {
+	                                		    return true;
+	                                		}
 	                                			if(
 	                                					$scope.invoiceForm.productCop.$valid &&
 	                                					$scope.invoiceForm.iquantCop.$valid &&
