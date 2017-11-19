@@ -29,7 +29,7 @@ angular.module('modiTradersApp')
 	                                	  self.tempAdditionalTax = [
 	                                		  {taxType:'Service Tax'}
 	                                	  ];
-	                                	  
+
 	                                	console.log('Getting state list');
 	                              		$http.get('/getStates')
 	                              			 .then(
