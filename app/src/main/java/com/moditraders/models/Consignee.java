@@ -1,6 +1,8 @@
 package com.moditraders.models;
 
 public class Consignee {
+
+	private int consigneeId;
 	
 	private String name;
 	
@@ -81,5 +83,27 @@ public class Consignee {
 	public void setGstin(String gstin) {
 		this.gstin = gstin;
 	}
-	
+
+	public int getConsigneeId() {
+		return consigneeId;
+	}
+
+	public void setConsigneeId(int consigneeId) {
+		this.consigneeId = consigneeId;
+	}
+
+	@Override
+	public String toString() {
+		return "Consignee{" +
+				"consigneeId=" + consigneeId +
+				", name='" + name + '\'' +
+				", address='" + address + '\'' +
+				", state='" + state + '\'' +
+				", stateCode='" + stateCode + '\'' +
+				", gstin='" + gstin + '\'' +
+				", email='" + email + '\'' +
+				", mobileNo='" + mobileNo + '\'' +
+				", phoneNo='" + phoneNo + '\'' +
+				'}';
+	}
 }

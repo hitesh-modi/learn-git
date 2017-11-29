@@ -6,6 +6,7 @@ import java.util.Collection;
 import javax.annotation.Resource;
 import javax.validation.Valid;
 
+import com.moditraders.models.*;
 import org.apache.log4j.Logger;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.hibernate.service.spi.ServiceException;
@@ -24,15 +25,6 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.moditraders.exceptions.ServiceExcpetion;
-import com.moditraders.models.Consignee;
-import com.moditraders.models.Customer;
-import com.moditraders.models.HSNChapterModel;
-import com.moditraders.models.HSNModel;
-import com.moditraders.models.HSNSectionModel;
-import com.moditraders.models.Product;
-import com.moditraders.models.SacGroupModel;
-import com.moditraders.models.SacHeadingModel;
-import com.moditraders.models.SacModel;
 import com.moditraders.services.IMainService;
 
 @RestController
@@ -107,7 +99,7 @@ public class MainController {
 	@RequiresPermissions("read-customer")
 	@GetMapping(value="/getCustomers")
 	public Collection<Customer> getCustomers() {
-		LOGGER.info("Getting product types from service");
+		LOGGER.info("Getting Customers from service");
 		Collection<Customer> customers = null;
 			try {
 				customers = mainService.getCustomers();
@@ -116,6 +108,19 @@ public class MainController {
 				e.printStackTrace();
 			}
 		return customers;
+	}
+
+	@ResponseBody
+	@RequiresPermissions("rw-invoice")
+	@PostMapping(value="/createInvoice")
+	public void createInvoice(@Valid @RequestBody String invoiceJson) {
+		LOGGER.info("Create Invoice received for " + invoiceJson);
+		try {
+			Invoice invoice = new ObjectMapper().readValue(invoiceJson, Invoice.class);
+			mainService.createInvoice(invoice);
+		} catch (IOException e) {
+			LOGGER.error(e);
+		}
 	}
 	
 	@ResponseBody

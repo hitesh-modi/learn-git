@@ -2,6 +2,8 @@ package com.moditraders.models;
 
 public class Customer {
 	
+	private int customerId;
+
 	private String name;
 	
 	private String address;
@@ -82,4 +84,27 @@ public class Customer {
 		this.gstin = gstin;
 	}
 	
+
+	public int getCustomerId() {
+		return customerId;
+	}
+
+	public void setCustomerId(int customerId) {
+		this.customerId = customerId;
+	}
+
+	@Override
+	public String toString() {
+		return "Customer{" +
+				"customerId=" + customerId +
+				", name='" + name + '\'' +
+				", address='" + address + '\'' +
+				", state='" + state + '\'' +
+				", stateCode='" + stateCode + '\'' +
+				", gstin='" + gstin + '\'' +
+				", email='" + email + '\'' +
+				", mobileNo='" + mobileNo + '\'' +
+				", phoneNo='" + phoneNo + '\'' +
+				'}';
+	}
 }

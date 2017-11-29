@@ -7,30 +7,13 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import com.moditraders.entities.*;
+import com.moditraders.models.*;
 import org.apache.log4j.Logger;
 import org.hibernate.service.spi.ServiceException;
 import org.springframework.stereotype.Service;
 
 import com.google.common.collect.Iterables;
-import com.moditraders.entities.ChapterSectionMap;
-import com.moditraders.entities.ConsigneeDetail;
-import com.moditraders.entities.CustomerDetail;
-import com.moditraders.entities.HSN;
-import com.moditraders.entities.HsnChapterMap;
-import com.moditraders.entities.Productdetail;
-import com.moditraders.entities.SacAccountingcodeGroupMap;
-import com.moditraders.entities.SacGroupHeadinMap;
-import com.moditraders.entities.SacHeadingMaster;
-import com.moditraders.entities.SectionMaster;
-import com.moditraders.models.Consignee;
-import com.moditraders.models.Customer;
-import com.moditraders.models.HSNChapterModel;
-import com.moditraders.models.HSNModel;
-import com.moditraders.models.HSNSectionModel;
-import com.moditraders.models.Product;
-import com.moditraders.models.SacGroupModel;
-import com.moditraders.models.SacHeadingModel;
-import com.moditraders.models.SacModel;
 import com.moditraders.repositories.ConsigneeRepository;
 import com.moditraders.repositories.CustomerRepository;
 import com.moditraders.repositories.HSNChapterRepository;
@@ -98,15 +81,19 @@ public class MainService implements IMainService{
 		productDetail.setAgencyStartDate(product.getAgencyStartDate());
 		productDetail.setProductCompany(product.getCompany());
 		productDetail.setProductTaxRate(product.getTaxRate());
-		if(product.isGood())
+		if(product.isGood()) {
+			HSN hsn = new HSN();
+			hsn.setHsnCode(product.getHsnCode());
 			productDetail.setProductServiceOrGood("G");
+			productDetail.setProductHSN(hsn);
+		}
 		else {
+			SacMaster sac = new SacMaster();
+			sac.setSacId(product.getHsnCode());
+			productDetail.setProductSac(sac);
 			productDetail.setProductServiceOrGood("S");
 		}
 		productDetail.setProductName(product.getName());
-		HSN hsn = new HSN();
-		hsn.setHsnCode(product.getHsnCode());
-		productDetail.setProductHSN(hsn);
 		Productdetail savedProduct = productRepository.save(productDetail);
 		LOGGER.info("Saved Product with ID " + savedProduct.getProductId());
 		return savedProduct.getProductId();
@@ -118,6 +105,7 @@ public class MainService implements IMainService{
 		Collection<Product> products = new ArrayList<Product>();
 		Iterable<Productdetail> productsFromDB = productRepository.findAll();
 		LOGGER.info("Found " + Iterables.size(productsFromDB) + " from Database.");
+		String goodsOrService = "";
 		for (Productdetail productdetail : productsFromDB) {
 			Product product = new Product();
 			product.setProductId(productdetail.getProductId());
@@ -125,9 +113,20 @@ public class MainService implements IMainService{
 			product.setAgencyStartDate(productdetail.getAgencyStartDate());
 			product.setCompany(productdetail.getProductCompany());
 			product.setDepositAmount(productdetail.getAgencySecurityDeposit());
-			product.setHsnCode(productdetail.getProductHSN().getHsnCode());
+			
+			goodsOrService = productdetail.getProductServiceOrGood();
+			
+			if(goodsOrService.equalsIgnoreCase("G")) {
+				product.setHsnCode(productdetail.getProductHSN().getHsnCode());
+				product.setAccountingCodeDesc(productdetail.getProductHSN().getHsnDesc());
+			}
+			else if(goodsOrService.equalsIgnoreCase("S")) {
+				product.setHsnCode(productdetail.getProductSac().getSacId());
+				product.setAccountingCodeDesc(productdetail.getProductSac().getSacDesc());
+			}
 			product.setName(productdetail.getProductName());
 			product.setTaxRate(productdetail.getProductTaxRate());
+			product.setGood(goodsOrService.equalsIgnoreCase("G")?true:false);
 			products.add(product);
 		}
 		return products;
@@ -156,6 +155,7 @@ public class MainService implements IMainService{
 		LOGGER.info("Received " + Iterables.size(cutomersFromDb) + " cutomers from DB");
 		for (CustomerDetail customerDetail : cutomersFromDb) {
 			Customer customer = new Customer();
+			customer.setCustomerId(customerDetail.getCdCustomerId());
 			customer.setName(customerDetail.getCdCustomerName());
 			customer.setAddress(customerDetail.getCdCustomerAddress());
 			customer.setState(customerDetail.getCdCustomerState());
@@ -280,5 +280,65 @@ public class MainService implements IMainService{
 		LOGGER.info("Retreived "+ hsnModels.size() + " from database.");
 		return hsnModels;
 	}
+
+	@Override
+	public void createInvoice(final Invoice invoice) {
+		LOGGER.info("Creating invoice " + invoice);
+		if(invoice.isNewCustomer()) {
+		    // Save customer
+
+        }
+        if(invoice.getNewConsignee().equalsIgnoreCase("true")) {
+		    // Save Consignee
+        } else if(invoice.getNewConsignee().equalsIgnoreCase("SAME_AS_CUSTOMER")){
+
+        }
+
+        Collection<InvoiceItem> invoiceItems = invoice.getInvoiceItemDetails();
+        for (InvoiceItem currInvoiceItem:
+             invoiceItems) {
+            // Save each invoice item
+        }
+
+	}
+
+	private CustomerDetail createCustomerEntity(Customer customer) {
+	    CustomerDetail customerDetail = new CustomerDetail();
+	    customerDetail.setCdCustomerName(customer.getName());
+	    customerDetail.setCdCustomerAddress(customer.getAddress());
+	    customerDetail.setCdCustomerGSTIN(customer.getGstin());
+	    customerDetail.setCdCustomerMobile(customer.getMobileNo());
+	    customerDetail.setCdCustomerEmail(customer.getEmail());
+	    customerDetail.setCdCustomerPhone(customer.getPhoneNo());
+	    customerDetail.setCdCustomerState(customer.getState());
+	    customerDetail.setCdCustomerStateCode(customer.getStateCode());
+	    return customerDetail;
+    }
+
+    private ConsigneeDetail createConsigneeEntity(Consignee consignee) {
+        ConsigneeDetail consigneeDetail = new ConsigneeDetail();
+        consigneeDetail.setConsigneeName(consignee.getName());
+        consigneeDetail.setConsigneeAddress(consignee.getAddress());
+        consigneeDetail.setConsigneeGSTIN(consignee.getGstin());
+        consigneeDetail.setConsigneeEmail(consignee.getEmail());
+        consigneeDetail.setConsigneeMobile(consignee.getMobileNo());
+        consigneeDetail.setConsigneePhone(consignee.getPhoneNo());
+        consigneeDetail.setConsigneeState(consignee.getState());
+        consigneeDetail.setConsigneeStateCode(consignee.getStateCode());
+        return  consigneeDetail;
+    }
+
+    private Invoiceitemdetail createInvoiceItemEntity(InvoiceItem invoiceItem) {
+	    Invoiceitemdetail invoiceitemdetail = new Invoiceitemdetail();
+	    // TODO: Convert invoice item details entity.
+        return  invoiceitemdetail;
+    }
+
+    private Invoicedetail createInvoiceItem(Invoice invoice) {
+        Invoicedetail invoicedetail = new Invoicedetail();
+        // TODO: Convert invoice entity.
+
+        return invoicedetail;
+    }
 	
 }

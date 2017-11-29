@@ -12,6 +12,8 @@ public interface IUserService {
 	
 	public boolean login(AuthInfo authInfo);
 
+	public boolean logout();
+	
 	public UserModel getUserInfo();
 
 	public Collection<StateModel> getStates();

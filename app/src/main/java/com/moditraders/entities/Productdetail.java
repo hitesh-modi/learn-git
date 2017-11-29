@@ -54,6 +54,10 @@ public class Productdetail implements Serializable {
 	@OneToOne
 	@JoinColumn(name="pd_hsn")
 	private HSN productHSN;
+	
+	@OneToOne
+	@JoinColumn(name="pd_sac")
+	private SacMaster productSac;
 
 	//bi-directional many-to-one association to Inventorydetail
 	@OneToMany(mappedBy="productdetail")
@@ -223,6 +227,14 @@ public class Productdetail implements Serializable {
 
 	public void setProductServiceOrGood(String productServiceOrGood) {
 		this.productServiceOrGood = productServiceOrGood;
+	}
+
+	public SacMaster getProductSac() {
+		return productSac;
+	}
+
+	public void setProductSac(SacMaster productSac) {
+		this.productSac = productSac;
 	}
 
 }

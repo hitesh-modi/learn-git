@@ -8,32 +8,42 @@ import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.AuthorizationException;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.aspectj.lang.JoinPoint;
+import org.apache.shiro.subject.Subject;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
+import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+
 
 @Aspect
 @Component
 public class WebAuthorizationAspect {
 	private static final Logger LOGGER = Logger.getLogger(WebAuthorizationAspect.class);
-	 @Before("(@target(org.springframework.web.bind.annotation.RestController) || @target(org.springframework.stereotype.Controller)) && @annotation(requiresPermission)")
-	    public void assertAuthorized(JoinPoint jp, RequiresPermissions requiresPermission) {
-		 LOGGER.info("Checking Permission on method : " + jp.getSignature().getName()); 
+	 @Around("(@target(org.springframework.web.bind.annotation.RestController) || @target(org.springframework.stereotype.Controller)) && @annotation(requiresPermission)")
+	    public Object assertAuthorized(ProceedingJoinPoint jp, RequiresPermissions requiresPermission) throws Throwable {
+		 MethodSignature signature =  (MethodSignature)jp.getSignature();
+		 Class returnType = signature.getReturnType();
 		 HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
 	        try {
-				SecurityUtils.getSubject().checkPermissions(requiresPermission.value());
+	        	Subject currentUser = SecurityUtils.getSubject();
+	        	LOGGER.info("Checking permission on method : " + jp.getSignature().getName() + " for user " + currentUser.getPrincipal());
+	        	currentUser.checkPermissions(requiresPermission.value());
+	        	Object returnObj = jp.proceed();
+	        	return returnType.cast(returnObj);
 			} catch (AuthorizationException e) {
 				LOGGER.error("User does not permission to view this page.");
 				try {
 					response.sendRedirect("/");
+					return null;
 				} catch (IOException e1) {
 					LOGGER.error("Error redirecting to home.");
 					e1.printStackTrace();
 				}
 				e.printStackTrace();
 			}
+	        return null;
 	    }
 }

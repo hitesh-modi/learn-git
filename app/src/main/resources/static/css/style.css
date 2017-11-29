@@ -85,16 +85,6 @@ h2 {
 	color: #3c3c58;
 }
 
-nav a:first-child {
-	font-family: 'Montserrat', sans-serif ;
-	border-radius: 10px 0 0 10px;
-}
-
-nav a:last-child {
-	font-family: 'Montserrat', sans-serif;
-	border-radius: 0 10px 10px 0;
-}
-
 .navigation {
 	display: inline-block;
 	margin: 10px auto 45px;
@@ -210,18 +200,21 @@ th {
 	height: 100px;
 }
 
-.col-sm-8 {
-	background-color: #e3e8ea;
-	text-align: left;
-}
-.col-sm-4 {
-	margin: 2px;
-	background-color: #e3e8ea;
-}
 .formTable {
 	margin: 4px;
 	padding: 4px;
 }
 .invoiceTable{
 	background-color: #e3e8ea;
+}
+
+.bordered-div{
+	border-radius: 20px; 
+	border: 3px solid #57c1c2;
+	padding: 10px;
+}
+
+.highlightedSection {
+    background-color: #3c3c58 !important;
+    color: white;
 }
