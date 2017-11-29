@@ -117,6 +117,7 @@ public class MainController {
 		LOGGER.info("Create Invoice received for " + invoiceJson);
 		try {
 			Invoice invoice = new ObjectMapper().readValue(invoiceJson, Invoice.class);
+			mainService.createInvoice(invoice);
 		} catch (IOException e) {
 			LOGGER.error(e);
 		}

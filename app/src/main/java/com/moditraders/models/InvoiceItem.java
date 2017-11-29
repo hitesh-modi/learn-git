@@ -152,4 +152,26 @@ public class InvoiceItem {
     public void setTaxes(Collection<TaxItem> taxes) {
         this.taxes = taxes;
     }
+
+    @Override
+    public String toString() {
+        return "InvoiceItem{" +
+                "serialNumber=" + serialNumber +
+                ", product=" + product +
+                ", quantity=" + quantity +
+                ", unit='" + unit + '\'' +
+                ", rate=" + rate +
+                ", total=" + total +
+                ", taxableValue=" + taxableValue +
+                ", cgstRate=" + cgstRate +
+                ", cgstAmount=" + cgstAmount +
+                ", sgstRate=" + sgstRate +
+                ", sgstAmount=" + sgstAmount +
+                ", igstAmount=" + igstAmount +
+                ", igstRate=" + igstRate +
+                ", discount=" + discount +
+                ", additionalTaxes=" + additionalTaxes +
+                ", taxes=" + taxes +
+                '}';
+    }
 }

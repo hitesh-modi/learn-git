@@ -19,15 +19,15 @@ angular.module('modiTradersApp')
 	                                	  $scope.invoiceItemDetails = [];
 	                                	  
 	                                	  self.stateList;
-	                                	  self.invoice.addtionalTaxes = [];
+	                                	  $scope.addtionalTaxes = [];
 	                                	  self.additionalTaxType = [
-	                                		  {taxType: 'Service Tax'},
-	                                		  {taxType: 'VAT'},
-	                                		  {taxType: 'Excise Duty'}
+	                                		  'Service Tax',
+	                                		  'VAT',
+	                                		  'Excise Duty'
 	                                	  ];
 	                                	  
 	                                	  self.tempAdditionalTax = [
-	                                		  {taxType:'Service Tax'}
+	                                		  {type:{taxType:'Service Tax'}}
 	                                	  ];
 
 	                                	console.log('Getting state list');
@@ -133,13 +133,23 @@ angular.module('modiTradersApp')
 	                                		
 	                                		$scope.copyCustomerToConsignee = function() {
 	                                			console.log('Copy the customer to consignee');
-	                                			self.invoice.consignee = self.invoice.customer;
+	                                			self.invoice.consignee = {};
+	                                			self.invoice.consignee.consigneeId = self.invoice.customer.customerId;
+                                                self.invoice.consignee.name = self.invoice.customer.name;
+                                                self.invoice.consignee.address = self.invoice.customer.address;
+                                                self.invoice.consignee.state = self.invoice.customer.state;
+                                                self.invoice.consignee.stateCode = self.invoice.customer.stateCode;
+                                                self.invoice.consignee.gstin = self.invoice.customer.gstin;
+                                                self.invoice.consignee.email = self.invoice.customer.email;
+                                                self.invoice.consignee.mobileNo = self.invoice.customer.mobileNo;
+                                                self.invoice.consignee.phoneNo = self.invoice.customer.phoneNo;
+
 	                                		};
 	                                		
 	                                		self.addInvoiceItem = function(itemToAdd) {
 	                                			console.log('Adding invoice item.', itemToAdd);
-	                                			itemToAdd.additionalTaxes = self.invoice.addtionalTaxes;
-	                                			self.invoice.addtionalTaxes = [];
+	                                			itemToAdd.additionalTaxes = $scope.addtionalTaxes;
+	                                			$scope.addtionalTaxes = [];
 	                                			$scope.invoiceItemDetails.push(itemToAdd);
 	                                			$scope.tempInvoiceDetails = [];
 	                                			self.tempGrandTotal = parseFloat(self.tempGrandTotal) + parseFloat(itemToAdd.total);
@@ -336,23 +346,24 @@ angular.module('modiTradersApp')
 	                                		};
 	                                		
 	                                		$scope.addOtherTax = function(additionalTax) {
-	                                			self.invoice.addtionalTaxes.push(additionalTax);
+	                                			$scope.addtionalTaxes.push(additionalTax);
+	                                			console.log('Adding Tax', additionalTax);
 	                                			self.tempAdditionalTax = [
-	                                				{taxType:'Service Tax'}
+	                                				{type:{taxType:'Service Tax'}}
 	                                			];
-	                                			console.log('Added tax', self.invoice.addtionalTaxes);
+	                                			console.log('Added tax', $scope.addtionalTaxes);
 	                                		};
 	                                		
 	                                		
 	                                		$scope.deleteAdditionalTax = function(taxToDelete) {
 	                                			var tempItem;
 	                                			console.log('Deleting item ', taxToDelete)
-	                                			for (var i = 0; i < self.invoice.addtionalTaxes.length; i++) {
-	                                				tempItem = self.invoice.addtionalTaxes[i];
+	                                			for (var i = 0; i < $scope.addtionalTaxes.length; i++) {
+	                                				tempItem = $scope.addtionalTaxes[i];
 	                                				if(tempItem.type.taxType == taxToDelete.type.taxType
 	                                						&& tempItem.amount == taxToDelete.amount) {
 	                                					console.log('Removing item', tempItem);
-	                                					self.invoice.addtionalTaxes.splice(i,1);
+	                                					$scope.addtionalTaxes.splice(i,1);
 	                                				}
 	                                			}
 	                                		};

@@ -62,7 +62,7 @@
 									ng-change="clearCustomer()"> New Customer</label> <label
 									class="col-sm-6"><input type="radio"
 									name="isNewCustomer" value="false"
-									ng-model="controller.invoice.isNewCustomer"
+									ng-model="controller.invoice.newCustomer"
 									ng-change="getCustomers()" data-toggle="modal"
 									data-target="#customerModal"> Existing Customer</label>
 							</div>
@@ -147,16 +147,16 @@
 							<div class="form-group" class="radio">
 								<label class="col-sm-4"> <input type="radio"
 									name="isNewCustomer" value="true"
-									ng-model="controller.invoice.isNewConsignee"
+									ng-model="controller.invoice.newConsignee"
 									ng-change="clearConsignee()"> New Consignee
 								</label> <label class="col-sm-4"> <input type="radio"
 									name="isNewCustomer" value="false"
-									ng-model="controller.invoice.isNewConsignee"
+									ng-model="controller.invoice.newConsignee"
 									ng-change="getConsignees()" data-toggle="modal"
 									data-target="#consigneeModal"> Existing Consignee
 								</label> <label class="col-sm-4"> <input type="radio"
-									name="isNewConsignee" value="sameAsCustomer"
-									ng-model="controller.invoice.isNewConsignee"
+									name="isNewConsignee" value="SAME_AS_CUSTOMER"
+									ng-model="controller.invoice.newConsignee"
 									ng-change="copyCustomerToConsignee()"> Same as Customer
 								</label>
 							</div>
@@ -507,11 +507,11 @@
 
 						<div class="col-sm-6">
 							<div
-								ng-repeat="additionalTax in controller.invoice.addtionalTaxes track by $index">
+								ng-repeat="additionalTax in addtionalTaxes track by $index">
 								<div class="row form-group">
 									<div class="col-sm-4">
 										<select name="additionalTaxTypeOrg" class="form-control"
-											ng-options="extraTax.taxType for extraTax in controller.additionalTaxType"
+											ng-options="extraTax for extraTax in controller.additionalTaxType"
 											ng-required="false" placeholder="Tax Type"
 											ng-model="additionalTax.type"></select>
 									</div>
@@ -541,7 +541,7 @@
 								<div class="row form-group">
 									<div class="col-sm-4">
 										<select name="additionalTaxTypeCop" class="form-control"
-											ng-options="extraTax.taxType for extraTax in controller.additionalTaxType"
+											ng-options="extraTax for extraTax in controller.additionalTaxType"
 											ng-required="false" placeholder="Tax Type"
 											ng-model="tempExtraTax.type"
 											ng-disabled="checkTaxableAmount(invoiceItemTemp.taxableValue)">

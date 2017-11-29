@@ -8,31 +8,40 @@ import java.math.BigDecimal;
  * Created by Hitesh on 19-11-2017.
  */
 public class TaxItem {
-    private TaxType taxType;
-    private BigDecimal taxRate;
-    private BigDecimal taxAmount;
+    private TaxType type;
+    private BigDecimal rate;
+    private BigDecimal amount;
 
-    public TaxType getTaxType() {
-        return taxType;
+    public TaxType getType() {
+        return type;
     }
 
-    public void setTaxType(TaxType taxType) {
-        this.taxType = taxType;
+    public void setType(TaxType type) {
+        this.type = type;
     }
 
-    public BigDecimal getTaxRate() {
-        return taxRate;
+    public BigDecimal getRate() {
+        return rate;
     }
 
-    public void setTaxRate(BigDecimal taxRate) {
-        this.taxRate = taxRate;
+    public void setRate(BigDecimal taxRate) {
+        this.rate = taxRate;
     }
 
-    public BigDecimal getTaxAmount() {
-        return taxAmount;
+    public BigDecimal getAmount() {
+        return amount;
     }
 
-    public void setTaxAmount(BigDecimal taxAmount) {
-        this.taxAmount = taxAmount;
+    public void setAmount(BigDecimal amount) {
+        this.amount = amount;
+    }
+
+    @Override
+    public String toString() {
+        return "TaxItem{" +
+                "type=" + type +
+                ", rate=" + rate +
+                ", amount=" + amount +
+                '}';
     }
 }

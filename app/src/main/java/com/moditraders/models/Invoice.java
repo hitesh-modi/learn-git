@@ -2,34 +2,37 @@ package com.moditraders.models;
 
 import java.math.BigDecimal;
 import java.util.Collection;
+import java.util.Date;
 
 /**
  *
  */
 public class Invoice {
 
-    private String invoiceId;
-    private String invoiceDate;
+    private String invoiceNumber;
+    private Date invoiceDate;
     private Customer customer;
     private Consignee consignee;
     private Collection<InvoiceItem> invoiceItemDetails;
     private BigDecimal grandTotal;
     private BigDecimal totalTax;
     private BigDecimal amountReceived;
+    private boolean newCustomer;
+    private String newConsignee;
 
-    public String getInvoiceId() {
-        return invoiceId;
+    public String getInvoiceNumber() {
+        return invoiceNumber;
     }
 
-    public void setInvoiceId(String invoiceId) {
-        this.invoiceId = invoiceId;
+    public void setInvoiceNumber(String invoiceNumber) {
+        this.invoiceNumber = invoiceNumber;
     }
 
-    public String getInvoiceDate() {
+    public Date getInvoiceDate() {
         return invoiceDate;
     }
 
-    public void setInvoiceDate(String invoiceDate) {
+    public void setInvoiceDate(Date invoiceDate) {
         this.invoiceDate = invoiceDate;
     }
 
@@ -79,5 +82,37 @@ public class Invoice {
 
     public void setAmountReceived(BigDecimal amountReceived) {
         this.amountReceived = amountReceived;
+    }
+
+    public boolean isNewCustomer() {
+        return newCustomer;
+    }
+
+    public void setNewCustomer(boolean newCustomer) {
+        this.newCustomer = newCustomer;
+    }
+
+    public String getNewConsignee() {
+        return newConsignee;
+    }
+
+    public void setNewConsignee(String newConsignee) {
+        this.newConsignee = newConsignee;
+    }
+
+    @Override
+    public String toString() {
+        return "Invoice{" +
+                "invoiceNumber='" + invoiceNumber + '\'' +
+                ", invoiceDate='" + invoiceDate + '\'' +
+                ", customer=" + customer +
+                ", consignee=" + consignee +
+                ", invoiceItemDetails=" + invoiceItemDetails +
+                ", grandTotal=" + grandTotal +
+                ", totalTax=" + totalTax +
+                ", amountReceived=" + amountReceived +
+                ", newCustomer=" + newCustomer +
+                ", newConsignee='" + newConsignee + '\'' +
+                '}';
     }
 }
