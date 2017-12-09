@@ -4,6 +4,7 @@ import java.io.Serializable;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -18,7 +19,13 @@ public class Invoiceitemdetail implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private int IID_ItemId;
+	private long IID_ItemId;
+
+	@Column(name="iid_cgst")
+	private BigDecimal iidCgst;
+
+	@Column(name="iid_igst")
+	private BigDecimal iidIgst;
 
 	private BigDecimal IID_ItemDiscount;
 
@@ -33,6 +40,12 @@ public class Invoiceitemdetail implements Serializable {
 
 	@Temporal(TemporalType.DATE)
 	private Date IID_ServiceStartDate;
+
+	@Column(name="iid_sgst")
+	private BigDecimal iidSgst;
+
+	@Column(name="iid_taxableamount")
+	private BigDecimal iidTaxableamount;
 
 	//bi-directional many-to-one association to Invoicedetail
 	@ManyToOne
@@ -49,15 +62,35 @@ public class Invoiceitemdetail implements Serializable {
 	@JoinColumn(name="IID_ServiceId")
 	private Servicedetail servicedetail;
 
+	//bi-directional many-to-one association to Invoiceitemtaxdetail
+	@OneToMany(mappedBy="invoiceitemdetail")
+	private List<Invoiceitemtaxdetail> invoiceitemtaxdetails;
+
 	public Invoiceitemdetail() {
 	}
 
-	public int getIID_ItemId() {
+	public long getIID_ItemId() {
 		return this.IID_ItemId;
 	}
 
-	public void setIID_ItemId(int IID_ItemId) {
+	public void setIID_ItemId(long IID_ItemId) {
 		this.IID_ItemId = IID_ItemId;
+	}
+
+	public BigDecimal getIidCgst() {
+		return this.iidCgst;
+	}
+
+	public void setIidCgst(BigDecimal iidCgst) {
+		this.iidCgst = iidCgst;
+	}
+
+	public BigDecimal getIidIgst() {
+		return this.iidIgst;
+	}
+
+	public void setIidIgst(BigDecimal iidIgst) {
+		this.iidIgst = iidIgst;
 	}
 
 	public BigDecimal getIID_ItemDiscount() {
@@ -108,6 +141,22 @@ public class Invoiceitemdetail implements Serializable {
 		this.IID_ServiceStartDate = IID_ServiceStartDate;
 	}
 
+	public BigDecimal getIidSgst() {
+		return this.iidSgst;
+	}
+
+	public void setIidSgst(BigDecimal iidSgst) {
+		this.iidSgst = iidSgst;
+	}
+
+	public BigDecimal getIidTaxableamount() {
+		return this.iidTaxableamount;
+	}
+
+	public void setIidTaxableamount(BigDecimal iidTaxableamount) {
+		this.iidTaxableamount = iidTaxableamount;
+	}
+
 	public Invoicedetail getInvoicedetail() {
 		return this.invoicedetail;
 	}
@@ -130,6 +179,28 @@ public class Invoiceitemdetail implements Serializable {
 
 	public void setServicedetail(Servicedetail servicedetail) {
 		this.servicedetail = servicedetail;
+	}
+
+	public List<Invoiceitemtaxdetail> getInvoiceitemtaxdetails() {
+		return this.invoiceitemtaxdetails;
+	}
+
+	public void setInvoiceitemtaxdetails(List<Invoiceitemtaxdetail> invoiceitemtaxdetails) {
+		this.invoiceitemtaxdetails = invoiceitemtaxdetails;
+	}
+
+	public Invoiceitemtaxdetail addInvoiceitemtaxdetail(Invoiceitemtaxdetail invoiceitemtaxdetail) {
+		getInvoiceitemtaxdetails().add(invoiceitemtaxdetail);
+		invoiceitemtaxdetail.setInvoiceitemdetail(this);
+
+		return invoiceitemtaxdetail;
+	}
+
+	public Invoiceitemtaxdetail removeInvoiceitemtaxdetail(Invoiceitemtaxdetail invoiceitemtaxdetail) {
+		getInvoiceitemtaxdetails().remove(invoiceitemtaxdetail);
+		invoiceitemtaxdetail.setInvoiceitemdetail(null);
+
+		return invoiceitemtaxdetail;
 	}
 
 }

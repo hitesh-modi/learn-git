@@ -25,6 +25,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.moditraders.exceptions.ServiceExcpetion;
+import com.moditraders.services.IInvoiceService;
 import com.moditraders.services.IMainService;
 
 @RestController
@@ -35,6 +36,9 @@ public class MainController {
 	
 	@Resource(name="mainService")
 	private IMainService mainService;
+	
+	@Resource(name="invoiceService")
+	private IInvoiceService invoiceService;
 	
 	@RequiresPermissions("create-product")
 	@PostMapping(value="/createProduct", produces=MediaType.APPLICATION_JSON_VALUE)
@@ -117,7 +121,7 @@ public class MainController {
 		LOGGER.info("Create Invoice received for " + invoiceJson);
 		try {
 			Invoice invoice = new ObjectMapper().readValue(invoiceJson, Invoice.class);
-			mainService.createInvoice(invoice);
+			invoiceService.createInvoice(invoice);
 		} catch (IOException e) {
 			LOGGER.error(e);
 		}

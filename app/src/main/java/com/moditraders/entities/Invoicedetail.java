@@ -36,32 +36,24 @@ public class Invoicedetail implements Serializable {
 
 	private BigDecimal ID_TaxAmount;
 
+	//bi-directional many-to-one association to Invoiceitemdetail
+	@OneToMany(mappedBy="invoicedetail")
+	private List<Invoiceitemdetail> invoiceitemdetails;
+
 	//bi-directional many-to-one association to CustomerDetail
 	@ManyToOne
 	@JoinColumn(name="ID_CustomerId")
 	private CustomerDetail customerDetail;
-	
-	//bi-directional many-to-one association to CustomerDetail
-		@ManyToOne
-		@JoinColumn(name="ID_ConsigneeId")
-		private ConsigneeDetail consigneeDetail;
-
-	public ConsigneeDetail getConsigneeDetail() {
-			return consigneeDetail;
-		}
-
-		public void setConsigneeDetail(ConsigneeDetail consigneeDetail) {
-			this.consigneeDetail = consigneeDetail;
-		}
 
 	//bi-directional many-to-one association to Taxrate
 	@ManyToOne
 	@JoinColumn(name="ID_TaxId")
 	private Taxrate taxrate;
 
-	//bi-directional many-to-one association to Invoiceitemdetail
-	@OneToMany(mappedBy="invoicedetail")
-	private List<Invoiceitemdetail> invoiceitemdetails;
+	//bi-directional many-to-one association to ConsigneeDetail
+	@ManyToOne
+	@JoinColumn(name="ID_ConsigneeId")
+	private ConsigneeDetail consigneeDetail;
 
 	public Invoicedetail() {
 	}
@@ -130,22 +122,6 @@ public class Invoicedetail implements Serializable {
 		this.ID_TaxAmount = ID_TaxAmount;
 	}
 
-	public CustomerDetail getCustomerDetail() {
-		return this.customerDetail;
-	}
-
-	public void setCustomerDetail(CustomerDetail customerDetail) {
-		this.customerDetail = customerDetail;
-	}
-
-	public Taxrate getTaxrate() {
-		return this.taxrate;
-	}
-
-	public void setTaxrate(Taxrate taxrate) {
-		this.taxrate = taxrate;
-	}
-
 	public List<Invoiceitemdetail> getInvoiceitemdetails() {
 		return this.invoiceitemdetails;
 	}
@@ -166,6 +142,30 @@ public class Invoicedetail implements Serializable {
 		invoiceitemdetail.setInvoicedetail(null);
 
 		return invoiceitemdetail;
+	}
+
+	public CustomerDetail getCustomerDetail() {
+		return this.customerDetail;
+	}
+
+	public void setCustomerDetail(CustomerDetail customerDetail) {
+		this.customerDetail = customerDetail;
+	}
+
+	public Taxrate getTaxrate() {
+		return this.taxrate;
+	}
+
+	public void setTaxrate(Taxrate taxrate) {
+		this.taxrate = taxrate;
+	}
+
+	public ConsigneeDetail getConsigneeDetail() {
+		return this.consigneeDetail;
+	}
+
+	public void setConsigneeDetail(ConsigneeDetail consigneeDetail) {
+		this.consigneeDetail = consigneeDetail;
 	}
 
 }
