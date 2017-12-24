@@ -1,6 +1,6 @@
 angular.module('modiTradersApp')
-	.controller('InvoiceController', ['$http', '$scope', '$window',
-	                                  function($http, $scope, $window) {
+	.controller('InvoiceController', ['$http', '$scope', '$window', 'ngDialog',
+	                                  function($http, $scope, $window, ngDialog) {
 	                                	  var self = this;
 	                                	  self.invoice = {};
 	                                	  self.customers = [];
@@ -42,10 +42,9 @@ angular.module('modiTradersApp')
 	                              					}
 	                              			);
 	                                	  
-	                                	  $window.setSelectedConsignee = function(consignee) {
+	                              		$scope.setSelectedConsignee = function(consignee) {
 	                                		  console.log('Selected Consignee', consignee);
 	                                		  self.invoice.consignee = consignee;
-	                                		  $scope.$digest();
 	                                	  };
 	                                	  
 	                                	  $scope.setSelectedCustomer = function(customer) {
@@ -80,11 +79,21 @@ angular.module('modiTradersApp')
                                                         $http.post('/services/createInvoice', self.invoice)
                                                         	                                		  .then(
                                                         	                                		  				function(response){
-                                                        	                                		  					console.log('Invoice created successfully.');
+                                                        	                                		  					console.log('Invoice created successfully.', response);
+                                                        	                                		  					self.showSuccessMessage();
                                                         	                                		  				}, function(errResponse){
                                                         	                                		  					console.log('Some error while creating invoice');
                                                         	                                		  				}
                                                         	                                		  		);
+	                                		};
+	                                		
+	                                		self.showSuccessMessage = function() {
+	                                			ngDialog.open({
+	                                				template: 'invoiceCreated.html',
+	                                				scope: $scope,
+	                                				controller: 'InvoiceController'
+	                                		
+	                                			});
 	                                		};
 	                                		
 	                                		$scope.getCustomers = function() {
@@ -93,11 +102,6 @@ angular.module('modiTradersApp')
 	                               		  		.then(
 	                               		  				function(response){
 	                               		  					self.customers = response.data;
-	                               		  					console.log('Customers list received from server', self.customers);
-	                               		  				  //  var $popup = $window.open("views/customers.html", "popup", "width=500,height=200,left=10,top=150");
-	                               		  				  //  $popup.customers = self.customers;
-	                               		  				    console.log('opened new window with customer list');
-	                               		  				    
 	                               		  				}, function(errResponse){
 	                               		  					console.log('Some error while fetching the list of cutomers from server');
 	                               		  				}
@@ -119,12 +123,8 @@ angular.module('modiTradersApp')
 	                                			 $http.get('/services/getConsignees')
 	                               		  		.then(
 	                               		  				function(response){
-	                               		  					self.customers = response.data;
-	                               		  					console.log('Consignee list received from server', self.customers);
-	                               		  				    var $popup = $window.open("views/consignees.html", "popup", "width=500,height=200,left=10,top=150");
-	                               		  				    $popup.customers = self.customers;
-	                               		  				    console.log('opened new window with consignee list');
-	                               		  				    
+	                               		  					self.consignees = response.data;
+	                               		  					console.log('Consignee received from server: ', self.consignees);
 	                               		  				}, function(errResponse){
 	                               		  					console.log('Some error while fetching the list of consignee from server');
 	                               		  				}
@@ -172,8 +172,13 @@ angular.module('modiTradersApp')
 	    	                                			
 	    	                                			self.calculateGrandTotal(newValue);
 	    	                                			self.calculateToTalTax(newValue);
+	    	                                			self.calculatNetAmount();
 	                                				}
 	                                		);
+	                                		
+	                                		self.calculatNetAmount = function() {
+	                                			self.invoice.netTotal = self.invoice.grandTotal + self.invoice.totalTax;
+	                                		};
 	                                		
 	                                		self.calculateGrandTotal = function(invoiceItems) {
 	                                			var tempInvoiceItem;

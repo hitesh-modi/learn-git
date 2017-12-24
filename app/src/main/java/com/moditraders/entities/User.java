@@ -34,7 +34,9 @@ public class User implements Serializable {
 
 	private String password;
 
-	private String state;
+	@ManyToOne
+	@JoinColumn(name="state")
+	private State state;
 
 	//bi-directional many-to-one association to UserRole
 	@OneToMany(mappedBy="username")
@@ -115,11 +117,11 @@ public class User implements Serializable {
 		this.password = password;
 	}
 
-	public String getState() {
+	public State getState() {
 		return this.state;
 	}
 
-	public void setState(String state) {
+	public void setState(State state) {
 		this.state = state;
 	}
 

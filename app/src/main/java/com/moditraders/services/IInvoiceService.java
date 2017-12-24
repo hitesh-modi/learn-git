@@ -4,6 +4,6 @@ import com.moditraders.models.Invoice;
 
 public interface IInvoiceService {
 
-	public long createInvoice(final Invoice invoice);
+	public void createInvoice(final Invoice invoice);
 	
 }

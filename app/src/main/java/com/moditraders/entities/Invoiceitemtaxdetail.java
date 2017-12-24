@@ -15,28 +15,48 @@ import java.math.BigDecimal;
 public class Invoiceitemtaxdetail implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@EmbeddedId
-	private InvoiceitemtaxdetailPK id;
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	@Column(name="iid_itemid")
+	private String ITD_invoicetaxid;
 
+	@Column(name="itd_taxtype")
+	private String ITD_taxType;
+	
+	@Column(name="itd_taxamount")
 	private BigDecimal ITD_taxamount;
 
+	@Column(name="itd_taxrate")
 	private BigDecimal ITD_taxrate;
 
 	//bi-directional many-to-one association to Invoiceitemdetail
 	@ManyToOne
-	@JoinColumn(name="ITD_itemid")
+	@JoinColumn(name="itd_itemid")
 	private Invoiceitemdetail invoiceitemdetail;
 
 	public Invoiceitemtaxdetail() {
 	}
 
-	public InvoiceitemtaxdetailPK getId() {
-		return this.id;
+
+	public String getITD_invoicetaxid() {
+		return ITD_invoicetaxid;
 	}
 
-	public void setId(InvoiceitemtaxdetailPK id) {
-		this.id = id;
+
+	public void setITD_invoicetaxid(String iTD_invoicetaxid) {
+		ITD_invoicetaxid = iTD_invoicetaxid;
 	}
+
+
+	public String getITD_taxType() {
+		return ITD_taxType;
+	}
+
+
+	public void setITD_taxType(String iTD_taxType) {
+		ITD_taxType = iTD_taxType;
+	}
+
 
 	public BigDecimal getITD_taxamount() {
 		return this.ITD_taxamount;

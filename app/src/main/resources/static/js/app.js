@@ -1,4 +1,4 @@
-angular.module('modiTradersApp',['ngRoute', 'angularUtils.directives.dirPagination'])
+angular.module('modiTradersApp',['ngRoute', 'angularUtils.directives.dirPagination', 'ngDialog'])
 	.config(
 			['$routeProvider',
 			function($routeProvider) {

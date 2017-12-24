@@ -176,16 +176,17 @@ public class MainService implements IMainService{
 		List<Consignee> consignees = new ArrayList<Consignee>();
 		LOGGER.info("Received " + Iterables.size(cutomersFromDb) + " cutomers from DB");
 		for (ConsigneeDetail consigneeDetail : cutomersFromDb) {
-			Consignee customer = new Consignee();
-			customer.setName(consigneeDetail.getConsigneeName());
-			customer.setAddress(consigneeDetail.getConsigneeAddress());
-			customer.setState(consigneeDetail.getConsigneeAddress());
-			customer.setStateCode(consigneeDetail.getConsigneeStateCode());
-			customer.setGstin(consigneeDetail.getConsigneeGSTIN());
-			customer.setEmail(consigneeDetail.getConsigneeEmail());
-			customer.setMobileNo(consigneeDetail.getConsigneeMobile());
-			customer.setPhoneNo(consigneeDetail.getConsigneePhone());
-			consignees.add(customer);
+			Consignee consignee = new Consignee();
+			consignee.setConsigneeId(consigneeDetail.getConsigneeId());
+			consignee.setName(consigneeDetail.getConsigneeName());
+			consignee.setAddress(consigneeDetail.getConsigneeAddress());
+			consignee.setState(consigneeDetail.getConsigneeAddress());
+			consignee.setStateCode(consigneeDetail.getConsigneeStateCode());
+			consignee.setGstin(consigneeDetail.getConsigneeGSTIN());
+			consignee.setEmail(consigneeDetail.getConsigneeEmail());
+			consignee.setMobileNo(consigneeDetail.getConsigneeMobile());
+			consignee.setPhoneNo(consigneeDetail.getConsigneePhone());
+			consignees.add(consignee);
 		}
 		return consignees;
 	}

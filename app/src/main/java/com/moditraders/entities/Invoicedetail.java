@@ -1,11 +1,24 @@
 package com.moditraders.entities;
 
 import java.io.Serializable;
-import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.Date;
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 
 /**
@@ -19,43 +32,62 @@ public class Invoicedetail implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@Column(name="id_invoiceid")
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private String ID_InvoiceId;
 
+	@Column(name="id_creationtimestamp")
 	private Timestamp ID_CreationTimestamp;
+	
+	@Column(name="id_invoicenumber")
+	private String ID_InvoiceNumber;
 
+	@Column(name="id_invoicebalanceamount")
 	private BigDecimal ID_InvoiceBalanceAmount;
 
 	@Temporal(TemporalType.DATE)
+	@Column(name="id_invoicedate")
 	private Date ID_InvoiceDate;
+	
+	@Column(name="id_grandtotal")
+	private BigDecimal ID_GrandTotal;
 
+
+	@Column(name="id_invoicepaidamount")
 	private BigDecimal ID_InvoicePaidAmount;
 
+	@Column(name="id_invoicetotalamount")
 	private BigDecimal ID_InvoiceTotalAmount;
 
+	@Column(name="id_modificationtimestamp")
 	private Timestamp ID_ModificationTimestamp;
 
+	@Column(name="id_taxamount")
 	private BigDecimal ID_TaxAmount;
 
 	//bi-directional many-to-one association to Invoiceitemdetail
-	@OneToMany(mappedBy="invoicedetail")
+	@OneToMany(mappedBy="invoicedetail", cascade = CascadeType.PERSIST)
 	private List<Invoiceitemdetail> invoiceitemdetails;
 
 	//bi-directional many-to-one association to CustomerDetail
 	@ManyToOne
-	@JoinColumn(name="ID_CustomerId")
+	@JoinColumn(name="id_customerid")
 	private CustomerDetail customerDetail;
-
-	//bi-directional many-to-one association to Taxrate
-	@ManyToOne
-	@JoinColumn(name="ID_TaxId")
-	private Taxrate taxrate;
 
 	//bi-directional many-to-one association to ConsigneeDetail
 	@ManyToOne
-	@JoinColumn(name="ID_ConsigneeId")
+	@JoinColumn(name="id_consigneeid")
 	private ConsigneeDetail consigneeDetail;
 
 	public Invoicedetail() {
+	}
+	
+	public String getID_InvoiceNumber() {
+		return ID_InvoiceNumber;
+	}
+
+	public void setID_InvoiceNumber(String iD_InvoiceNumber) {
+		ID_InvoiceNumber = iD_InvoiceNumber;
 	}
 
 	public String getID_InvoiceId() {
@@ -152,13 +184,6 @@ public class Invoicedetail implements Serializable {
 		this.customerDetail = customerDetail;
 	}
 
-	public Taxrate getTaxrate() {
-		return this.taxrate;
-	}
-
-	public void setTaxrate(Taxrate taxrate) {
-		this.taxrate = taxrate;
-	}
 
 	public ConsigneeDetail getConsigneeDetail() {
 		return this.consigneeDetail;
@@ -166,6 +191,14 @@ public class Invoicedetail implements Serializable {
 
 	public void setConsigneeDetail(ConsigneeDetail consigneeDetail) {
 		this.consigneeDetail = consigneeDetail;
+	}
+	
+	public BigDecimal getID_GrandTotal() {
+		return ID_GrandTotal;
+	}
+
+	public void setID_GrandTotal(BigDecimal iD_GrandTotal) {
+		ID_GrandTotal = iD_GrandTotal;
 	}
 
 }
