@@ -17,8 +17,8 @@ public class Invoiceitemtaxdetail implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(name="iid_itemid")
-	private String ITD_invoicetaxid;
+	@Column(name="itd_itemid")
+	private String ITD_itemid;
 
 	@Column(name="itd_taxtype")
 	private String ITD_taxType;
@@ -28,23 +28,24 @@ public class Invoiceitemtaxdetail implements Serializable {
 
 	@Column(name="itd_taxrate")
 	private BigDecimal ITD_taxrate;
-
+	
 	//bi-directional many-to-one association to Invoiceitemdetail
 	@ManyToOne
-	@JoinColumn(name="itd_itemid")
+	@JoinColumn(name="itd_invoiceitemid")
 	private Invoiceitemdetail invoiceitemdetail;
+
 
 	public Invoiceitemtaxdetail() {
 	}
 
 
 	public String getITD_invoicetaxid() {
-		return ITD_invoicetaxid;
+		return ITD_itemid;
 	}
 
 
 	public void setITD_invoicetaxid(String iTD_invoicetaxid) {
-		ITD_invoicetaxid = iTD_invoicetaxid;
+		ITD_itemid = iTD_invoicetaxid;
 	}
 
 
@@ -81,5 +82,5 @@ public class Invoiceitemtaxdetail implements Serializable {
 	public void setInvoiceitemdetail(Invoiceitemdetail invoiceitemdetail) {
 		this.invoiceitemdetail = invoiceitemdetail;
 	}
-
+	
 }
