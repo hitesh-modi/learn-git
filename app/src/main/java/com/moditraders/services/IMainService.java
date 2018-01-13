@@ -33,5 +33,4 @@ public interface IMainService {
 
 	public Collection<HSNModel> getHSNs(String chapterId) throws ServiceException;
 
-    void createInvoice(Invoice invoice);
 }

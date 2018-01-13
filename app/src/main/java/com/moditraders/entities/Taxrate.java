@@ -35,10 +35,6 @@ public class Taxrate implements Serializable {
 	@OneToMany(mappedBy="taxrate")
 	private List<Inventoryrefilldetail> inventoryrefilldetails;
 
-	//bi-directional many-to-one association to Invoicedetail
-	@OneToMany(mappedBy="taxrate")
-	private List<Invoicedetail> invoicedetails;
-
 	public Taxrate() {
 	}
 
@@ -102,28 +98,6 @@ public class Taxrate implements Serializable {
 		inventoryrefilldetail.setTaxrate(null);
 
 		return inventoryrefilldetail;
-	}
-
-	public List<Invoicedetail> getInvoicedetails() {
-		return this.invoicedetails;
-	}
-
-	public void setInvoicedetails(List<Invoicedetail> invoicedetails) {
-		this.invoicedetails = invoicedetails;
-	}
-
-	public Invoicedetail addInvoicedetail(Invoicedetail invoicedetail) {
-		getInvoicedetails().add(invoicedetail);
-		invoicedetail.setTaxrate(this);
-
-		return invoicedetail;
-	}
-
-	public Invoicedetail removeInvoicedetail(Invoicedetail invoicedetail) {
-		getInvoicedetails().remove(invoicedetail);
-		invoicedetail.setTaxrate(null);
-
-		return invoicedetail;
 	}
 
 }

@@ -158,8 +158,8 @@ public class MainService implements IMainService{
 			customer.setCustomerId(customerDetail.getCdCustomerId());
 			customer.setName(customerDetail.getCdCustomerName());
 			customer.setAddress(customerDetail.getCdCustomerAddress());
-			customer.setState(customerDetail.getCdCustomerState());
-			customer.setStateCode(customerDetail.getCdCustomerStateCode());
+			customer.setState(customerDetail.getState().getStatename());
+			customer.setStateCode(customerDetail.getState().getStatecode());
 			customer.setGstin(customerDetail.getCdCustomerGSTIN());
 			customer.setEmail(customerDetail.getCdCustomerEmail());
 			customer.setMobileNo(customerDetail.getCdCustomerMobile());
@@ -176,16 +176,17 @@ public class MainService implements IMainService{
 		List<Consignee> consignees = new ArrayList<Consignee>();
 		LOGGER.info("Received " + Iterables.size(cutomersFromDb) + " cutomers from DB");
 		for (ConsigneeDetail consigneeDetail : cutomersFromDb) {
-			Consignee customer = new Consignee();
-			customer.setName(consigneeDetail.getConsigneeName());
-			customer.setAddress(consigneeDetail.getConsigneeAddress());
-			customer.setState(consigneeDetail.getConsigneeAddress());
-			customer.setStateCode(consigneeDetail.getConsigneeStateCode());
-			customer.setGstin(consigneeDetail.getConsigneeGSTIN());
-			customer.setEmail(consigneeDetail.getConsigneeEmail());
-			customer.setMobileNo(consigneeDetail.getConsigneeMobile());
-			customer.setPhoneNo(consigneeDetail.getConsigneePhone());
-			consignees.add(customer);
+			Consignee consignee = new Consignee();
+			consignee.setConsigneeId(consigneeDetail.getConsigneeId());
+			consignee.setName(consigneeDetail.getConsigneeName());
+			consignee.setAddress(consigneeDetail.getConsigneeAddress());
+			consignee.setState(consigneeDetail.getState().getStatename());
+			consignee.setStateCode(consigneeDetail.getState().getStatecode());
+			consignee.setGstin(consigneeDetail.getConsigneeGSTIN());
+			consignee.setEmail(consigneeDetail.getConsigneeEmail());
+			consignee.setMobileNo(consigneeDetail.getConsigneeMobile());
+			consignee.setPhoneNo(consigneeDetail.getConsigneePhone());
+			consignees.add(consignee);
 		}
 		return consignees;
 	}
@@ -281,64 +282,4 @@ public class MainService implements IMainService{
 		return hsnModels;
 	}
 
-	@Override
-	public void createInvoice(final Invoice invoice) {
-		LOGGER.info("Creating invoice " + invoice);
-		if(invoice.isNewCustomer()) {
-		    // Save customer
-
-        }
-        if(invoice.getNewConsignee().equalsIgnoreCase("true")) {
-		    // Save Consignee
-        } else if(invoice.getNewConsignee().equalsIgnoreCase("SAME_AS_CUSTOMER")){
-
-        }
-
-        Collection<InvoiceItem> invoiceItems = invoice.getInvoiceItemDetails();
-        for (InvoiceItem currInvoiceItem:
-             invoiceItems) {
-            // Save each invoice item
-        }
-
-	}
-
-	private CustomerDetail createCustomerEntity(Customer customer) {
-	    CustomerDetail customerDetail = new CustomerDetail();
-	    customerDetail.setCdCustomerName(customer.getName());
-	    customerDetail.setCdCustomerAddress(customer.getAddress());
-	    customerDetail.setCdCustomerGSTIN(customer.getGstin());
-	    customerDetail.setCdCustomerMobile(customer.getMobileNo());
-	    customerDetail.setCdCustomerEmail(customer.getEmail());
-	    customerDetail.setCdCustomerPhone(customer.getPhoneNo());
-	    customerDetail.setCdCustomerState(customer.getState());
-	    customerDetail.setCdCustomerStateCode(customer.getStateCode());
-	    return customerDetail;
-    }
-
-    private ConsigneeDetail createConsigneeEntity(Consignee consignee) {
-        ConsigneeDetail consigneeDetail = new ConsigneeDetail();
-        consigneeDetail.setConsigneeName(consignee.getName());
-        consigneeDetail.setConsigneeAddress(consignee.getAddress());
-        consigneeDetail.setConsigneeGSTIN(consignee.getGstin());
-        consigneeDetail.setConsigneeEmail(consignee.getEmail());
-        consigneeDetail.setConsigneeMobile(consignee.getMobileNo());
-        consigneeDetail.setConsigneePhone(consignee.getPhoneNo());
-        consigneeDetail.setConsigneeState(consignee.getState());
-        consigneeDetail.setConsigneeStateCode(consignee.getStateCode());
-        return  consigneeDetail;
-    }
-
-    private Invoiceitemdetail createInvoiceItemEntity(InvoiceItem invoiceItem) {
-	    Invoiceitemdetail invoiceitemdetail = new Invoiceitemdetail();
-	    // TODO: Convert invoice item details entity.
-        return  invoiceitemdetail;
-    }
-
-    private Invoicedetail createInvoiceItem(Invoice invoice) {
-        Invoicedetail invoicedetail = new Invoicedetail();
-        // TODO: Convert invoice entity.
-
-        return invoicedetail;
-    }
-	
 }

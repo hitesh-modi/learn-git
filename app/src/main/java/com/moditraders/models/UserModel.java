@@ -27,7 +27,7 @@ public class UserModel {
 	private String contactNumber;
 	
 	private StateModel state;
-
+	
 	public StateModel getState() {
 		return state;
 	}

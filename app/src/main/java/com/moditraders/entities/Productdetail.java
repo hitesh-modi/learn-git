@@ -21,7 +21,7 @@ public class Productdetail implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="pd_productid")
-	private int productId;
+	private long productId;
 
 	@Column(name="pd_agencysecuritydeposit")
 	private BigDecimal agencySecurityDeposit;
@@ -74,11 +74,11 @@ public class Productdetail implements Serializable {
 	public Productdetail() {
 	}
 
-	public int getProductId() {
+	public long getProductId() {
 		return this.productId;
 	}
 
-	public void setProductId(int productId) {
+	public void setProductId(long productId) {
 		this.productId = productId;
 	}
 

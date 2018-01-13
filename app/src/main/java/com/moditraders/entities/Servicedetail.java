@@ -32,10 +32,6 @@ public class Servicedetail implements Serializable {
 	@Temporal(TemporalType.DATE)
 	private Date SD_StartDate;
 
-	//bi-directional many-to-one association to Invoiceitemdetail
-	@OneToMany(mappedBy="servicedetail")
-	private List<Invoiceitemdetail> invoiceitemdetails;
-
 	//bi-directional many-to-one association to Servicemaintainencedetail
 	@OneToMany(mappedBy="servicedetail")
 	private List<Servicemaintainencedetail> servicemaintainencedetails;
@@ -87,27 +83,6 @@ public class Servicedetail implements Serializable {
 		this.SD_StartDate = SD_StartDate;
 	}
 
-	public List<Invoiceitemdetail> getInvoiceitemdetails() {
-		return this.invoiceitemdetails;
-	}
-
-	public void setInvoiceitemdetails(List<Invoiceitemdetail> invoiceitemdetails) {
-		this.invoiceitemdetails = invoiceitemdetails;
-	}
-
-	public Invoiceitemdetail addInvoiceitemdetail(Invoiceitemdetail invoiceitemdetail) {
-		getInvoiceitemdetails().add(invoiceitemdetail);
-		invoiceitemdetail.setServicedetail(this);
-
-		return invoiceitemdetail;
-	}
-
-	public Invoiceitemdetail removeInvoiceitemdetail(Invoiceitemdetail invoiceitemdetail) {
-		getInvoiceitemdetails().remove(invoiceitemdetail);
-		invoiceitemdetail.setServicedetail(null);
-
-		return invoiceitemdetail;
-	}
 
 	public List<Servicemaintainencedetail> getServicemaintainencedetails() {
 		return this.servicemaintainencedetails;

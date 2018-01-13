@@ -185,7 +185,7 @@ th, td {
     margin: 5px;
 }
 
-tr:nth-child(even){background-color: #e3e8ea;}
+/* tr:nth-child(even){background-color: #e3e8ea;} */
 
 th {
     background-color: #3c3c58;
@@ -204,8 +204,20 @@ th {
 	margin: 4px;
 	padding: 4px;
 }
-.invoiceTable{
-	background-color: #e3e8ea;
+
+.invoicetable thead{
+	font-family: "Courier New";
+	font-size: 12;
+	font-weight: bold;
+}
+
+.invoicetable td{
+	font-family: "Courier New";
+	font-size: 14;
+	font-weight: bold;
+	border: 1px solid #dddddd;
+	text-align: center;
+	word-wrap: break-word;
 }
 
 .bordered-div{

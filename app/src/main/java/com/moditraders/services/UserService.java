@@ -77,8 +77,10 @@ public class UserService implements IUserService {
 		userModel.setUserName(constructUserName(user.getFirstname(), user.getMiddlename(), user.getLastname()));
 		userModel.setAddress(user.getAddress());
 		userModel.setGstin(user.getGstin());
+		userModel.setFirmName(user.getBusinessname());
 		StateModel state = new StateModel();
-		state.setStatename(user.getState());
+		state.setStatename(user.getState().getStatename());
+		state.setStatecode(user.getState().getStatecode());
 		userModel.setState(state);
 		return userModel;
 	}
@@ -121,7 +123,10 @@ public class UserService implements IUserService {
 		user.setLastname(userToRegister.getLname());
 		user.setGstin(userToRegister.getGstin());
 		user.setContactnumber(userToRegister.getContactNumber());
-		user.setState(userToRegister.getState().getStatename());
+		
+		State state = stateRepo.findOne(userToRegister.getState().getStatecode());
+		
+		user.setState(state);
 		user.setUsername(userToRegister.getEmail());
 		user.setPassword(Util.getDecodedPassword(userToRegister.getPassword()));
 		userRepo.save(user);

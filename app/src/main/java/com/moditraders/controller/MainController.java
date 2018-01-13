@@ -25,6 +25,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.moditraders.exceptions.ServiceExcpetion;
+import com.moditraders.services.IInvoiceService;
 import com.moditraders.services.IMainService;
 
 @RestController
@@ -35,6 +36,9 @@ public class MainController {
 	
 	@Resource(name="mainService")
 	private IMainService mainService;
+	
+	@Resource(name="invoiceService")
+	private IInvoiceService invoiceService;
 	
 	@RequiresPermissions("create-product")
 	@PostMapping(value="/createProduct", produces=MediaType.APPLICATION_JSON_VALUE)
@@ -70,6 +74,13 @@ public class MainController {
 			e.printStackTrace();
 		}
 		return productTypes;
+	}
+	
+	@RequiresPermissions("read-product")
+	@GetMapping(value="/printInvoice")
+	public void printInvoice(@RequestParam String invoiceId) {
+		LOGGER.info("Creating PDF for invoice" + invoiceId);
+		
 	}
 	
 	@ResponseBody
@@ -113,14 +124,17 @@ public class MainController {
 	@ResponseBody
 	@RequiresPermissions("rw-invoice")
 	@PostMapping(value="/createInvoice")
-	public void createInvoice(@Valid @RequestBody String invoiceJson) {
+	public String createInvoice(@Valid @RequestBody String invoiceJson) {
 		LOGGER.info("Create Invoice received for " + invoiceJson);
+		String invoiceNumber = "";
 		try {
 			Invoice invoice = new ObjectMapper().readValue(invoiceJson, Invoice.class);
-			mainService.createInvoice(invoice);
+			invoiceNumber = invoiceService.createInvoice(invoice);
+			return invoiceNumber;
 		} catch (IOException e) {
 			LOGGER.error(e);
 		}
+		return invoiceNumber;
 	}
 	
 	@ResponseBody

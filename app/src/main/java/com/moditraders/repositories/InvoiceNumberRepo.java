@@ -10,6 +10,6 @@ import com.moditraders.entities.InvoiceNumberDetail;
 
 @Repository("invoiceNumberRepo")
 public interface InvoiceNumberRepo extends CrudRepository<InvoiceNumberDetail, Long>{
-	@Query("select sequenceNo from InvoiceNumberDetail where invoiceDate = ?")
+	@Query("select max(sequenceNo) from InvoiceNumberDetail where invoiceDate = ?")
 	public Integer getInvoiceSequenceNumber(Date date);
 }

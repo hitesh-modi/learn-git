@@ -17,7 +17,8 @@ public class Invoice {
     private BigDecimal grandTotal;
     private BigDecimal totalTax;
     private BigDecimal amountReceived;
-    private boolean newCustomer;
+    private BigDecimal netTotal;
+	private boolean newCustomer;
     private String newConsignee;
 
     public String getInvoiceNumber() {
@@ -100,6 +101,14 @@ public class Invoice {
         this.newConsignee = newConsignee;
     }
 
+    public BigDecimal getNetTotal() {
+		return netTotal;
+	}
+
+	public void setNetTotal(BigDecimal netTotal) {
+		this.netTotal = netTotal;
+	}
+    
     @Override
     public String toString() {
         return "Invoice{" +

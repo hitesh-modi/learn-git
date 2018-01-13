@@ -1,9 +1,22 @@
 package com.moditraders.entities;
 
 import java.io.Serializable;
-import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.Date;
+import java.util.List;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 
 /**
@@ -18,45 +31,49 @@ public class Invoiceitemdetail implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private int IID_ItemId;
+	@Column(name="iid_itemid")
+	private String IID_ItemId;
 
+	@Column(name="iid_itemdiscount")
 	private BigDecimal IID_ItemDiscount;
 
+	@Column(name="iid_itemprice")
 	private BigDecimal IID_ItemPrice;
 
-	private String IID_ItemType;
-
+	@Column(name="iid_itemunit")
+	private String IID_ItemUnit;
+	
+	@Column(name="iid_itemtotalamount")
+	private BigDecimal IID_ItemTotalAmount;
+	
+	@Column(name="iid_productquantity")
 	private int IID_ProductQuantity;
 
-	@Temporal(TemporalType.DATE)
-	private Date IID_ServiceEndDate;
-
-	@Temporal(TemporalType.DATE)
-	private Date IID_ServiceStartDate;
+	@Column(name="iid_taxableamount")
+	private BigDecimal iidTaxableamount;
 
 	//bi-directional many-to-one association to Invoicedetail
 	@ManyToOne
-	@JoinColumn(name="IID_InvoiceId")
+	@JoinColumn(name="iid_invoiceid")
 	private Invoicedetail invoicedetail;
 
 	//bi-directional many-to-one association to Productdetail
 	@ManyToOne
-	@JoinColumn(name="IID_ProductId")
+	@JoinColumn(name="iid_productid")
 	private Productdetail productdetail;
 
-	//bi-directional many-to-one association to Servicedetail
-	@ManyToOne
-	@JoinColumn(name="IID_ServiceId")
-	private Servicedetail servicedetail;
+	//bi-directional many-to-one association to Invoiceitemtaxdetail
+	@OneToMany(mappedBy="invoiceitemdetail", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	private Set<Invoiceitemtaxdetail> invoiceitemtaxdetails;
 
 	public Invoiceitemdetail() {
 	}
 
-	public int getIID_ItemId() {
+	public String getIID_ItemId() {
 		return this.IID_ItemId;
 	}
 
-	public void setIID_ItemId(int IID_ItemId) {
+	public void setIID_ItemId(String IID_ItemId) {
 		this.IID_ItemId = IID_ItemId;
 	}
 
@@ -76,13 +93,6 @@ public class Invoiceitemdetail implements Serializable {
 		this.IID_ItemPrice = IID_ItemPrice;
 	}
 
-	public String getIID_ItemType() {
-		return this.IID_ItemType;
-	}
-
-	public void setIID_ItemType(String IID_ItemType) {
-		this.IID_ItemType = IID_ItemType;
-	}
 
 	public int getIID_ProductQuantity() {
 		return this.IID_ProductQuantity;
@@ -92,20 +102,12 @@ public class Invoiceitemdetail implements Serializable {
 		this.IID_ProductQuantity = IID_ProductQuantity;
 	}
 
-	public Date getIID_ServiceEndDate() {
-		return this.IID_ServiceEndDate;
+	public BigDecimal getIidTaxableamount() {
+		return this.iidTaxableamount;
 	}
 
-	public void setIID_ServiceEndDate(Date IID_ServiceEndDate) {
-		this.IID_ServiceEndDate = IID_ServiceEndDate;
-	}
-
-	public Date getIID_ServiceStartDate() {
-		return this.IID_ServiceStartDate;
-	}
-
-	public void setIID_ServiceStartDate(Date IID_ServiceStartDate) {
-		this.IID_ServiceStartDate = IID_ServiceStartDate;
+	public void setIidTaxableamount(BigDecimal iidTaxableamount) {
+		this.iidTaxableamount = iidTaxableamount;
 	}
 
 	public Invoicedetail getInvoicedetail() {
@@ -124,12 +126,43 @@ public class Invoiceitemdetail implements Serializable {
 		this.productdetail = productdetail;
 	}
 
-	public Servicedetail getServicedetail() {
-		return this.servicedetail;
+
+	public Set<Invoiceitemtaxdetail> getInvoiceitemtaxdetails() {
+		return this.invoiceitemtaxdetails;
 	}
 
-	public void setServicedetail(Servicedetail servicedetail) {
-		this.servicedetail = servicedetail;
+	public void setInvoiceitemtaxdetails(Set<Invoiceitemtaxdetail> invoiceitemtaxdetails) {
+		this.invoiceitemtaxdetails = invoiceitemtaxdetails;
+	}
+
+	public Invoiceitemtaxdetail addInvoiceitemtaxdetail(Invoiceitemtaxdetail invoiceitemtaxdetail) {
+		getInvoiceitemtaxdetails().add(invoiceitemtaxdetail);
+		invoiceitemtaxdetail.setInvoiceitemdetail(this);
+
+		return invoiceitemtaxdetail;
+	}
+
+	public Invoiceitemtaxdetail removeInvoiceitemtaxdetail(Invoiceitemtaxdetail invoiceitemtaxdetail) {
+		getInvoiceitemtaxdetails().remove(invoiceitemtaxdetail);
+		invoiceitemtaxdetail.setInvoiceitemdetail(null);
+
+		return invoiceitemtaxdetail;
+	}
+	
+	public String getIID_ItemUnit() {
+		return IID_ItemUnit;
+	}
+
+	public void setIID_ItemUnit(String iID_ItemUnit) {
+		IID_ItemUnit = iID_ItemUnit;
+	}
+	
+	public BigDecimal getIID_ItemTotalAmount() {
+		return IID_ItemTotalAmount;
+	}
+
+	public void setIID_ItemTotalAmount(BigDecimal iID_ItemTotalAmount) {
+		IID_ItemTotalAmount = iID_ItemTotalAmount;
 	}
 
 }
