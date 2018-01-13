@@ -3,10 +3,12 @@ package com.moditraders.entities;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -38,6 +40,12 @@ public class Invoiceitemdetail implements Serializable {
 	@Column(name="iid_itemprice")
 	private BigDecimal IID_ItemPrice;
 
+	@Column(name="iid_itemunit")
+	private String IID_ItemUnit;
+	
+	@Column(name="iid_itemtotalamount")
+	private BigDecimal IID_ItemTotalAmount;
+	
 	@Column(name="iid_productquantity")
 	private int IID_ProductQuantity;
 
@@ -55,8 +63,8 @@ public class Invoiceitemdetail implements Serializable {
 	private Productdetail productdetail;
 
 	//bi-directional many-to-one association to Invoiceitemtaxdetail
-	@OneToMany(mappedBy="invoiceitemdetail", cascade = CascadeType.PERSIST)
-	private List<Invoiceitemtaxdetail> invoiceitemtaxdetails;
+	@OneToMany(mappedBy="invoiceitemdetail", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	private Set<Invoiceitemtaxdetail> invoiceitemtaxdetails;
 
 	public Invoiceitemdetail() {
 	}
@@ -119,11 +127,11 @@ public class Invoiceitemdetail implements Serializable {
 	}
 
 
-	public List<Invoiceitemtaxdetail> getInvoiceitemtaxdetails() {
+	public Set<Invoiceitemtaxdetail> getInvoiceitemtaxdetails() {
 		return this.invoiceitemtaxdetails;
 	}
 
-	public void setInvoiceitemtaxdetails(List<Invoiceitemtaxdetail> invoiceitemtaxdetails) {
+	public void setInvoiceitemtaxdetails(Set<Invoiceitemtaxdetail> invoiceitemtaxdetails) {
 		this.invoiceitemtaxdetails = invoiceitemtaxdetails;
 	}
 
@@ -139,6 +147,22 @@ public class Invoiceitemdetail implements Serializable {
 		invoiceitemtaxdetail.setInvoiceitemdetail(null);
 
 		return invoiceitemtaxdetail;
+	}
+	
+	public String getIID_ItemUnit() {
+		return IID_ItemUnit;
+	}
+
+	public void setIID_ItemUnit(String iID_ItemUnit) {
+		IID_ItemUnit = iID_ItemUnit;
+	}
+	
+	public BigDecimal getIID_ItemTotalAmount() {
+		return IID_ItemTotalAmount;
+	}
+
+	public void setIID_ItemTotalAmount(BigDecimal iID_ItemTotalAmount) {
+		IID_ItemTotalAmount = iID_ItemTotalAmount;
 	}
 
 }

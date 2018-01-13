@@ -5,10 +5,12 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -66,8 +68,8 @@ public class Invoicedetail implements Serializable {
 	private BigDecimal ID_TaxAmount;
 
 	//bi-directional many-to-one association to Invoiceitemdetail
-	@OneToMany(mappedBy="invoicedetail", cascade = CascadeType.PERSIST)
-	private List<Invoiceitemdetail> invoiceitemdetails;
+	@OneToMany(mappedBy="invoicedetail", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+	private Set<Invoiceitemdetail> invoiceitemdetails;
 
 	//bi-directional many-to-one association to CustomerDetail
 	@ManyToOne
@@ -154,11 +156,11 @@ public class Invoicedetail implements Serializable {
 		this.ID_TaxAmount = ID_TaxAmount;
 	}
 
-	public List<Invoiceitemdetail> getInvoiceitemdetails() {
+	public Set<Invoiceitemdetail> getInvoiceitemdetails() {
 		return this.invoiceitemdetails;
 	}
 
-	public void setInvoiceitemdetails(List<Invoiceitemdetail> invoiceitemdetails) {
+	public void setInvoiceitemdetails(Set<Invoiceitemdetail> invoiceitemdetails) {
 		this.invoiceitemdetails = invoiceitemdetails;
 	}
 

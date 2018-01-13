@@ -158,8 +158,8 @@ public class MainService implements IMainService{
 			customer.setCustomerId(customerDetail.getCdCustomerId());
 			customer.setName(customerDetail.getCdCustomerName());
 			customer.setAddress(customerDetail.getCdCustomerAddress());
-			customer.setState(customerDetail.getCdCustomerState());
-			customer.setStateCode(customerDetail.getCdCustomerStateCode());
+			customer.setState(customerDetail.getState().getStatename());
+			customer.setStateCode(customerDetail.getState().getStatecode());
 			customer.setGstin(customerDetail.getCdCustomerGSTIN());
 			customer.setEmail(customerDetail.getCdCustomerEmail());
 			customer.setMobileNo(customerDetail.getCdCustomerMobile());
@@ -180,8 +180,8 @@ public class MainService implements IMainService{
 			consignee.setConsigneeId(consigneeDetail.getConsigneeId());
 			consignee.setName(consigneeDetail.getConsigneeName());
 			consignee.setAddress(consigneeDetail.getConsigneeAddress());
-			consignee.setState(consigneeDetail.getConsigneeAddress());
-			consignee.setStateCode(consigneeDetail.getConsigneeStateCode());
+			consignee.setState(consigneeDetail.getState().getStatename());
+			consignee.setStateCode(consigneeDetail.getState().getStatecode());
 			consignee.setGstin(consigneeDetail.getConsigneeGSTIN());
 			consignee.setEmail(consigneeDetail.getConsigneeEmail());
 			consignee.setMobileNo(consigneeDetail.getConsigneeMobile());

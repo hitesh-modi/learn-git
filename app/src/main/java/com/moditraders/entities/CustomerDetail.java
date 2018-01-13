@@ -42,30 +42,19 @@ public class CustomerDetail implements Serializable {
 	@Column(name="CD_MODIFICATIONTIMESTAMP")
 	private Timestamp cdModificationtimestamp;
 	
-	@Column(name="CD_CUSTOMER_STATE")
+	@ManyToOne
+	@JoinColumn(name="CD_CUSTOMER_STATE_CODE")
+	private State state;
+	
+	/*@Column(name="CD_CUSTOMER_STATE")
 	private String cdCustomerState;
 	
 	@Column(name="CD_CUSTOMER_STATE_CODE")
-	private String cdCustomerStateCode;
+	private String cdCustomerStateCode;*/
 	
 	@Column(name="CD_GSTIN")
 	private String cdCustomerGSTIN;
 
-	public String getCdCustomerState() {
-		return cdCustomerState;
-	}
-
-	public void setCdCustomerState(String cdCustomerState) {
-		this.cdCustomerState = cdCustomerState;
-	}
-
-	public String getCdCustomerStateCode() {
-		return cdCustomerStateCode;
-	}
-
-	public void setCdCustomerStateCode(String cdCustomerStateCode) {
-		this.cdCustomerStateCode = cdCustomerStateCode;
-	}
 
 	public String getCdCustomerGSTIN() {
 		return cdCustomerGSTIN;
@@ -166,6 +155,14 @@ public class CustomerDetail implements Serializable {
 		invoicedetail.setCustomerDetail(null);
 
 		return invoicedetail;
+	}
+
+	public State getState() {
+		return state;
+	}
+
+	public void setState(State state) {
+		this.state = state;
 	}
 
 }

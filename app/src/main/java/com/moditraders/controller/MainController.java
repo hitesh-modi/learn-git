@@ -76,6 +76,13 @@ public class MainController {
 		return productTypes;
 	}
 	
+	@RequiresPermissions("read-product")
+	@GetMapping(value="/printInvoice")
+	public void printInvoice(@RequestParam String invoiceId) {
+		LOGGER.info("Creating PDF for invoice" + invoiceId);
+		
+	}
+	
 	@ResponseBody
 	@RequiresPermissions("read-product")
 	@GetMapping(value="/getProducts")
@@ -117,14 +124,17 @@ public class MainController {
 	@ResponseBody
 	@RequiresPermissions("rw-invoice")
 	@PostMapping(value="/createInvoice")
-	public void createInvoice(@Valid @RequestBody String invoiceJson) {
+	public String createInvoice(@Valid @RequestBody String invoiceJson) {
 		LOGGER.info("Create Invoice received for " + invoiceJson);
+		String invoiceNumber = "";
 		try {
 			Invoice invoice = new ObjectMapper().readValue(invoiceJson, Invoice.class);
-			invoiceService.createInvoice(invoice);
+			invoiceNumber = invoiceService.createInvoice(invoice);
+			return invoiceNumber;
 		} catch (IOException e) {
 			LOGGER.error(e);
 		}
+		return invoiceNumber;
 	}
 	
 	@ResponseBody

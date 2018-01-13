@@ -2,7 +2,7 @@ package com.moditraders.models;
 
 public class Consignee {
 
-	private int consigneeId;
+	private Long consigneeId;
 	
 	private String name;
 	
@@ -84,11 +84,11 @@ public class Consignee {
 		this.gstin = gstin;
 	}
 
-	public int getConsigneeId() {
+	public Long getConsigneeId() {
 		return consigneeId;
 	}
 
-	public void setConsigneeId(int consigneeId) {
+	public void setConsigneeId(Long consigneeId) {
 		this.consigneeId = consigneeId;
 	}
 

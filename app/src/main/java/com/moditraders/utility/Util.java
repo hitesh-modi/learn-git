@@ -49,4 +49,9 @@ public class Util {
 		return decodedPassword;
 	}
 	
+	public static String getDateInPrintableFormat(Date date) {
+		DateFormat dateFormat = new SimpleDateFormat("dd MMM, yyyy");
+		return dateFormat.format(date);
+	}
+	
 }

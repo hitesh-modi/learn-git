@@ -19,7 +19,7 @@ public class ConsigneeDetail implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="CONSIGNEE_ID")
-	private int consigneeId;
+	private Long consigneeId;
 
 	@Column(name="CONSIGNEE_CREATIONTIMESTAMP")
 	private Timestamp consigneeCreationTimestamp;
@@ -42,30 +42,19 @@ public class ConsigneeDetail implements Serializable {
 	@Column(name="CONSIGNEE_MODIFICATIONTIMESTAMP")
 	private Timestamp consigneeModificationTime;
 	
-	@Column(name="CONSIGNEE_STATE")
+	/*@Column(name="CONSIGNEE_STATE")
 	private String consigneeState;
 	
 	@Column(name="CONSIGNEE_STATE_CODE")
-	private String consigneeStateCode;
+	private String consigneeStateCode;*/
+	
+	@ManyToOne
+	@JoinColumn(name="CONSIGNEE_STATE_CODE")
+	private State state;
 	
 	@Column(name="CONSIGNEE_GSTIN")
 	private String consigneeGSTIN;
 
-	public String getConsigneeState() {
-		return consigneeState;
-	}
-
-	public void setConsigneeState(String consigneeState) {
-		this.consigneeState = consigneeState;
-	}
-
-	public String getConsigneeStateCode() {
-		return consigneeStateCode;
-	}
-
-	public void setConsigneeStateCode(String consigneeStateCode) {
-		this.consigneeStateCode = consigneeStateCode;
-	}
 
 	public String getConsigneeGSTIN() {
 		return consigneeGSTIN;
@@ -82,11 +71,11 @@ public class ConsigneeDetail implements Serializable {
 	public ConsigneeDetail() {
 	}
 
-	public int getConsigneeId() {
+	public Long getConsigneeId() {
 		return this.consigneeId;
 	}
 
-	public void setConsigneeId(int consigneeId) {
+	public void setConsigneeId(Long consigneeId) {
 		this.consigneeId = consigneeId;
 	}
 
@@ -166,5 +155,14 @@ public class ConsigneeDetail implements Serializable {
 
 		return invoicedetail;
 	}
+	
+	public State getState() {
+		return state;
+	}
+
+	public void setState(State state) {
+		this.state = state;
+	}
+
 
 }

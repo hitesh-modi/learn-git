@@ -33,6 +33,9 @@ public class User implements Serializable {
 	private String middlename;
 
 	private String password;
+	
+	private String logopath;
+
 
 	@ManyToOne
 	@JoinColumn(name="state")
@@ -133,4 +136,12 @@ public class User implements Serializable {
 		this.userRoles = userRoles;
 	}
 
+	public String getLogopath() {
+		return logopath;
+	}
+
+	public void setLogopath(String logopath) {
+		this.logopath = logopath;
+	}
+	
 }

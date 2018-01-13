@@ -1,6 +1,6 @@
 angular.module('modiTradersApp')
-	.controller('InvoiceController', ['$http', '$scope', '$window', 'ngDialog',
-	                                  function($http, $scope, $window, ngDialog) {
+	.controller('InvoiceController', ['$http', '$scope', '$rootScope', '$window', 'ngDialog',
+	                                  function($http, $scope, $rootScope, $window, ngDialog) {
 	                                	  var self = this;
 	                                	  self.invoice = {};
 	                                	  self.customers = [];
@@ -79,7 +79,7 @@ angular.module('modiTradersApp')
                                                         $http.post('/services/createInvoice', self.invoice)
                                                         	                                		  .then(
                                                         	                                		  				function(response){
-                                                        	                                		  					console.log('Invoice created successfully.', response);
+                                                        	                                		  					console.log('Invoice created successfully.', response.data);
                                                         	                                		  					self.showSuccessMessage();
                                                         	                                		  				}, function(errResponse){
                                                         	                                		  					console.log('Some error while creating invoice');
