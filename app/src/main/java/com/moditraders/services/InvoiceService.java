@@ -1,27 +1,19 @@
 package com.moditraders.services;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.annotation.Resource;
 import javax.transaction.Transactional;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -33,7 +25,6 @@ import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.pdf.PdfPCell;
-import com.itextpdf.text.pdf.PdfPRow;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.moditraders.entities.ConsigneeDetail;
@@ -155,10 +146,11 @@ public class InvoiceService implements IInvoiceService{
 		invoiceDetail.setCustomerDetail(customerDetail);
 		invoiceDetail.setID_InvoiceTotalAmount(invoice.getGrandTotal());
 		invoiceDetail.setID_InvoicePaidAmount(invoice.getAmountReceived());
-		BigDecimal remainingAmount = invoice.getGrandTotal().subtract(invoice.getAmountReceived());
+		BigDecimal remainingAmount = invoice.getNetTotal().subtract(invoice.getAmountReceived());
 		invoiceDetail.setID_InvoiceBalanceAmount(remainingAmount);
 		invoiceDetail.setID_InvoiceDate(invoice.getInvoiceDate());
 		invoiceDetail.setID_InvoiceNumber(invoice.getInvoiceNumber());
+		invoiceDetail.setID_InvoiceDueDate(invoice.getInvoiceDueDate());
 		invoiceDetail.setID_TaxAmount(invoice.getTotalTax());
 		invoiceDetail.setID_GrandTotal(invoice.getNetTotal());
 		return invoiceDetail;
@@ -316,6 +308,13 @@ public class InvoiceService implements IInvoiceService{
     	// Add Traders Details
     	PdfPTable traderTable = new PdfPTable(2);
     	traderTable.setWidthPercentage(100);
+    	
+    	PdfPCell sellerDetailsCell = new PdfPCell(new Phrase("Seller's Details", getBoldFont()));
+    	sellerDetailsCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+    	sellerDetailsCell.setColspan(2);
+    	
+    	traderTable.addCell(sellerDetailsCell);
+    	
     	PdfPCell traderNameCell = new PdfPCell();
     	
     	StringBuilder nameBuilder = new StringBuilder();
@@ -498,7 +497,7 @@ public class InvoiceService implements IInvoiceService{
 			String iRate = invoiceitemdetail.getIID_ItemPrice().toPlainString();
 			PdfPCell iRateCell = new PdfPCell(new Phrase(iRate, getRegularFont()));
 			
-			String iUnits = invoiceitemdetail.getIID_ItemUnit();
+			String iUnits = invoiceitemdetail.getIID_ItemUnit() == null ? "" : invoiceitemdetail.getIID_ItemUnit();
 			PdfPCell iUnitsCell = new PdfPCell(new Phrase(iUnits, getRegularFont()));
 			
 			Integer iQuant = invoiceitemdetail.getIID_ProductQuantity();
@@ -507,7 +506,7 @@ public class InvoiceService implements IInvoiceService{
 			String iTotal = invoiceitemdetail.getIID_ItemTotalAmount().toPlainString();
 			PdfPCell iTotalCell = new PdfPCell(new Phrase(iTotal, getRegularFont()));
 			
-			String iDiscount = invoiceitemdetail.getIID_ItemDiscount().toPlainString();
+			String iDiscount = invoiceitemdetail.getIID_ItemDiscount() == null ? "": invoiceitemdetail.getIID_ItemDiscount().toPlainString();
 			PdfPCell iDiscountCell = new PdfPCell(new Phrase(iDiscount, getRegularFont()));
 			
 			String iTaxableValue = invoiceitemdetail.getIidTaxableamount().toPlainString();
@@ -615,7 +614,7 @@ public class InvoiceService implements IInvoiceService{
     	
     	invoiceDoc.add(totalSectionTable);
     	
-    	PdfPTable signatureNameTable = new PdfPTable(2);
+    	PdfPTable signatureNameTable = new PdfPTable(4);
     	signatureNameTable.setWidthPercentage(100);
     	StringBuilder signNameBuilder = new StringBuilder();
     	signNameBuilder.append("For ");
@@ -623,10 +622,15 @@ public class InvoiceService implements IInvoiceService{
     	signNameBuilder.append(" (Seal and Sign in above box)");
     	
     	PdfPCell signatureNameCell = new PdfPCell(new Phrase(signNameBuilder.toString(), getRegularFont()));
+    	signatureNameCell.setColspan(2);
     	signatureNameTable.addCell(signatureNameCell);
     	
-    	PdfPCell emptyCell = new PdfPCell();
-    	signatureNameTable.addCell(emptyCell);
+    	
+    	PdfPCell dueDateLabel = new PdfPCell(new Phrase("Due Date:", getBoldFont()));
+    	signatureNameTable.addCell(dueDateLabel);
+    	
+    	PdfPCell dueDateValue = new PdfPCell(new Phrase(Util.getDateInPrintableFormat(invoiceModel.getID_InvoiceDueDate()), getBoldFont()));
+    	signatureNameTable.addCell(dueDateValue);
     	
     	invoiceDoc.add(signatureNameTable);
     	
@@ -639,7 +643,7 @@ public class InvoiceService implements IInvoiceService{
     	invoiceDoc.add(termsAndConditionTable);
     	
     	invoiceDoc.close();
-    	return null;
+    	return file;
     }
     
     private TaxItem getCGSTDetails(Set<Invoiceitemtaxdetail> taxDetails) {

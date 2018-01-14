@@ -66,6 +66,10 @@ public class Invoicedetail implements Serializable {
 
 	@Column(name="id_taxamount")
 	private BigDecimal ID_TaxAmount;
+	
+	@Temporal(TemporalType.DATE)
+	@Column(name="id_invoiceduedate")
+	private Date ID_InvoiceDueDate;
 
 	//bi-directional many-to-one association to Invoiceitemdetail
 	@OneToMany(mappedBy="invoicedetail", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
@@ -201,6 +205,14 @@ public class Invoicedetail implements Serializable {
 
 	public void setID_GrandTotal(BigDecimal iD_GrandTotal) {
 		ID_GrandTotal = iD_GrandTotal;
+	}
+
+	public Date getID_InvoiceDueDate() {
+		return ID_InvoiceDueDate;
+	}
+
+	public void setID_InvoiceDueDate(Date iD_InvoiceDueDate) {
+		ID_InvoiceDueDate = iD_InvoiceDueDate;
 	}
 
 }

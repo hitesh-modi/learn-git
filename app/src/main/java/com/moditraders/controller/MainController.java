@@ -1,9 +1,13 @@
 package com.moditraders.controller;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.Collection;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import com.moditraders.models.*;
@@ -24,9 +28,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.itextpdf.text.DocumentException;
 import com.moditraders.exceptions.ServiceExcpetion;
 import com.moditraders.services.IInvoiceService;
 import com.moditraders.services.IMainService;
+import com.moditraders.services.IUserService;
 
 @RestController
 @RequestMapping("/services")
@@ -36,6 +43,9 @@ public class MainController {
 	
 	@Resource(name="mainService")
 	private IMainService mainService;
+	
+	@Resource(name="userService")
+	private IUserService userService;
 	
 	@Resource(name="invoiceService")
 	private IInvoiceService invoiceService;
@@ -76,11 +86,34 @@ public class MainController {
 		return productTypes;
 	}
 	
-	@RequiresPermissions("read-product")
-	@GetMapping(value="/printInvoice")
-	public void printInvoice(@RequestParam String invoiceId) {
-		LOGGER.info("Creating PDF for invoice" + invoiceId);
+	//@RequiresPermissions("read-product")
+	@PostMapping(value="/printInvoice", produces=MediaType.APPLICATION_OCTET_STREAM_VALUE, consumes=MediaType.APPLICATION_JSON_VALUE )
+	public void printInvoice(@RequestBody String invoiceIdJson, HttpServletResponse response) throws MalformedURLException, DocumentException, IOException {
 		
+		String invoiceId = "";
+		ObjectNode objectNode = new ObjectMapper().readValue(invoiceIdJson, ObjectNode.class);
+		if(objectNode.has("invoiceId")) {
+			invoiceId = objectNode.get("invoiceId").asText();
+		}
+		LOGGER.info("Creating PDF for invoice" + invoiceId);
+		UserModel user = userService.getUserInfo();
+		File invoiceFile = invoiceService.createInvoicePDF(invoiceId, user.getUserid());
+		
+		FileInputStream fis = new FileInputStream(invoiceFile);
+		response.setHeader("Content-Disposition", "attachment; filename="+invoiceFile.getName());
+		response.setHeader("Content-type", "application/octet-stream");
+		
+		try{
+			int c;
+            while ((c = fis.read()) != -1) {
+            response.getWriter().write(c);
+            }
+		}
+		finally {
+			 if (fis != null) 
+				 fis.close();
+	                response.getWriter().close();
+		}
 	}
 	
 	@ResponseBody
