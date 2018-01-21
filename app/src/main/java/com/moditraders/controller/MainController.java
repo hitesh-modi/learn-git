@@ -94,7 +94,7 @@ public class MainController {
 		return productTypes;
 	}
 
-	// @RequiresPermissions("read-product")
+	@RequiresPermissions("read-product")
 	@PostMapping(value = "/printInvoice", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public void printInvoice(@RequestBody String invoiceIdJson, HttpServletResponse response)
 			throws MalformedURLException, DocumentException, IOException {
@@ -285,7 +285,7 @@ public class MainController {
 
 	@ResponseBody
 	@RequiresPermissions("rw-invoice")
-	@PostMapping(value = "/getInvoieReport")
+	@PostMapping(value = "/getInvoiceReport")
 	public Collection<InvoiceReportModel> getInvoiceReports(@RequestBody String invoiceReportRequest)
 			throws ParseException, JsonParseException, JsonMappingException, IOException {
 		LOGGER.info("Request for generating invoice report received.");
@@ -301,11 +301,35 @@ public class MainController {
 		}
 
 		Collection<InvoiceReportModel> reportData = null;
-		DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 		Date fromDate = df.parse(fromDateStr);
 		Date toDate = df.parse(toDateStr);
 		reportData = invoiceReportService.getInvoices(fromDate, toDate);
 		return reportData;
+	}
+	
+	@ResponseBody
+	@RequiresPermissions("rw-invoice")
+	@GetMapping(value = "/getInvoice")
+	public Invoice getInvoice(@RequestParam String invoiceId) {
+		LOGGER.info("Request for retriving invoice:" + invoiceId);
+		return invoiceService.getInvoice(invoiceId);
+	}
+	
+	@RequiresPermissions("rw-invoice")
+	@PostMapping(value = "/receivePayment")
+	public void receivePayment(@RequestBody String requestBody) throws JsonParseException, JsonMappingException, IOException {
+		String invoiceId = "";
+		String amountReceived = "";
+		ObjectNode objectNode = new ObjectMapper().readValue(requestBody, ObjectNode.class);
+		if (objectNode.has("invoiceId")) {
+			invoiceId = objectNode.get("invoiceId").asText();
+		}
+		if (objectNode.has("amountReceived")) {
+			amountReceived = objectNode.get("amountReceived").asText();
+		}
+		LOGGER.info("Request for payment:" + invoiceId + ", and payment amount: " + amountReceived);
+		invoiceService.receivePayment(invoiceId, amountReceived);
 	}
 
 	private String convertToJson(Object object) throws JsonProcessingException {

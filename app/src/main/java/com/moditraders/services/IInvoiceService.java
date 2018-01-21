@@ -12,5 +12,9 @@ public interface IInvoiceService {
 	public String createInvoice(final Invoice invoice);
 
 	public File createInvoicePDF(String invoiceId, String userId) throws DocumentException, MalformedURLException, IOException;
+
+	public Invoice getInvoice(String invoiceId);
+	
+	public void receivePayment(String invoiceId, String amount);
 	
 }

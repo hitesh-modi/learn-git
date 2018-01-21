@@ -52,6 +52,7 @@ import com.moditraders.repositories.ProductRepository;
 import com.moditraders.repositories.StateRepository;
 import com.moditraders.repositories.UserRepository;
 import com.moditraders.types.TaxType;
+import com.moditraders.utility.ConversionUtility;
 import com.moditraders.utility.Util;
 
 
@@ -693,5 +694,26 @@ public class InvoiceService implements IInvoiceService{
     	font.setSize(8);
     	return font;
     }
+    
+    @Override
+    public Invoice getInvoice(String invoiceId) {
+    	Invoicedetail invoiceEntity = invoiceRepo.findOne(invoiceId);
+    	return ConversionUtility.convertInvoiceEntityToModel(invoiceEntity);
+    }
+
+	@Override
+	public void receivePayment(String invoiceId, String amount) {
+		Invoicedetail invoiceEntity = invoiceRepo.findOne(invoiceId);
+		BigDecimal paidAmount = invoiceEntity.getID_InvoicePaidAmount();
+		BigDecimal amountPaid = new BigDecimal(amount);
+		
+		paidAmount = paidAmount.add(amountPaid);
+		BigDecimal balanceAmount = invoiceEntity.getID_InvoiceBalanceAmount();
+		balanceAmount = balanceAmount.subtract(amountPaid);
+		invoiceEntity.setID_InvoiceBalanceAmount(balanceAmount);
+		invoiceEntity.setID_InvoicePaidAmount(paidAmount);
+		invoiceRepo.save(invoiceEntity);
+	}
+    
     
 }

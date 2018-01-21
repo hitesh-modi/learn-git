@@ -40,7 +40,7 @@ public class InvoiceTest {
 	
 	@Test
 	public void getInvoiceReport() {
-		invoiceReportService.getInvoices(DateUtils.addDays(Calendar.getInstance().getTime(), -7), Calendar.getInstance().getTime());
+		invoiceReportService.getInvoices(DateUtils.addDays(Calendar.getInstance().getTime(), -20), Calendar.getInstance().getTime());
 	}
 
 }

@@ -1,3 +1,56 @@
-<div ng-controller="InvoiceReportController as ctrl">
-	<h3>TODO: Create Sales Report here</h3>
+<div ng-controller="InvoiceReportController as ctrl"
+	ng-init="getInvoiceData(true, null, null)">
+	<div class="container">
+		<h2>Invoice Report (Last 30 Days)</h2>
+
+		<form class="form-inline well">
+				<div class="form-group">
+					<label for="fromDate">From Date</label> 
+					<input type="datetime-local" class="form-control"
+						id="fromDate" ng-model="ctrl.fromDate" max="{{toDate | date:'yyyy-MM-ddTHH:mm:ss'}}"/>
+				</div>
+				<div class="form-group">
+					<label for="toDate">To Date</label>
+					<input type="datetime-local" class="form-control"
+						id="toDate" ng-model="ctrl.fromDate" min="{{fromDate | date:'yyyy-MM-ddTHH:mm:ss'}}"/>
+				</div>
+				<button type="button" class="btn btn-primary btn-sm" ng-click="getInvoiceData(false, fromDate, toDate)">
+						<span class="glyphicon glyphicon-search"></span> Search
+				</button>
+				
+		</form>
+
+		<table class="table table-bordered well">
+			<thead>
+				<tr>
+					<th>#</th>
+					<th>Customer Name</th>
+					<th>Consignee Name</th>
+					<th>Invoice Amount</th>
+					<th>Balance Amount</th>
+					<th>Invoice Date</th>
+					<th>Due Date</th>
+					<th>Receive Payment</th>
+					<th>Print</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="invoice in ctrl.invoices track by invoice.invoiceId">
+					<td><a ng-click="getInvoice(invoice.invoiceId)">{{invoice.invoiceNumber}}</a></td>
+					<td>{{invoice.customerName}}</td>
+					<td>{{invoice.consigneeName}}</td>
+					<td>{{invoice.invoiceAmount}}</td>
+					<td>{{invoice.balanceAmount}}</td>
+					<td>{{invoice.invoiceDate}}</td>
+					<td>{{invoice.invoiceDueDate}}</td>
+					<td><input type="button" value="Receive Payment"
+						class="btn btn-sm btn-success"
+						ng-click="receivePaymentDialog(invoice)"></td>
+					<td><input type="button" value="Print"
+						class="btn btn-sm btn-success"
+						ng-click="printInvoice(invoice.invoiceId)"></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
 </div>

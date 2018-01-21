@@ -34,15 +34,18 @@
 					<li><a href="#createService" tabindex="4">Create Service</a></li>
 					<li><a href="#inventoryRefill" tabindex="5">Inventory Refill</a></li>
 					<li><a href="#serviceRecord" tabindex="6">Service Record</a></li>
-					<li>
-						<div class="dropdown">
-							<button class="dropbtn">Reports</button>
-							<div class="dropdown-content">
-								<a href="#productReport">Product Report</a> 
-								<a href="#salesReport">Sales Report</a> 
-								<a href="#serviceReport">Service Reports</a>
-							</div>
-						</div>
+					<li class="dropdown">
+							<a href="#" 
+								class="dropdown-toggle" 
+								data-toggle="dropdown" 
+								role="button" 
+								aria-haspopup="true" 
+								aria-expanded="false">Reports<span class="caret"></span></a>
+							<ul class="dropdown-menu">
+								<li><a href="#productReport">Product Report</a></li>
+								<li><a href="#salesReport">Sales Report</a></li>
+								<li><a href="#serviceReport">Service Reports</a></li>
+							</ul>
 					</li>
 				
 				<li><a href="#contactUs" tabindex="8">Contact</a></li>
@@ -64,6 +67,7 @@
 	<script src="productController.js"></script>
 	<script src="productReportController.js"></script>
 	<script src="invoiceReportController.js"></script>
+	<script src="invoiceService.js"></script>
 	<script src="invoiceController.js"></script>
 	<script src="ngDialog.js"></script>
 	
