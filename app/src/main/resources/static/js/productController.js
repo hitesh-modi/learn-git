@@ -1,6 +1,6 @@
 angular.module('modiTradersApp')
-	.controller('ProductController', ['$http', '$scope','$window',
-	                                  function($http, $scope, $window) {
+	.controller('ProductController', ['$http', '$scope','$window', 'productService',
+	                                  function($http, $scope, $window, productService) {
 	                                	  var self = this;
 	                                	  self.showMessage = false;
 	                                	  self.message = "";
@@ -13,6 +13,7 @@ angular.module('modiTradersApp')
 	                                	  self.hsnSections=[];
 	                                	  self.hsnChapters=[];
 	                                	  self.hsns = [];
+	                                	  
 	                                	  self.submitProductForm = function() {
 	                                		  console.log('User clicked submit with product ', self.product);
 	                                		  $http.post('/services/createProduct', self.product)

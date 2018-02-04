@@ -58,12 +58,10 @@ angular
 											});
 
 							$scope.setSelectedConsignee = function(consignee) {
-								console.log('Selected Consignee', consignee);
 								self.invoice.consignee = consignee;
 							};
 
 							$scope.setSelectedCustomer = function(customer) {
-								console.log('Selected Customer', customer);
 								self.invoice.customer = customer;
 							};
 							console.log('Invoice controller loaded.');
@@ -99,25 +97,46 @@ angular
 											});
 
 							self.submit = function() {
+								
 								self.invoice.invoiceItemDetails = $scope.invoiceItemDetails;
-								console.log('Invoice Submitted with values',
-										self.invoice);
-								$http
-										.post('/services/createInvoice',
-												self.invoice)
-										.then(
-												function(response) {
-													console
-															.log(
-																	'Invoice created successfully.',
-																	response.data);
-													$scope.createdInvoiceId = response.data;
-												    self.showSuccessMessage();
-												},
-												function(errResponse) {
-													console
-															.log('Some error while creating invoice');
-												});
+								
+									$http.post('/services/createInvoice',
+											self.invoice)
+									.then(
+											function(response) {
+												$scope.createdInvoiceId = response.data;
+											    self.showSuccessMessage();
+											},
+											function(errResponse) {
+												console
+														.log('Some error while creating invoice');
+											});
+								
+								
+							};
+							
+							$scope.validateForm = function() {
+								if(!isNaN(parseFloat(self.invoice.grandTotal))) {
+									if(parseFloat(self.invoice.grandTotal) >= 50000 
+											&& !self.invoice.consignee.name
+											&& !self.invoice.consignee.address
+											&& !self.invoice.consignee.stateCode) {
+										console.log('Validation failed.');
+										ngDialog.open({
+											template : '<div class="alert alert-danger">Consignee Name, Address and State Code is mandatory when Invoice Amount is greater than 50000<div>',
+											scope : $scope,
+											controller : 'InvoiceController',
+										});
+										
+										console.log('Returning False');
+										
+										return false;
+										
+									}
+									else {
+										return true;
+									}
+								}
 							};
 
 							self.showSuccessMessage = function() {
@@ -204,8 +223,7 @@ angular
 										$scope.invoiceItemDetails.length);
 							};
 
-							$scope
-									.$watchCollection(
+							$scope.$watchCollection(
 											"invoiceItemDetails",
 											function(newValue, oldValue) {
 												console.log('New Length',
@@ -444,4 +462,64 @@ angular
 									return true;
 								}
 							};
+							
+							$scope.setTaxRate = function(product, invoiceTempItem) {
+									if($rootScope.userDetails.state.statecode == self.invoice.consignee.stateCode) {
+										console.log('Setting CGST and SGST Values');
+										invoiceTempItem.sgstRate = product.taxRate / 2;
+										invoiceTempItem.cgstRate = product.taxRate / 2;
+									}
+									else {
+										console.log('Setting IGST Values');
+										invoiceTempItem.igstRate = product.taxRate;
+									}
+							};
+							
+							$scope.$watch('controller.invoice.consignee.stateCode', function (newValue, oldValue, scope) {
+								console.log('State Code of consignee changed', newValue, oldValue);
+								
+									if(newValue == oldValue) {
+										return;
+									}
+									else {
+											if(typeof $scope.invoiceItemDetails != 'undefined' && $scope.invoiceItemDetails.length > 0)
+											{
+													
+													for (var i = 0; i < $scope.invoiceItemDetails.length; i++) {
+														if($rootScope.userDetails.state.statecode == newValue) {
+															if(typeof $scope.invoiceItemDetails[i].product != "undefined") {
+																$scope.invoiceItemDetails[i].cgstRate = $scope.invoiceItemDetails[i].product.taxRate / 2;
+																$scope.invoiceItemDetails[i].sgstRate = $scope.invoiceItemDetails[i].product.taxRate / 2;
+																$scope.invoiceItemDetails[i].cgstAmount = $scope.invoiceItemDetails[i].taxableValue * $scope.invoiceItemDetails[i].cgstRate / 100;
+																$scope.invoiceItemDetails[i].sgstAmount = $scope.invoiceItemDetails[i].taxableValue * $scope.invoiceItemDetails[i].sgstRate / 100;
+															}
+														}
+														else {
+															if(typeof $scope.invoiceItemDetails[i].product != "undefined") {
+																$scope.invoiceItemDetails[i].igstRate = $scope.invoiceItemDetails[i].product.taxRate;
+																$scope.invoiceItemDetails[i].igstAmount = $scope.invoiceItemDetails[i].taxableValue * $scope.invoiceItemDetails[i].igstRate / 100;
+															}
+														}
+													}
+											}
+													
+											if(typeof $scope.tempInvoiceDetails != 'undefined' && $scope.tempInvoiceDetails.length > 0) {
+												for (var i = 0; i < $scope.tempInvoiceDetails.length; i++) {
+													if($rootScope.userDetails.state.statecode == newValue) {
+														if(typeof $scope.tempInvoiceDetails[i].product != "undefined" ) {
+															$scope.tempInvoiceDetails[i].cgstRate = $scope.tempInvoiceDetails[i].product.taxRate / 2;
+															$scope.tempInvoiceDetails[i].sgstRate = $scope.tempInvoiceDetails[i].product.taxRate / 2;
+														}
+													}
+													else {
+														if(typeof self.invoice.invoiceItemDetails[i].product != "undefined" ) {
+															$scope.tempInvoiceDetails[i].igstRate = $scope.tempInvoiceDetails[i].product.taxRate;
+														}
+													}
+												}
+											}
+													
+										}
+								}, true);
+							
 						} ]);
