@@ -24,18 +24,30 @@
 			<thead>
 				<tr>
 					<th>#</th>
-					<th>Customer Name</th>
-					<th>Consignee Name</th>
-					<th>Invoice Amount</th>
-					<th>Balance Amount</th>
-					<th>Invoice Date</th>
-					<th>Due Date</th>
+					<th ng-click="sort('customerName')">Customer Name <span
+							class="glyphicon sort-icon" ng-show="sortKey=='customerName'"
+							ng-class="{'glyphicon-circle-arrow-up':reverse,'glyphicon-circle-arrow-down':!reverse}"></span></th>
+					<th ng-click="sort('consigneeName')">Consignee Name <span
+							class="glyphicon sort-icon" ng-show="sortKey=='consigneeName'"
+							ng-class="{'glyphicon-circle-arrow-up':reverse,'glyphicon-circle-arrow-down':!reverse}"></span></th>
+					<th ng-click="sort('invoiceAmount')">Invoice Amount <span
+							class="glyphicon sort-icon" ng-show="sortKey=='invoiceAmount'"
+							ng-class="{'glyphicon-circle-arrow-up':reverse,'glyphicon-circle-arrow-down':!reverse}"></span></th>
+					<th ng-click="sort('balanceAmount')">Balance Amount <span
+							class="glyphicon sort-icon" ng-show="sortKey=='balanceAmount'"
+							ng-class="{'glyphicon-circle-arrow-up':reverse,'glyphicon-circle-arrow-down':!reverse}"></span></th>
+					<th ng-click="sort('invoiceDate')">Invoice Date <span
+							class="glyphicon sort-icon" ng-show="sortKey=='balanceAmount'"
+							ng-class="{'glyphicon-circle-arrow-up':reverse,'glyphicon-circle-arrow-down':!reverse}"></span></th>
+					<th ng-click="sort('invoiceDueDate')">Due Date <span
+							class="glyphicon sort-icon" ng-show="sortKey=='invoiceDueDate'"
+							ng-class="{'glyphicon-circle-arrow-up':reverse,'glyphicon-circle-arrow-down':!reverse}"></span></th>
 					<th>Receive Payment</th>
 					<th>Print</th>
 				</tr>
 			</thead>
 			<tbody>
-				<tr ng-repeat="invoice in ctrl.invoices track by invoice.invoiceId">
+				<tr dir-paginate="invoice in ctrl.invoices | orderBy:sortKey:reverse | itemsPerPage: 10 track by invoice.invoiceId">
 					<td><a ng-click="getInvoice(invoice.invoiceId)">{{invoice.invoiceNumber}}</a></td>
 					<td>{{invoice.customerName}}</td>
 					<td>{{invoice.consigneeName}}</td>
@@ -45,6 +57,7 @@
 					<td>{{invoice.invoiceDueDate}}</td>
 					<td><input type="button" value="Receive Payment"
 						class="btn btn-sm btn-success"
+						ng-disabled="checkBalanceAmount(invoice.balanceAmount)"
 						ng-click="receivePaymentDialog(invoice)"></td>
 					<td><input type="button" value="Print"
 						class="btn btn-sm btn-success"
@@ -52,5 +65,7 @@
 				</tr>
 			</tbody>
 		</table>
+		<dir-pagination-controls max-size="10" direction-links="true"
+								 boundary-links="true"> </dir-pagination-controls>
 	</div>
 </div>

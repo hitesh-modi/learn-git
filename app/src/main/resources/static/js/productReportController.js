@@ -1,6 +1,6 @@
 angular.module('modiTradersApp')
-	.controller('ProductReportController', ['$http', '$scope',
-	                                  function($http, $scope) {
+	.controller('ProductReportController', ['$http', '$scope', 'productService', 'ngDialog',
+	                                  function($http, $scope, productService, ngDialog) {
 	                                	  var self = this;
 	                                	  
 	                                	  $scope.sort = function(keyName) {
@@ -18,6 +18,23 @@ angular.module('modiTradersApp')
                         		  					console.log('Some error while fetching the data from server');
                         		  				}
                         		  		);
-	                                	  
+
+                                          $scope.editProduct = function(productId) {
+                                              productService.getProduct(productId).then(
+                                                  function(data) {
+                                                      console.log('Data got from service',data);
+                                                      $scope.product = data;
+                                                      ngDialog.open({
+                                                          template: 'productForm.html',
+                                                          scope: $scope,
+                                                          controller: 'ProductController',
+                                                          data: {product: $scope.product}
+                                                      });
+                                                  }
+                                              );
+
+                                              console.log('Product from service: ', $scope.product);
+                                          };
+
 	                                  }
-	                                  ]);
+]);

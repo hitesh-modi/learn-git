@@ -139,6 +139,14 @@ public class MainController {
 		return products;
 	}
 
+    @ResponseBody
+    @RequiresPermissions("rw-invoice")
+    @GetMapping(value = "/getProduct")
+    public Product getProduct(@RequestParam String productId) throws ServiceExcpetion {
+        LOGGER.info("Request for retrieving Product:" + productId);
+        return mainService.getProduct(productId);
+    }
+
 	@ResponseBody
 	@RequiresPermissions("create-invoice")
 	@GetMapping(value = "/getInvoiceNumber")

@@ -42,6 +42,17 @@ angular.module('modiTradersApp')
 				
 			console.log('invoice from service: ', $scope.invoice);
 		};
+
+        $scope.sort = function(keyName) {
+            $scope.sortKey = keyName;
+            $scope.reverse = !$scope.reverse;
+        };
+
+        $scope.checkBalanceAmount = function(amount) {
+            var amount = parseFloat(amount);
+            if(amount == 0)
+                return true;
+        };
 		
 		$scope.printInvoice = function(invoiceId) {
 			invoiceService.printInvoice(invoiceId);

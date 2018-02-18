@@ -75,7 +75,14 @@ public class MainService implements IMainService{
 	@Override
 	public long saveProduct(Product product) {
 		LOGGER.info("Saving Product");
-		Productdetail productDetail = new Productdetail();
+
+        Productdetail productDetail = new Productdetail();
+		if(product.getProductId() != 0) {
+            // The request is for editing since product id is already present
+            productDetail = productRepository.findOne(product.getProductId());
+        }
+
+
 		productDetail.setProductType(product.getType());
 		productDetail.setAgencySecurityDeposit(product.getDepositAmount());
 		productDetail.setAgencyStartDate(product.getAgencyStartDate());
@@ -130,6 +137,36 @@ public class MainService implements IMainService{
 			products.add(product);
 		}
 		return products;
+	}
+
+	@Override
+	public Product getProduct(final String productId) {
+		LOGGER.info("Get product with Id: " + productId);
+		Collection<Product> products = new ArrayList<Product>();
+		Productdetail productdetail = productRepository.findOne(Long.parseLong(productId));
+		LOGGER.info("Found " + productdetail + " from Database.");
+		String goodsOrService = "";
+			Product product = new Product();
+			product.setProductId(productdetail.getProductId());
+			product.setType(productdetail.getProductType().toUpperCase());
+			product.setAgencyStartDate(productdetail.getAgencyStartDate());
+			product.setCompany(productdetail.getProductCompany());
+			product.setDepositAmount(productdetail.getAgencySecurityDeposit());
+
+			goodsOrService = productdetail.getProductServiceOrGood();
+
+			if(goodsOrService.equalsIgnoreCase("G")) {
+				product.setHsnCode(productdetail.getProductHSN().getHsnCode());
+				product.setAccountingCodeDesc(productdetail.getProductHSN().getHsnDesc());
+			}
+			else if(goodsOrService.equalsIgnoreCase("S")) {
+				product.setHsnCode(productdetail.getProductSac().getSacId());
+				product.setAccountingCodeDesc(productdetail.getProductSac().getSacDesc());
+			}
+			product.setName(productdetail.getProductName());
+			product.setTaxRate(productdetail.getProductTaxRate());
+			product.setGood(goodsOrService.equalsIgnoreCase("G")?true:false);
+		return product;
 	}
 	
 	@Override

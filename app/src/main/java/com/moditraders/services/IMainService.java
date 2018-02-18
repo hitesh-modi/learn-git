@@ -14,8 +14,10 @@ public interface IMainService {
 	public long saveProduct(Product product) throws ServiceExcpetion;
 
 	public Collection<Product> getProducts() throws ServiceException;
-	
-	public String generateInvoiceNumber()throws ServiceException;
+
+	public Product getProduct(String productId) throws ServiceExcpetion;
+
+    public String generateInvoiceNumber()throws ServiceException;
 	
 	public Collection<Customer> getCustomers() throws ServiceException;
 

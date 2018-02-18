@@ -1,6 +1,6 @@
 <div ng-controller="ProductReportController as productReportController"
 	class="container">
-	<div class="container-fluid" style="max-width: 800px;">
+	<div class="container-fluid">
 		<h4>
 			Product Report
 			</h5>
@@ -54,7 +54,7 @@
 					<td><span ng-show="product.good==true">Good</span><span ng-show="product.good==false">Service</span></td>
 					<td><input type="button" value="Edit"
 						class="btn btn-sm btn-success"
-						ng-click=""></td>
+						ng-click="editProduct(product.productId)"></td>
 				</tr>
 			</table>
 			<dir-pagination-controls max-size="10" direction-links="true"
