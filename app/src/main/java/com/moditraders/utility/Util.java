@@ -12,15 +12,16 @@ public class Util {
 
 	public static String getInvoiceNumber(int sequenceNumber) {
 		StringBuilder sb = new StringBuilder();
-		DecimalFormat numberFormat = new DecimalFormat("00000");
+		DecimalFormat numberFormat = new DecimalFormat("000000");
 		String newSeq = numberFormat.format(sequenceNumber+1);
-		sb.append(getFinancialYearString()+"/"+getCurrentDateInString()+newSeq);
+		//sb.append(getFinancialYearString()+"/"+getCurrentDateInString()+newSeq);
+        sb.append("INV"+"/"+getCurrentDateInString()+newSeq);
 		return sb.toString();
 	}
 	
 	private static String getCurrentDateInString() {
 		Date date = new Date();
-		DateFormat df = new SimpleDateFormat("yyyyMMdd");
+		DateFormat df = new SimpleDateFormat("yyMMdd");
 		return df.format(date);
 	}
 	

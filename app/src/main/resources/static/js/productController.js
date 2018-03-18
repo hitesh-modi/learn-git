@@ -14,7 +14,7 @@ angular.module('modiTradersApp')
 	                                	  self.hsnChapters=[];
 	                                	  self.hsns = [];
 
-	                                	  if(typeof $scope.ngDialogData != undefined) {
+	                                	  if(typeof $scope.ngDialogData != "undefined") {
 											  self.product = $scope.ngDialogData.product;
 										  }
 

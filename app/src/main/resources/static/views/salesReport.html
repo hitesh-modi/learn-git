@@ -42,8 +42,10 @@
 					<th ng-click="sort('invoiceDueDate')">Due Date <span
 							class="glyphicon sort-icon" ng-show="sortKey=='invoiceDueDate'"
 							ng-class="{'glyphicon-circle-arrow-up':reverse,'glyphicon-circle-arrow-down':!reverse}"></span></th>
-					<th>Receive Payment</th>
-					<th>Print</th>
+					<th>Actions</th>
+                    <!--<th>Credit Note</th>
+                    <th>Revise Invoice</th>
+					<th>Print</th>-->
 				</tr>
 			</thead>
 			<tbody>
@@ -55,13 +57,25 @@
 					<td>{{invoice.balanceAmount}}</td>
 					<td>{{invoice.invoiceDate}}</td>
 					<td>{{invoice.invoiceDueDate}}</td>
-					<td><input type="button" value="Receive Payment"
+                    <td>
+                        <a style="color: black;" ng-click="printInvoice(invoice.invoiceId)"><span class="glyphicon glyphicon-print" aria-hidden="true">&nbsp;</span>Print</a><br/>
+                        <a style="color: black;" ng-click="receivePaymentDialog(invoice)"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true">&nbsp;</span>Receive Payment</a><br/>
+                        <a style="color: black;" ng-click="openCreditNote(invoice.invoiceId)"><span class="glyphicon glyphicon-export" aria-hidden="true">&nbsp;</span>Credit Note</a><br/>
+                        <a style="color: black;" ng-click="reviseInvoice(invoice)"><span class="glyphicon glyphicon-edit" aria-hidden="true">&nbsp;</span>Revise Invoice</a>
+                    </td>
+					<!--<td><input type="button" value="Receive Payment"
 						class="btn btn-sm btn-success"
 						ng-disabled="checkBalanceAmount(invoice.balanceAmount)"
 						ng-click="receivePaymentDialog(invoice)"></td>
+                    <td><input type="button" value="Credit Note"
+                               class="btn btn-sm btn-success"
+                               ng-click=""></td>
+                    <td><input type="button" value="Revise Invoice"
+                               class="btn btn-sm btn-success"
+                               ng-click=""></td>
 					<td><input type="button" value="Print"
 						class="btn btn-sm btn-success"
-						ng-click="printInvoice(invoice.invoiceId)"></td>
+						ng-click="printInvoice(invoice.invoiceId)"></td>-->
 				</tr>
 			</tbody>
 		</table>

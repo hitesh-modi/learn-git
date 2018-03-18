@@ -3,18 +3,8 @@ package com.moditraders.utility;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.moditraders.entities.ConsigneeDetail;
-import com.moditraders.entities.CustomerDetail;
-import com.moditraders.entities.Invoicedetail;
-import com.moditraders.entities.Invoiceitemdetail;
-import com.moditraders.entities.Invoiceitemtaxdetail;
-import com.moditraders.entities.Productdetail;
-import com.moditraders.models.Consignee;
-import com.moditraders.models.Customer;
-import com.moditraders.models.Invoice;
-import com.moditraders.models.InvoiceItem;
-import com.moditraders.models.Product;
-import com.moditraders.models.TaxItem;
+import com.moditraders.entities.*;
+import com.moditraders.models.*;
 import com.moditraders.types.TaxType;
 
 public class ConversionUtility {
@@ -78,6 +68,7 @@ public class ConversionUtility {
 		invoiceItem.setRate(invoiceItemEntity.getIID_ItemPrice());
 		invoiceItem.setTotal(invoiceItemEntity.getIID_ItemTotalAmount());
 		invoiceItem.setDiscount(invoiceItemEntity.getIID_ItemDiscount());
+        invoiceItem.setTaxableValue(invoiceItemEntity.getIidTaxableamount());
 		invoiceItem.setUnit(invoiceItemEntity.getIID_ItemUnit());
 		List<TaxItem> taxItems = new ArrayList<>();
 		for(Invoiceitemtaxdetail taxDetail: invoiceItemEntity.getInvoiceitemtaxdetails()) {
@@ -128,5 +119,24 @@ public class ConversionUtility {
 		product.setGood(goodsOrService.equalsIgnoreCase("G")?true:false);
 		return product;
 	}
+
+	public static Expense convertExpenseEntityToModel(ExpensesEntity entity) {
+        Expense expenseModel = new Expense();
+        expenseModel.setExpenseAmount(entity.getExpenseamount());
+        expenseModel.setExpenseComment(entity.getExpensecomment());
+        expenseModel.setExpenseDate(entity.getExpensedate());
+        expenseModel.setExpenseId(entity.getExpenseid());
+        expenseModel.setExpenseType(entity.getExpensetype());
+        return expenseModel;
+    }
+
+    public static ExpensesEntity convertExpenseModelToEntity(Expense expense) {
+	    ExpensesEntity expenseEntity = new ExpensesEntity();
+	    expenseEntity.setExpenseamount(expense.getExpenseAmount());
+	    expenseEntity.setExpensedate(expense.getExpenseDate());
+	    expenseEntity.setExpensetype(expense.getExpenseType());
+	    expenseEntity.setExpensecomment(expense.getExpenseComment());
+	    return expenseEntity;
+    }
 	
 }

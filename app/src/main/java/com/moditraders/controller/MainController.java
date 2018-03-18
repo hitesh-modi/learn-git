@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import com.moditraders.models.*;
+import com.moditraders.services.*;
+import com.moditraders.types.ExpenseType;
 import org.apache.log4j.Logger;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.hibernate.service.spi.ServiceException;
@@ -35,10 +37,6 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.itextpdf.text.DocumentException;
 import com.moditraders.exceptions.ServiceExcpetion;
-import com.moditraders.services.IInvoiceReportService;
-import com.moditraders.services.IInvoiceService;
-import com.moditraders.services.IMainService;
-import com.moditraders.services.IUserService;
 
 @RestController
 @RequestMapping("/services")
@@ -57,6 +55,9 @@ public class MainController {
 
 	@Resource(name = "invoiceReportService")
 	private IInvoiceReportService invoiceReportService;
+
+	@Resource(name = "expenseService")
+    private IExpenseService expenseService;
 
 	@RequiresPermissions("create-product")
 	@PostMapping(value = "/createProduct", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -339,6 +340,20 @@ public class MainController {
 		LOGGER.info("Request for payment:" + invoiceId + ", and payment amount: " + amountReceived);
 		invoiceService.receivePayment(invoiceId, amountReceived);
 	}
+
+    @RequiresPermissions("rw-expense")
+    @GetMapping(value = "/getExpenseTypes")
+    public @ResponseBody
+    ExpenseType[] getExpenseTypes() {
+        return expenseService.getExpenseTypes();
+    }
+
+    @RequiresPermissions("rw-expense")
+    @PostMapping(value = "/saveExpense")
+    public @ResponseBody
+    Long createExpense(@RequestBody Expense expense) {
+        return expenseService.saveExpense(expense);
+    }
 
 	private String convertToJson(Object object) throws JsonProcessingException {
 		ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();

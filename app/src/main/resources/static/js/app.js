@@ -8,8 +8,8 @@ angular.module('modiTradersApp',['ngRoute', 'angularUtils.directives.dirPaginati
 				.when('/createProduct', {
 					templateUrl: 'productForm.html' 
 				})
-				.when('/createService', {
-					templateUrl: 'serviceForm.html'
+				.when('/createExpense', {
+					templateUrl: 'expenseForm.html'
 				})
 				.when('/serviceRecord', {
 					templateUrl: 'serviceRecord.html'

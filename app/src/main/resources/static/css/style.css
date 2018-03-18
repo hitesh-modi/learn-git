@@ -19,7 +19,8 @@
 }
 
 a:hover {
-	text-decoration: none;
+    font-weight:bold;
+	text-decoration: underline;
 }
 
 a:visited {
@@ -229,4 +230,34 @@ th {
 .highlightedSection {
     background-color: #3c3c58 !important;
     color: white;
+}
+
+.autohide {
+    -moz-animation: cssAnimation 0s ease-in 5s forwards;
+    /* Firefox */
+    -webkit-animation: cssAnimation 0s ease-in 5s forwards;
+    /* Safari and Chrome */
+    -o-animation: cssAnimation 0s ease-in 5s forwards;
+    /* Opera */
+    animation: cssAnimation 0s ease-in 5s forwards;
+    -webkit-animation-fill-mode: forwards;
+    animation-fill-mode: forwards;
+}
+@keyframes cssAnimation {
+    to {
+        width:0;
+        height:0;
+        overflow:hidden;
+    }
+}
+@-webkit-keyframes cssAnimation {
+    to {
+        width:0;
+        height:0;
+        visibility:hidden;
+    }
+}
+
+.glyphicon {
+    font-size: 12px;
 }

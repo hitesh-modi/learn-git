@@ -308,7 +308,6 @@ angular
 							};
 
 							self.createInvoiceItem = function() {
-								console.log('Creating a temp invoice item.');
 								var invoiceItem = {};
 								invoiceItem.serialNumber = $scope.invoiceItemNumbers;
 								$scope.tempInvoiceDetails = [];

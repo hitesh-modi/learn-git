@@ -3,7 +3,7 @@ angular.module('modiTradersApp')
 	function($http, $scope, ngDialog,invoiceService, $window) {
 		var self = this;
 		self.invoices;
-		
+
 		$scope.getInvoiceData = function(defaultReport, fromDate, toDate) {
 			if(defaultReport == true) {
 				var toDate = new Date();
@@ -12,6 +12,7 @@ angular.module('modiTradersApp')
 				fromDate.setMonth(dateOneMonthBack);
 			}
 			var receivePaymentDialog = {};
+            var creditNoteDialog = {};
 			console.log('From Date: ', fromDate);
 			console.log('To Date: ', toDate);
 			console.log('Getting invoice data');
@@ -79,6 +80,23 @@ angular.module('modiTradersApp')
 	 				}
 	 		);
 		};
+
+		$scope.openCreditNote = function(invoiceId) {
+
+            invoiceService.getInvoice(invoiceId).then(
+                function(data) {
+                    console.log('Data got from service',data);
+                    $scope.invoice = data;
+                    ngDialog.open({
+                        template: 'creditNoteForm.html',
+                        scope: $scope,
+                        controller: 'CreditNoteController',
+                        data: {invoice: $scope.invoice}
+                    });
+                }
+            );
+
+        };
 		
 	}
 ]);
