@@ -14,12 +14,12 @@ public class InvoiceItem {
     private BigDecimal rate;
     private BigDecimal total;
     private BigDecimal taxableValue;
-    private BigDecimal cgstRate;
-    private BigDecimal cgstAmount;
-    private BigDecimal sgstRate;
-    private BigDecimal sgstAmount;
-    private BigDecimal igstAmount;
-    private BigDecimal igstRate;
+    private BigDecimal cgstRate = new BigDecimal(0);
+    private BigDecimal cgstAmount = new BigDecimal(0);
+    private BigDecimal sgstRate = new BigDecimal(0);;
+    private BigDecimal sgstAmount = new BigDecimal(0);;
+    private BigDecimal igstAmount = new BigDecimal(0);;
+    private BigDecimal igstRate = new BigDecimal(0);;
     private BigDecimal discount;
     private Collection<TaxItem> additionalTaxes;
 

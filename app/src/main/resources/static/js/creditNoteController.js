@@ -55,21 +55,30 @@ angular
 
                             $scope.saveEdit = function () {
                               $scope.editMode = false;
-                              self.calculateTotal();
+                              self.calculateTotal(self.invoiceItemUnderEdit);
                             };
 
-                            self.calculateTotal = function () {
+                            self.calculateTotal = function (invoiceItem) {
                                 var totalTaxableValue = 0;
                                 var totalTaxes = 0;
                                 for (var i = 0; i < self.invoice.invoiceItemDetails.length; i++) {
                                     tempInvoiceItem = self.invoice.invoiceItemDetails[i];
                                     totalTaxableValue = commonService.add(tempInvoiceItem.taxableValue, totalTaxableValue);
-                                    totalTaxes = commonService.add()
+                                    totalTaxes = commonService.add(tempInvoiceItem.cgstAmount, totalTaxes);
+                                    totalTaxes = commonService.add(tempInvoiceItem.sgstAmount, totalTaxes);
+                                    totalTaxes = commonService.add(tempInvoiceItem.igstAmount, totalTaxes);
                                 }
+
+                                $scope.calculateTotal(invoiceItem);
+                                $scope.calculateTaxableValue(invoiceItem);
+
+                                $scope.invoice.grandTotal = totalTaxableValue;
+                                $scope.invoice.totalTax = totalTaxes;
+                                $scope.invoice.netTotal = commonService.add(totalTaxes, totalTaxableValue);
                             };
 
 							self.submit = function() {
-								
+								console.log('Data posted ', self.invoice);
 							};
 							
 							self.showSuccessMessage = function() {

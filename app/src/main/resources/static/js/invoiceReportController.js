@@ -87,6 +87,8 @@ angular.module('modiTradersApp')
                 function(data) {
                     console.log('Data got from service',data);
                     $scope.invoice = data;
+                    $scope.invoice.invoiceDate = new Date(data.invoiceDate);
+                    $scope.invoice.invoiceDueDate = new Date(data.invoiceDueDate);
                     ngDialog.open({
                         template: 'creditNoteForm.html',
                         scope: $scope,
