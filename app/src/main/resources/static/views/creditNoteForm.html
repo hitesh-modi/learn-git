@@ -238,33 +238,30 @@
                                 {{invoiceItem.product.name}}
                             </td>
                             <td>
-                                <span ng-hide="editMode">{{invoiceItem.quantity}}</span>
-                                <span ng-show="editMode">
+                                <span ng-hide="invoiceItem.editMode">{{invoiceItem.quantity}}</span>
+                                <span ng-show="invoiceItem.editMode">
                                     <input class="form-control input-sm"
-                                           ng-model="invoiceItem.quantity" ng-pattern="/^[0-9]+$/"
-                                           ng-blur="calculateTotal(invoiceItem)">
+                                           ng-model="invoiceItem.quantity" ng-pattern="/^[0-9]+$/">
                                 </span>
                             </td>
                             <td>
                                 {{invoiceItem.unit}}
                             </td>
                             <td>
-                                <span ng-hide="editMode">{{invoiceItem.rate}}</span>
-                                <span ng-show="editMode">
+                                <span ng-hide="invoiceItem.editMode">{{invoiceItem.rate}}</span>
+                                <span ng-show="invoiceItem.editMode">
                                     <input class="form-control input-sm"
-                                           ng-model="invoiceItem.rate" ng-pattern="/^[0-9]+$/"
-                                           ng-blur="calculateTotal(invoiceItem)">
+                                           ng-model="invoiceItem.rate" ng-pattern="/^[0-9]+$/">
                                 </span>
                             </td>
                             <td>
                                 {{invoiceItem.total}}
                             </td>
                             <td>
-                                <span ng-hide="editMode">{{invoiceItem.discount}}</span>
-                                <span ng-show="editMode">
+                                <span ng-hide="invoiceItem.editMode">{{invoiceItem.discount}}</span>
+                                <span ng-show="invoiceItem.editMode">
                                     <input class="form-control input-sm"
-                                           ng-model="invoiceItem.discount" ng-pattern="/^[0-9]+$/"
-                                           ng-blur="calculateTaxableValue(invoiceItem)">
+                                           ng-model="invoiceItem.discount" ng-pattern="/^[0-9]+$/">
                                 </span>
                             </td>
                             <td>
@@ -291,8 +288,8 @@
                             <td>
                                 <div>
 
-                                    <span ng-hide="editMode"><a style="color: black;" ng-click="setEdit(invoiceItem)"><i class="fas fas fa-pen-square"></i>Edit</a><br/></span>
-                                    <span ng-show="editMode"><a style="color: black;" ng-click="saveEdit()"><i class="fas fa-save"></i>Save</a><br/></span>
+                                    <span ng-hide="invoiceItem.editMode"><a style="color: black;" ng-click="setEdit(invoiceItem)"><i class="fas fas fa-pen-square"></i>Edit</a><br/></span>
+                                    <span ng-show="invoiceItem.editMode"><a style="color: black;" ng-click="saveEdit()"><i class="fas fa-save"></i>Save</a><br/></span>
                                     <span><a style="color: black;" ng-click="deleteItem()"><i class="fas fa-trash-alt"></i>Delete</a></span>
 
                                    <!-- <button class="btn-sm btn-primary" ng-hide="editMode"

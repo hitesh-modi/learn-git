@@ -86,12 +86,12 @@
 									<label class="col-sm-2">Name</label>
 									<div class="col-sm-4">
 										<input type="text" ng-model="controller.invoice.customer.name"
-											class="form-control input-sm" ng-required="true">
+											class="form-control input-sm" ng-required="true" ng-disabled="controller.invoice.newCustomer == 'false'">
 									</div>
 									<label class="col-sm-2">Address</label>
 									<div class="col-sm-4">
 										<textarea ng-model="controller.invoice.customer.address"
-											class="form-control input-sm" ng-required="true"></textarea>
+											class="form-control input-sm" ng-required="true" ng-disabled="controller.invoice.newCustomer == 'false'"></textarea>
 									</div>
 								</div>
 
@@ -100,13 +100,13 @@
 									<div class="col-sm-4">
 										<input type="text"
 											ng-model="controller.invoice.customer.mobileNo"
-											class="form-control input-sm" ng-required="true">
+											class="form-control input-sm" ng-required="true" ng-disabled="controller.invoice.newCustomer == 'false'">
 									</div>
 									<label class="col-sm-2">Phone</label>
 									<div class="col-sm-4">
 										<input type="text"
 											ng-model="controller.invoice.customer.phoneNo"
-											class="form-control input-sm">
+											class="form-control input-sm" ng-disabled="controller.invoice.newCustomer == 'false'">
 									</div>
 								</div>
 
@@ -115,7 +115,7 @@
 									<div class="col-sm-4">
 										<input type="text"
 											ng-model="controller.invoice.customer.email"
-											class="form-control input-sm">
+											class="form-control input-sm" ng-disabled="controller.invoice.newCustomer == 'false'">
 									</div>
 									<div class="col-sm-6"></div>
 								</div>
@@ -124,7 +124,7 @@
 									<label for="state" class="col-sm-2">State</label>
 									<div class="col-sm-4">
 										<select ng-model="controller.invoice.customer.stateCode"
-											name="state" class="form-control input-sm" ng-required="true">
+											name="state" class="form-control input-sm" ng-required="true" ng-disabled="controller.invoice.newCustomer == 'false'">
 
 											<option
 												ng-repeat="state in controller.stateList track by state.statecode"
@@ -136,7 +136,7 @@
 									</div>
 									<label class="col-sm-2">GSTIN</label>
 									<div class="col-sm-4">
-										<input type="text"
+										<input type="text" ng-disabled="controller.invoice.newCustomer == 'false'"
 											ng-model="controller.invoice.customer.gstin"
 											class="form-control input-sm">
 									</div>
@@ -176,12 +176,12 @@
 									<label class="col-sm-2">Name</label>
 									<div class="col-sm-4">
 										<input type="text"
-											ng-model="controller.invoice.consignee.name"
+											ng-model="controller.invoice.consignee.name" ng-disabled="controller.invoice.newConsignee !== 'true'"
 											class="form-control input-sm" ng-required="true">
 									</div>
 									<label class="col-sm-2">Address</label>
 									<div class="col-sm-4">
-										<textarea ng-model="controller.invoice.consignee.address"
+										<textarea ng-model="controller.invoice.consignee.address" ng-disabled="controller.invoice.newConsignee !== 'true'"
 											class="form-control input-sm" ng-required="true"></textarea>
 									</div>
 								</div>
@@ -190,12 +190,12 @@
 									<label class="col-sm-2">Mobile</label>
 									<div class="col-sm-4">
 										<input type="text"
-											ng-model="controller.invoice.consignee.mobileNo"
+											ng-model="controller.invoice.consignee.mobileNo" ng-disabled="controller.invoice.newConsignee !== 'true'"
 											class="form-control input-sm" ng-required="true">
 									</div>
 									<label class="col-sm-2">Phone</label>
 									<div class="col-sm-4">
-										<input type="text"
+										<input type="text" ng-disabled="controller.invoice.newConsignee !== 'true'"
 											ng-model="controller.invoice.consignee.phoneNo"
 											class="form-control input-sm">
 									</div>
@@ -205,7 +205,7 @@
 									<label class="col-sm-2">Email</label>
 									<div class="col-sm-4">
 										<input type="text"
-											ng-model="controller.invoice.consignee.email"
+											ng-model="controller.invoice.consignee.email" ng-disabled="controller.invoice.newConsignee !== 'true'"
 											class="form-control input-sm">
 									</div>
 									<div class="col-sm-6"></div>
@@ -214,22 +214,20 @@
 								<div class="form-group">
 									<label for="state" class="col-sm-2">State</label>
 									<div class="col-sm-4">
-										<select ng-model="controller.invoice.consignee.stateCode"
+										<select ng-model="controller.invoice.consignee.stateCode" ng-disabled="controller.invoice.newConsignee !== 'true'"
 											name="state" class="form-control input-sm" ng-required="true">
 
 											<option
 												ng-repeat="state in controller.stateList track by state.statecode"
 												ng-value="state.statecode"
-												ng-selected="controller.invoice.consignee.stateCode == state.statecode">{{state.statename+'
-												('+state.statecode+')'}}</option>
-
+												ng-selected="controller.invoice.consignee.stateCode == state.statecode">{{state.statename+'('+state.statecode+')'}}</option>
 
 										</select>
 
 									</div>
 									<label class="col-sm-2">GSTIN</label>
 									<div class="col-sm-4">
-										<input type="text"
+										<input type="text" ng-disabled="controller.invoice.newConsignee !== 'true'"
 											ng-model="controller.invoice.consignee.gstin"
 											class="form-control input-sm">
 									</div>

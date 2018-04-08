@@ -13,6 +13,7 @@ import java.util.Set;
 import javax.annotation.Resource;
 import javax.transaction.Transactional;
 
+import com.moditraders.models.*;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -38,12 +39,6 @@ import com.moditraders.entities.Productdetail;
 import com.moditraders.entities.SacMaster;
 import com.moditraders.entities.State;
 import com.moditraders.entities.User;
-import com.moditraders.models.Consignee;
-import com.moditraders.models.Customer;
-import com.moditraders.models.Invoice;
-import com.moditraders.models.InvoiceItem;
-import com.moditraders.models.Product;
-import com.moditraders.models.TaxItem;
 import com.moditraders.repositories.ConsigneeRepository;
 import com.moditraders.repositories.CustomerRepository;
 import com.moditraders.repositories.InvoiceNumberRepo;
@@ -75,6 +70,9 @@ public class InvoiceService implements IInvoiceService{
 	
 	@Resource(name="invoiceRepo")
 	private InvoiceRepository invoiceRepo;
+
+	@Resource(name="userService")
+    private IUserService userService;
 	
 	@Resource(name="productRepository")
 	private ProductRepository productRepository;
@@ -118,10 +116,19 @@ public class InvoiceService implements IInvoiceService{
 
         Collection<InvoiceItem> invoiceItems = invoice.getInvoiceItemDetails();
         Invoicedetail invoiceEntity = createInvoiceEntity(invoice, consigneeEntity, customerEntity);
+
+        UserModel user = userService.getUserInfo();
+
+
+        boolean isConsigneeInSameState = false;
+        if(consigneeEntity.getState().getStatecode().equals(user.getState().getStatecode())) {
+            isConsigneeInSameState = true;
+        }
+
         Set<Invoiceitemdetail> invoiceItemDetailsEntities = new HashSet<>();
         for (InvoiceItem currInvoiceItem:
         	invoiceItems) {
-        	Invoiceitemdetail invoiceItemDetail = createInvoiceItemEntity(currInvoiceItem, invoiceEntity);
+        	Invoiceitemdetail invoiceItemDetail = createInvoiceItemEntity(currInvoiceItem, invoiceEntity, isConsigneeInSameState);
         	invoiceItemDetailsEntities.add(invoiceItemDetail);
         }
         invoiceEntity.setInvoiceitemdetails(invoiceItemDetailsEntities);
@@ -187,7 +194,7 @@ public class InvoiceService implements IInvoiceService{
         return  consigneeDetail;
     }
 
-    private Invoiceitemdetail createInvoiceItemEntity(InvoiceItem invoiceItem, Invoicedetail invoiceEntity) {
+    private Invoiceitemdetail createInvoiceItemEntity(InvoiceItem invoiceItem, Invoicedetail invoiceEntity, boolean isConsigneeInSameState) {
 	    Invoiceitemdetail invoiceitemdetail = new Invoiceitemdetail();
 	    Product product = invoiceItem.getProduct();
 	    invoiceitemdetail.setProductdetail(createProductEntity(product));
@@ -197,41 +204,45 @@ public class InvoiceService implements IInvoiceService{
 	    invoiceitemdetail.setIID_ItemTotalAmount(invoiceItem.getTotal());
 	    invoiceitemdetail.setIID_ItemPrice(invoiceItem.getRate());
 	    invoiceitemdetail.setIidTaxableamount(invoiceItem.getTaxableValue());
-	    Collection<TaxItem> additionalTaxes = getAllTaxesForInvoiceItem(invoiceItem);
+
+	    Collection<TaxItem> additionalTaxes = getAllTaxesForInvoiceItem(invoiceItem, isConsigneeInSameState);
 	    Set<Invoiceitemtaxdetail> taxEntities = createInvoiceTaxItemEntities(additionalTaxes, invoiceitemdetail);
 	    invoiceitemdetail.setInvoiceitemtaxdetails(taxEntities);
 	    invoiceitemdetail.setInvoicedetail(invoiceEntity);
         return  invoiceitemdetail;
     }
     
-    private Collection<TaxItem> getAllTaxesForInvoiceItem(InvoiceItem invoiceItem) {
+    private Collection<TaxItem> getAllTaxesForInvoiceItem(InvoiceItem invoiceItem, boolean isConsigneeInSameState) {
     	Collection<TaxItem> invoiceTaxes = invoiceItem.getAdditionalTaxes();
-    	if((invoiceItem.getCgstRate() != null && invoiceItem.getCgstAmount() != null) && 
-    			(!invoiceItem.getCgstRate().equals(BigDecimal.ZERO) && !invoiceItem.getCgstAmount().equals(BigDecimal.ZERO) )) {
-    		TaxItem cgstTaxItem = new TaxItem();
-    		cgstTaxItem.setAmount(invoiceItem.getCgstAmount());
-    		cgstTaxItem.setRate(invoiceItem.getCgstRate());
-    		cgstTaxItem.setType(TaxType.CGST);
-    		invoiceTaxes.add(cgstTaxItem);
-    	}
+    	if(isConsigneeInSameState) {
+            if((invoiceItem.getCgstRate() != null && invoiceItem.getCgstAmount() != null) &&
+                    (!invoiceItem.getCgstRate().equals(BigDecimal.ZERO) && !invoiceItem.getCgstAmount().equals(BigDecimal.ZERO) )) {
+                TaxItem cgstTaxItem = new TaxItem();
+                cgstTaxItem.setAmount(invoiceItem.getCgstAmount());
+                cgstTaxItem.setRate(invoiceItem.getCgstRate());
+                cgstTaxItem.setType(TaxType.CGST);
+                invoiceTaxes.add(cgstTaxItem);
+            }
+
+            if((invoiceItem.getSgstRate() != null && invoiceItem.getSgstAmount() != null) &&
+                    (!invoiceItem.getSgstRate().equals(BigDecimal.ZERO) && !invoiceItem.getSgstAmount().equals(BigDecimal.ZERO) )) {
+                TaxItem sgstTaxItem = new TaxItem();
+                sgstTaxItem.setAmount(invoiceItem.getSgstAmount());
+                sgstTaxItem.setRate(invoiceItem.getSgstRate());
+                sgstTaxItem.setType(TaxType.SGST);
+                invoiceTaxes.add(sgstTaxItem);
+            }
+        } else {
+            if((invoiceItem.getIgstRate() != null && invoiceItem.getIgstAmount() != null) &&
+                    (!invoiceItem.getIgstRate().equals(BigDecimal.ZERO) && !invoiceItem.getIgstAmount().equals(BigDecimal.ZERO) )) {
+                TaxItem igstTaxItem = new TaxItem();
+                igstTaxItem.setAmount(invoiceItem.getIgstAmount());
+                igstTaxItem.setRate(invoiceItem.getIgstRate());
+                igstTaxItem.setType(TaxType.IGST);
+                invoiceTaxes.add(igstTaxItem);
+            }
+        }
     	
-    	if((invoiceItem.getSgstRate() != null && invoiceItem.getSgstAmount() != null) && 
-    			(!invoiceItem.getSgstRate().equals(BigDecimal.ZERO) && !invoiceItem.getSgstAmount().equals(BigDecimal.ZERO) )) {
-    		TaxItem sgstTaxItem = new TaxItem();
-    		sgstTaxItem.setAmount(invoiceItem.getSgstAmount());
-    		sgstTaxItem.setRate(invoiceItem.getSgstRate());
-    		sgstTaxItem.setType(TaxType.SGST);
-    		invoiceTaxes.add(sgstTaxItem);
-    	}
-    	
-    	if((invoiceItem.getIgstRate() != null && invoiceItem.getIgstAmount() != null) && 
-    			(!invoiceItem.getIgstRate().equals(BigDecimal.ZERO) && !invoiceItem.getIgstAmount().equals(BigDecimal.ZERO) )) {
-    		TaxItem igstTaxItem = new TaxItem();
-    		igstTaxItem.setAmount(invoiceItem.getIgstAmount());
-    		igstTaxItem.setRate(invoiceItem.getIgstRate());
-    		igstTaxItem.setType(TaxType.IGST);
-    		invoiceTaxes.add(igstTaxItem);
-    	}
     	return invoiceTaxes;
     }
 

@@ -17,6 +17,7 @@ angular
 							self.invoice.invoiceItemDetails = [];
 							self.invoice.grandTotal = 0.0;
 							self.invoice.totalTax = 0.0;
+							self.invoiceItemLock = false;
 
 							self.invoiceItemUnderEdit;
 
@@ -49,13 +50,26 @@ angular
                             }
 
                             $scope.setEdit = function(invoiceItem) {
-                                $scope.editMode = true;
-                                self.invoiceItemUnderEdit = invoiceItem;
+
+                                if(self.invoiceItemLock == false) {
+                                    console.log('invoice under edit is null or undefined');
+                                    self.invoiceItemUnderEdit = invoiceItem;
+                                    invoiceItem.editMode = true;
+                                    self.invoiceItemLock = true;
+                                } else {
+                                    console.log('invoice under edit is null or undefined');
+                                    ngDialog.openConfirm({
+                                        template: '<p>Please save existing invoice item which is open for editing</p>',
+                                        plain: true
+                                    });
+                                }
+
                             };
 
                             $scope.saveEdit = function () {
-                              $scope.editMode = false;
-                              self.calculateTotal(self.invoiceItemUnderEdit);
+                                self.invoiceItemUnderEdit.editMode = false;
+                                //self.calculateTotal(self.invoiceItemUnderEdit);
+                                self.invoiceItemLock = false;
                             };
 
                             self.calculateTotal = function (invoiceItem) {
@@ -72,9 +86,9 @@ angular
                                 $scope.calculateTotal(invoiceItem);
                                 $scope.calculateTaxableValue(invoiceItem);
 
-                                $scope.invoice.grandTotal = totalTaxableValue;
-                                $scope.invoice.totalTax = totalTaxes;
-                                $scope.invoice.netTotal = commonService.add(totalTaxes, totalTaxableValue);
+                                self.invoice.grandTotal = totalTaxableValue;
+                                self.invoice.totalTax = totalTaxes;
+                                self.invoice.netTotal = commonService.add(totalTaxes, totalTaxableValue);
                             };
 
 							self.submit = function() {
@@ -96,6 +110,56 @@ angular
                                 invoiceItem.taxableValue = commonService.substract(invoiceItem.total, invoiceItem.discount);
                             };
 
+
+                            /**
+                             * This listener is for quantity, whenever quantity changes calculate the amount.
+                             */
+                            $scope.$watch('controller.invoiceItemUnderEdit.quantity', function (newValue, oldValue, scope) {
+
+                                console.log('Quantity values changed', newValue, oldValue);
+
+                                if(newValue == oldValue) {
+                                    return;
+                                }
+
+                               self.invoiceItemUnderEdit.total = commonService.multiply(newValue, self.invoiceItemUnderEdit.rate);
+
+                            }, true);
+
+
+                            /**
+                             * This listener is for Total (quantity x rate), whenever quantity changes calculate the amount.
+                             */
+                            $scope.$watch('controller.invoiceItemUnderEdit.total', function (newValue, oldValue, scope) {
+
+                                console.log('Total values changed', newValue, oldValue);
+
+                                if(newValue == oldValue) {
+                                    return;
+                                }
+
+                                self.invoiceItemUnderEdit.taxableValue = commonService.substract(newValue, self.invoiceItemUnderEdit.discount);
+
+                            }, true);
+
+                            /**
+                             * This listener is for Discount, whenever quantity changes calculate the amount.
+                             */
+                            $scope.$watch('controller.invoiceItemUnderEdit.discount', function (newValue, oldValue, scope) {
+
+                                console.log('Discount values changed', newValue, oldValue);
+
+                                if(newValue == oldValue) {
+                                    return;
+                                }
+
+                                self.invoiceItemUnderEdit.taxableValue = commonService.substract(self.invoiceItemUnderEdit.total, newValue);
+
+                            }, true);
+
+                            /**
+                             * This is listener for taxable value, whenever that changes it has to recalculate the taxes.
+                             */
                             $scope.$watch('controller.invoiceItemUnderEdit.taxableValue', function (newValue, oldValue, scope) {
 
                                 console.log('Taxable values changed', newValue, oldValue);
@@ -107,6 +171,8 @@ angular
                                 self.invoiceItemUnderEdit.cgstAmount = commonService.calculatePercentage(newValue, self.invoiceItemUnderEdit.cgstRate);
                                 self.invoiceItemUnderEdit.igstAmount = commonService.calculatePercentage(newValue, self.invoiceItemUnderEdit.igstRate);
                                 self.invoiceItemUnderEdit.sgstAmount = commonService.calculatePercentage(newValue, self.invoiceItemUnderEdit.sgstRate);
+
+                                self.calculateTotal(self.invoiceItemUnderEdit);
 
                             }, true);
 

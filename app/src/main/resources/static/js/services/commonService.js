@@ -49,4 +49,14 @@ angular.module('modiTradersApp')
             return returnValue;
         };
 
+        this.isNullOrUndefined = function(object) {
+            if (object === undefined) {
+                return true;
+            }
+            if (object === null) {
+                return true;
+            }
+            return false;
+        };
+
     }]);
