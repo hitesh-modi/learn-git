@@ -286,8 +286,10 @@ public class InvoiceService implements IInvoiceService{
     @Override
     public File createInvoicePDF(final String invoiceId, final String userId) throws DocumentException, MalformedURLException, IOException {
     	User user = userRepo.getUser(userId);
-    	String logoPath = user.getLogopath();
-    	
+    	//String logoPath = user.getLogopath();
+
+		String logoPath = "F:\\Development\\git-repo\\learn-git\\app\\src\\main\\resources\\static\\images\\invoice-logo.png";
+
     	Invoicedetail invoiceModel = invoiceRepo.findOne(invoiceId);
     	
     	Document invoiceDoc = new Document();
